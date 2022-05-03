@@ -12,7 +12,10 @@ public class MapGenerator {
     /** Source of entropy */
     private Random rand_;
 
-    /** Amount of roughness */
+    /** 
+     * Amount of roughness 
+     * Adjust to change smoothness of map.
+     */
     float roughness_;
 
     /** Plasma fractal grid */
@@ -93,6 +96,20 @@ public class MapGenerator {
             System.out.println();
         }
     }
+    
+    /**
+     * Dump out as a CSV
+     * Not needed. Good for testing.
+     */
+    public void printAsStringCSV(String[][] map) {
+        for(int i = 0;i < map.length;i++) {
+            for(int j = 0;j < map[0].length;j++) {
+                System.out.print(map[i][j]);
+                System.out.print(",");
+            }
+            System.out.println();
+        }
+    }
 
     /**
      * Convert to a Boolean array
@@ -116,5 +133,31 @@ public class MapGenerator {
         MapGenerator n = new MapGenerator(null, 1.0f, 16, 16);
         n.initialise();
         n.printAsCSV();
+        String[][] a = n.createTerrain(16);
+        n.printAsStringCSV(a);
+    }
+    
+    /**
+     * Make a map with land and water
+     */
+    public String[][] createTerrain(int size) {
+        String[][] map = new String[size][size];
+        for(int i = 0;i < map.length;i++) {
+            for(int j = 0;j < map[0].length;j++) {
+                if(grid_[i][j] < -0.5)
+                {
+                    map[i][j] = "deep water";
+                }
+                else if(grid_[i][j] <= 0)
+                {
+                    map[i][j] = "shallow water";
+                }
+                else
+                {
+                    map[i][j] = "land";
+                }
+            }
+        }
+        return map;
     }
 }
