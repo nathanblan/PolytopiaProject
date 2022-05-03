@@ -1,0 +1,21 @@
+#BlueJ class context
+comment0.target=MapGenerator
+comment1.params=rand\ roughness\ width\ height
+comment1.target=MapGenerator(java.util.Random,\ float,\ int,\ int)
+comment1.text=\ Generate\ a\ noise\ source\ based\ upon\ the\ midpoint\ displacement\ fractal.\r\n\ \r\n\ @param\ rand\ The\ random\ number\ generator\r\n\ @param\ roughness\ a\ roughness\ parameter\r\n\ @param\ width\ the\ width\ of\ the\ grid\r\n\ @param\ height\ the\ height\ of\ the\ grid\r\n
+comment2.params=
+comment2.target=void\ initialise()
+comment3.params=v\ l\ h
+comment3.target=float\ roughen(float,\ int,\ int)
+comment4.params=xl\ yl\ xh\ yh
+comment4.target=void\ generate(int,\ int,\ int,\ int)
+comment5.params=
+comment5.target=void\ printAsCSV()
+comment5.text=\r\n\ Dump\ out\ as\ a\ CSV\ [DONT\ NEED\ THIS]\r\n
+comment6.params=
+comment6.target=boolean[][]\ toBooleans()
+comment6.text=\r\n\ Convert\ to\ a\ Boolean\ array\r\n\ @return\ the\ boolean\ array\r\n
+comment7.params=args
+comment7.target=void\ main(java.lang.String[])
+comment7.text=For\ testing
+numComments=8
