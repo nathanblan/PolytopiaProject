@@ -7,22 +7,28 @@
  */
 public class Tile
 {
-    private int owner;
-
+    protected City city;
+    
     /**
      * Constructor for objects of class Tile
      */
     public Tile()
-    {
-        owner = 0;
-    }
+    {}
     
     public void setOwner (int newOwner)
     {
-        owner = newOwner;
+        if (city != null)
+            city.setOwner(newOwner);
     }
     public int getOwner()
     {
-        return owner;
+        if (city == null)
+            return 0;
+        return city.getOwner();
+    }
+    
+    public City getCity()
+    {
+        return city;
     }
 }

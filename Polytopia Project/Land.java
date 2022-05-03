@@ -1,6 +1,6 @@
 
 /**
- * Write a description of class Land here.
+ * A basic land tile.
  *
  * @author (your name)
  * @version (a version number or a date)

@@ -8,4 +8,6 @@ comment2.params=newOwner
 comment2.target=void\ setOwner(int)
 comment3.params=
 comment3.target=int\ getOwner()
-numComments=4
+comment4.params=
+comment4.target=City\ getCity()
+numComments=5

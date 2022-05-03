@@ -1,11 +1,11 @@
 
 /**
- * Write a description of class WaterTile here.
+ * A water tile. Can fish (30% chance to have fish) and build ports
  *
  * @author (your name)
  * @version (a version number or a date)
  */
-public class WaterTile extends Tile
+public class Water extends Tile
 {
     private boolean hasPort;
     private boolean hasFish;
@@ -13,7 +13,7 @@ public class WaterTile extends Tile
     /**
      * Constructor for objects of class WaterTile
      */
-    public WaterTile()
+    public Water()
     {
         hasPort = false;
         hasFish = Math.random() < 0.3; // 30% chance of having fish
@@ -29,6 +29,9 @@ public class WaterTile extends Tile
             return -1;
         hasPort = true;
         hasFish = false;
+        
+        city.incPopulation(2);
+        
         return 1;
     }
     
@@ -41,6 +44,9 @@ public class WaterTile extends Tile
         if (!hasFish)
             return -1;
         hasFish = false;
+        
+        city.incPopulation(1);
+        
         return 1;
     }
 }

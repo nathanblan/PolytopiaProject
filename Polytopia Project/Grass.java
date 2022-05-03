@@ -1,6 +1,6 @@
 
 /**
- * Write a description of class Grass here.
+ * A grass tile. Can build farms on this tile.
  *
  * @author (your name)
  * @version (a version number or a date)
@@ -22,6 +22,9 @@ public class Grass extends Tile
         if (isFarm)
             return -1;
         isFarm = true;
+        
+        city.incPopulation(2);
+        
         return 1;
     }
 }
