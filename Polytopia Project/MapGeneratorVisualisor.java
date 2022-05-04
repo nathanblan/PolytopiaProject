@@ -3,84 +3,44 @@
  * Use to visualize the map made by MapGenerator.
  */
 
-
 import javafx.application.Application;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
+import javafx.scene.Group;
 import javafx.scene.Scene;
-import javafx.geometry.Insets;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.layout.GridPane;
+import javafx.scene.paint.*;
 import javafx.stage.Stage;
+import javafx.scene.canvas.*;
+import javafx.scene.input.*;
+import javafx.scene.text.*;
 
 public class MapGeneratorVisualisor extends Application {
 
-    private double sceneWidth = 1024;
-    private double sceneHeight = 768;
-
-    private int n = 10;
-    private int m = 10;
-
-    double gridWidth = sceneWidth / n;
-    double gridHeight = sceneHeight / m;
-
-    MyNode[][] playfield = new MyNode[n][m];
+    private double sceneWidth = 1000;
+    private double sceneHeight = 1000;
+    private final int SIZE = 10;
 
     @Override
-    public void start(Stage primaryStage) {
-
-
+    public void start(Stage stage) {
+        stage.setTitle("Polytopia");
         Group root = new Group();
-
-        // initialize playfield
-        for( int i=0; i < n; i++) {
-            for( int j=0; j < m; j++) {
-
-                // create node
-                MyNode node = new MyNode( "Item " + i + "/" + j, i * gridWidth, j * gridHeight, gridWidth, gridHeight);
-
-                // add node to group
-                root.getChildren().add( node);
-
-                // add to playfield for further reference using an array
-                playfield[i][j] = node;
-
+        Canvas canvas = new Canvas(sceneWidth, sceneHeight);
+        GraphicsContext gc = canvas.getGraphicsContext2D();
+        
+        MapGenerator gen = new MapGenerator(null, 4.0f, SIZE, SIZE);
+        String[][] stringMap = gen.createTerrain(SIZE);
+        Tile[][] map = new Tile[10][10];
+        
+        for (int r = 0; r < SIZE; r++)
+        {
+            for (int c = 0; c < SIZE; c++)
+            {
+                if (stringMap[r][c].equals
             }
         }
-
-
-        Scene scene = new Scene( root, sceneWidth, sceneHeight);
-
-        primaryStage.setScene( scene);
-        primaryStage.show();
-
+        
+        root.getChildren().add(canvas);
+        stage.setScene(new Scene(root));
+        stage.show();
     }
-
-    public static void main(String[] args) {
-        launch(args);
-    }
-
-    public static class MyNode extends StackPane {
-
-        public MyNode( String name, double x, double y, double width, double height) {
-
-            // create rectangle
-            Rectangle rectangle = new Rectangle( width, height);
-            rectangle.setStroke(Color.BLACK);
-            rectangle.setFill(Color.LIGHTBLUE);
-
-            // create label
-            Label label = new Label( name);
-
-            // set position
-            setTranslateX( x);
-            setTranslateY( y);
-
-            getChildren().addAll( rectangle, label);
-
-        }
-
-    }
-
 }
