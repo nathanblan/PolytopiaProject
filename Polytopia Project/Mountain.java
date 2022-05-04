@@ -5,6 +5,10 @@
  * @author (your name)
  * @version (a version number or a date)
  */
+
+import javafx.scene.canvas.*;
+import javafx.scene.paint.Color;
+
 public class Mountain extends Tile
 {
     private boolean hasGold;
@@ -28,5 +32,11 @@ public class Mountain extends Tile
         city.incPopulation(2);
         
         return 1;
+    }
+    
+    public void drawTile(GraphicsContext gc, int x, int y)
+    {
+        gc.setFill(Color.GREY);
+        gc.fillRect(x*TILE_SIZE, y*TILE_SIZE, TILE_SIZE, TILE_SIZE);
     }
 }

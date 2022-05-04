@@ -5,6 +5,10 @@
  * @author (your name)
  * @version (a version number or a date)
  */
+
+import javafx.scene.canvas.*;
+import javafx.scene.paint.Color;
+
 public class Water extends Tile
 {
     private boolean hasPort;
@@ -48,5 +52,11 @@ public class Water extends Tile
         city.incPopulation(1);
         
         return 1;
+    }
+    
+    public void drawTile(GraphicsContext gc, int x, int y)
+    {
+        gc.setFill(Color.BLUE);
+        gc.fillRect(x*TILE_SIZE, y*TILE_SIZE, TILE_SIZE, TILE_SIZE);
     }
 }

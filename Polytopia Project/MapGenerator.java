@@ -36,7 +36,7 @@ public class MapGenerator {
     }
 
 
-    public void initialise() {
+    public void init() {
         int xh = grid_.length - 1;
         int yh = grid_[0].length - 1;
 
@@ -134,7 +134,7 @@ public class MapGenerator {
         int i=5;
         while(i >= 1)
         {
-            n.initialise();
+            n.init();
             //n.printAsCSV();
             char[][] a = n.createTerrain(20);
             n.printAsStringCSV(a);

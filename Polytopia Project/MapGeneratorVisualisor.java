@@ -16,9 +16,9 @@ import javafx.scene.text.*;
 
 public class MapGeneratorVisualisor extends Application {
 
-    private double sceneWidth = 1000;
-    private double sceneHeight = 1000;
-    private final int SIZE = 10;
+    private double sceneWidth = 700;
+    private double sceneHeight = 700;
+    private final int SIZE = 14;
 
     @Override
     public void start(Stage stage) {
@@ -28,15 +28,31 @@ public class MapGeneratorVisualisor extends Application {
         GraphicsContext gc = canvas.getGraphicsContext2D();
         
         MapGenerator gen = new MapGenerator(null, 4.0f, SIZE, SIZE);
-        String[][] stringMap = gen.createTerrain(SIZE);
-        Tile[][] map = new Tile[10][10];
+        gen.init();
+        char[][] charMap = gen.createTerrain(SIZE);
+        Tile[][] map = new Tile[SIZE][SIZE];
         
         for (int r = 0; r < SIZE; r++)
         {
             for (int c = 0; c < SIZE; c++)
             {
-                if (stringMap[r][c].equals
+                if (charMap[r][c] == 'A')
+                    map[r][c] = new Mountain();
+                else if (charMap[r][c] == '=')
+                    map[r][c] = new DeepWater();
+                else if (charMap[r][c] == '~')
+                    map[r][c] = new Water();
+                else if (charMap[r][c] == '-')
+                    map[r][c] = new Land();
+                else if (charMap[r][c] == '+')
+                    map[r][c] = new Forest();
+                else if (charMap[r][c] == ',')
+                    map[r][c] = new Grass();
+                    
+                map[r][c].drawTile(gc, r, c);
+                System.out.print(charMap[r][c]+" ");
             }
+            System.out.println();
         }
         
         root.getChildren().add(canvas);

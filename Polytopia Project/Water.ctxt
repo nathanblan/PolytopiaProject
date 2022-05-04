@@ -1,6 +1,5 @@
 #BlueJ class context
 comment0.target=Water
-comment0.text=\r\n\ A\ water\ tile.\ Can\ fish\ (30%\ chance\ to\ have\ fish)\ and\ build\ ports\r\n\r\n\ @author\ (your\ name)\r\n\ @version\ (a\ version\ number\ or\ a\ date)\r\n
 comment1.params=
 comment1.target=Water()
 comment1.text=\r\n\ Constructor\ for\ objects\ of\ class\ WaterTile\r\n
@@ -10,4 +9,6 @@ comment2.text=\r\n\ Builds\ a\ port\ on\ the\ tile\ of\ water\r\n\ @return\ -1\ 
 comment3.params=
 comment3.target=int\ fish()
 comment3.text=\r\n\ Fishes\ in\ the\ tile\ of\ water\r\n\ @return\ -1\ if\ unsuccessful,\ 1\ if\ successful\r\n
-numComments=4
+comment4.params=gc\ x\ y
+comment4.target=void\ drawTile(javafx.scene.canvas.GraphicsContext,\ int,\ int)
+numComments=5

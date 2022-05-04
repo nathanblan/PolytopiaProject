@@ -5,6 +5,10 @@
  * @author (your name)
  * @version (a version number or a date)
  */
+
+import javafx.scene.canvas.*;
+import javafx.scene.paint.Color;
+
 public class Forest extends Tile
 {
     private boolean hasAnimal;
@@ -40,5 +44,11 @@ public class Forest extends Tile
         city.incPopulation(1);
         
         return 1;
+    }
+    
+    public void drawTile(GraphicsContext gc, int x, int y)
+    {
+        gc.setFill(Color.GREEN);
+        gc.fillRect(x*TILE_SIZE, y*TILE_SIZE, TILE_SIZE, TILE_SIZE);
     }
 }
