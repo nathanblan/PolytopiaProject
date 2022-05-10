@@ -34,7 +34,7 @@ public class MapGeneratorVisualisor extends Application {
         drawTileMap(map, gc, 0, 0, 14, 14);
         
         canvas.setOnKeyPressed(e -> {
-            checkKeyPress(e);
+            checkKeyPress(e, map, gc);
         });
         
         root.getChildren().add(canvas);
@@ -42,10 +42,39 @@ public class MapGeneratorVisualisor extends Application {
         stage.show();
     }
     
-    private void checkKeyPress(KeyEvent e)
+    private void checkKeyPress(KeyEvent e, Tile[][] map, GraphicsContext gc)
     {
-        if (e.getCode() == KeyCode.A) {
-            System.out.println("A key was pressed");
+        if (e.getCode() == KeyCode.A)
+        {
+            if (curX > 0)
+            {
+                curX--;
+                drawTileMap(map, gc, curX, curY, 14, 14);
+            }
+        }
+        else if (e.getCode() == KeyCode.D)
+        {
+            if (curX < SIZE - sceneWidth/Tile.TILE_SIZE)
+            {
+                curX++;
+                drawTileMap(map, gc, curX, curY, 14, 14);
+            }
+        }
+        else if (e.getCode() == KeyCode.W)
+        {
+            if (curY > 0)
+            {
+                curY--;
+                drawTileMap(map, gc, curX, curY, 14, 14);
+            }
+        }
+        else if (e.getCode() == KeyCode.S)
+        {
+            if (curY < SIZE - sceneHeight/Tile.TILE_SIZE)
+            {
+                curY++;
+                drawTileMap(map, gc, curX, curY, 14, 14);
+            }
         }
     }
     

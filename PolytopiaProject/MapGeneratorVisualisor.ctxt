@@ -2,8 +2,8 @@
 comment0.target=MapGeneratorVisualisor
 comment1.params=stage
 comment1.target=void\ start(javafx.stage.Stage)
-comment2.params=e
-comment2.target=void\ checkKeyPress(javafx.scene.input.KeyEvent)
+comment2.params=e\ map\ gc
+comment2.target=void\ checkKeyPress(javafx.scene.input.KeyEvent,\ Tile[][],\ javafx.scene.canvas.GraphicsContext)
 comment3.params=
 comment3.target=Tile[][]\ getTileMap()
 comment4.params=map\ gc\ startX\ startY\ width\ height
