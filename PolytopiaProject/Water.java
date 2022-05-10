@@ -1,3 +1,4 @@
+import javafx.scene.image.Image;
 
 /**
  * A water tile. Can fish (30% chance to have fish) and build ports
@@ -56,7 +57,8 @@ public class Water extends Tile
     
     public void drawTile(GraphicsContext gc, int x, int y)
     {
-        gc.setFill(Color.BLUE);
-        gc.fillRect(x*TILE_SIZE, y*TILE_SIZE, TILE_SIZE, TILE_SIZE);
+        //gc.setFill(Color.BLUE);
+        //gc.fillRect(x*TILE_SIZE, y*TILE_SIZE, TILE_SIZE, TILE_SIZE);
+        gc.drawImage(new Image("images\\shallow water.jpg"), x*TILE_SIZE, y*TILE_SIZE, TILE_SIZE, TILE_SIZE);
     }
 }
