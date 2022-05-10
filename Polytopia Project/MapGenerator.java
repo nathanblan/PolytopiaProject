@@ -87,7 +87,7 @@ public class MapGenerator {
         for(int i = 0;i < grid_.length;i++) {
             for(int j = 0;j < grid_[0].length;j++) {
                 System.out.print(grid_[i][j]);
-                System.out.print(",");
+                //System.out.print(",");
             }
             System.out.println();
         }
@@ -113,8 +113,128 @@ public class MapGenerator {
 
     /** For testing */
     public static void main(String[] args) {
-        MapGenerator n = new MapGenerator(null, 1.0f, 250, 250);
-        n.init();
-        n.printAsCSV();
+        MapGenerator n = new MapGenerator(null, 4.0f, 20, 20);
+        int i=5;
+        while(i >= 1)
+        {
+            n.init();
+            //n.printAsCSV();
+            char[][] a = n.createTerrain(20);
+            //n.printAsCSV(a);
+            System.out.println();
+            i--;
+        }
+        
+    }
+    
+    /**
+     * Make a map with land and water
+     */
+    public char[][] createTerrain(int size) {
+        char[][] map = new char[size][size];
+        for(int i = 0;i < map.length;i++) {
+            for(int j = 0;j < map[0].length;j++) {
+                if(grid_[i][j]+0.5 < -0.75)
+                {
+                    map[i][j] = '=';//deep water
+                }
+                else if(grid_[i][j] <= 0)
+                {
+                    map[i][j] = '~';//shallow water
+                }
+                else if(grid_[i][j]+0.5 >=5.5)
+                {
+                    map[i][j] = 'A'; //mountain
+                }
+                else if(grid_[i][j]+0.5 >=3.75)
+                {
+                    map[i][j] = 'A'; //mountain
+                }
+                else
+                {
+                    map[i][j] = '-';//land
+                }
+            }
+        }
+        
+        for(int i = 2;i < map.length-2;i++) {
+            for(int j = 2;j < map[0].length-2;j++) {
+                //mountain conditions
+                if(map[i][j] == 'A' && map[i][j-2] == 'A')
+                {
+                    map[i][j-1] = '-';//so shallow water is next to land
+                }
+                if(map[i][j] == 'A' && map[i][j+2] == 'A')
+                {
+                    map[i][j+1] = '-';//so shallow water is next to land
+                }
+                if(map[i][j] == 'A' && map[i][j-2] == 'A')
+                {
+                    map[i-1][j] = '-';//so shallow water is next to land
+                }
+                if(map[i][j] == 'A' && map[i][j+2] == 'A')
+                {
+                    map[i+1][j] = '-';//so shallow water is next to land
+                }
+                
+                //deep water conditions
+                /*
+                if(map[i][j].equals("=") && map[i][j-1].equals("=") && map[i][j-2].equals("="))
+                {
+                    map[i][j-2] = "—";//so shallow water is next to land
+                }
+                if(map[i][j].equals("=") && map[i][j+1].equals("=") && map[i][j+2].equals("="))
+                {
+                    map[i][j+2] = "—";//so shallow water is next to land
+                }
+                if(map[i][j].equals("=") && map[i-1][j].equals("=") && map[i-2][j].equals("="))
+                {
+                    map[i-2][j] = "—";//so shallow water is next to land
+                }
+                if(map[i][j].equals("=") && map[i+1][j].equals("=") && map[i+2][j].equals("="))
+                {
+                    map[i+2][j] = "—";//so shallow water is next to land
+                } */
+            }
+        }
+        
+        for(int i = 1;i < map.length-1;i++) {
+            for(int j = 1;j < map[0].length-1;j++) {
+                //shallow water conditions
+                if(map[i][j] == '-' && map[i][j-1] == '=')
+                {
+                    map[i][j-1] = '~';//so shallow water is next to land
+                }
+                if(map[i][j] == '-' && map[i][j+1] == '=')
+                {
+                    map[i][j+1] = '~';//so shallow water is next to land
+                }
+                if(map[i][j] == '-' && map[i-1][j] == '=')
+                {
+                    map[i-1][j] = '~';//so shallow water is next to land
+                }
+                if(map[i][j] == '-' && map[i+1][j] == '=')
+                {
+                    map[i+1][j] = '~';//so shallow water is next to land
+                }
+            }
+        }
+        
+        for(int i = 0;i < map.length;i++) {
+            for(int j = 0;j < map[0].length;j++) {
+                if(map[i][j] == '-')
+                {
+                    if((Math.random()*10) < 2.5)
+                    {
+                        map[i][j] = '+';
+                    }
+                    else if((Math.random()*10) < 5)
+                    {
+                        map[i][j] = ',';
+                    }
+                }
+            }
+        }
+        return map;
     }
 }
