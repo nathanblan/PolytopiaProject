@@ -191,11 +191,11 @@ public class MapGenerator {
                     }
                 }
                 else if(i==map.length-1 && j==0){
-                    if(map[i][j] == '-' && map[i+1][j] == '=')
+                    if(map[i][j] == '-' && map[i-1][j] == '=')
                     {
-                        map[i+1][j] = '~';//so shallow water is next to land
+                        map[i-1][j] = '~';//so shallow water is next to land
                     }
-                    if(map[i][j] == '-' && map[i][j-1] == '=')
+                    if(map[i][j] == '-' && map[i][j+1] == '=')
                     {
                         map[i][j+1] = '~';//so shallow water is next to land
                     }
@@ -211,16 +211,16 @@ public class MapGenerator {
                     }
                 }
                 else if(i==map.length-1 && j==map[0].length-1){
-                    if(map[i][j] == '-' && map[i+1][j] == '=')
+                    if(map[i][j] == '-' && map[i-1][j] == '=')
                     {
-                        map[i+1][j] = '~';//so shallow water is next to land
+                        map[i-1][j] = '~';//so shallow water is next to land
                     }
                     if(map[i][j] == '-' && map[i][j-1] == '=')
                     {
                         map[i][j-1] = '~';//so shallow water is next to land
                     }
                 }
-                else if(i==0 && j!= 0)
+                else if(i==0 && j<map[0].length-1)
                 {
                     if(map[i][j] == '-' && map[i+1][j] == '=')
                     {
@@ -229,6 +229,45 @@ public class MapGenerator {
                     if(map[i][j] == '-' && map[i][j+1] == '=')
                     {
                         map[i][j+1] = '~';//so shallow water is next to land
+                    }
+                }
+                else if(i==map.length-1 && j<map[0].length-1)
+                {
+                    if(map[i][j] == '-' && map[i-1][j] == '=')
+                    {
+                        map[i+1][j] = '~';//so shallow water is next to land
+                    }
+                    if(map[i][j] == '-' && map[i][j+1] == '=')
+                    {
+                        map[i][j+1] = '~';//so shallow water is next to land
+                    }
+                }
+                else if(i<map.length-1 && j==0)
+                {
+                    if(map[i][j] == '-' && map[i-1][j] == '=')
+                    {
+                        map[i+1][j] = '~';//so shallow water is next to land
+                    }
+                    if(map[i][j] == '-' && map[i][j+1] == '=')
+                    {
+                        map[i][j+1] = '~';//so shallow water is next to land
+                    }if(map[i][j] == '-' && map[i+1][j] == '=')
+                    {
+                        map[i+1][j] = '~';//so shallow water is next to land
+                    }
+                }
+                else if(i<map.length-1 && j==map[0].length-1)
+                {
+                    if(map[i][j] == '-' && map[i-1][j] == '=')
+                    {
+                        map[i+1][j] = '~';//so shallow water is next to land
+                    }
+                    if(map[i][j] == '-' && map[i][j-1] == '=')
+                    {
+                        map[i][j+1] = '~';//so shallow water is next to land
+                    }if(map[i][j] == '-' && map[i+1][j] == '=')
+                    {
+                        map[i+1][j] = '~';//so shallow water is next to land
                     }
                 }
                 else{
