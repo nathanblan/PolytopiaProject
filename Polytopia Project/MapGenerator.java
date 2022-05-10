@@ -33,7 +33,7 @@ public class MapGenerator {
     }
 
 
-    public void initialise() {
+    public void init() {
         int xh = grid_.length - 1;
         int yh = grid_[0].length - 1;
 
@@ -114,7 +114,7 @@ public class MapGenerator {
     /** For testing */
     public static void main(String[] args) {
         MapGenerator n = new MapGenerator(null, 1.0f, 250, 250);
-        n.initialise();
+        n.init();
         n.printAsCSV();
     }
 }
