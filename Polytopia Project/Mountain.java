@@ -1,6 +1,6 @@
 
 /**
- * A grass tile. Can build farms on this tile.
+ * Write a description of class Mountain here.
  *
  * @author (your name)
  * @version (a version number or a date)
@@ -9,23 +9,25 @@
 import javafx.scene.canvas.*;
 import javafx.scene.paint.Color;
 
-public class Grass extends Tile
+public class Mountain extends Tile
 {
-    private boolean isFarm;
-    
+    private boolean hasGold;
+    private boolean hasMine;
+
     /**
-     * Constructor for objects of class Grass
+     * Constructor for objects of class Mountain
      */
-    public Grass()
+    public Mountain()
     {
-        isFarm = false;
+        hasMine = false;
+        hasGold = Math.random() < 0.3; // 30% chance
     }
     
-    public int buildFarm()
+    public int buildMine()
     {
-        if (isFarm)
+        if (!hasGold || hasMine)
             return -1;
-        isFarm = true;
+        hasMine = true;
         
         city.incPopulation(2);
         
@@ -34,7 +36,7 @@ public class Grass extends Tile
     
     public void drawTile(GraphicsContext gc, int x, int y)
     {
-        gc.setFill(Color.DARKGREEN);
+        gc.setFill(Color.GREY);
         gc.fillRect(x*TILE_SIZE, y*TILE_SIZE, TILE_SIZE, TILE_SIZE);
     }
 }

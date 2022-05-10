@@ -1,0 +1,13 @@
+#BlueJ class context
+comment0.target=City
+comment0.text=\r\n\ Write\ a\ description\ of\ class\ City\ here.\r\n\r\n\ @author\ (your\ name)\r\n\ @version\ (a\ version\ number\ or\ a\ date)\r\n
+comment1.params=
+comment1.target=City()
+comment1.text=\r\n\ Constructor\ for\ objects\ of\ class\ City\r\n
+comment2.params=newOwner
+comment2.target=void\ setOwner(int)
+comment3.params=
+comment3.target=int\ getOwner()
+comment4.params=num
+comment4.target=void\ incPopulation(int)
+numComments=5
