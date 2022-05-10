@@ -1,3 +1,4 @@
+import javafx.scene.image.Image;
 
 /**
  * A grass tile. Can build farms on this tile.
@@ -34,7 +35,6 @@ public class Grass extends Tile
     
     public void drawTile(GraphicsContext gc, int x, int y)
     {
-        gc.setFill(Color.DARKGREEN);
-        gc.fillRect(x*TILE_SIZE, y*TILE_SIZE, TILE_SIZE, TILE_SIZE);
+        gc.drawImage(new Image("images\\grass.jpg"), x*TILE_SIZE, y*TILE_SIZE, TILE_SIZE, TILE_SIZE);
     }
 }
