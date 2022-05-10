@@ -18,7 +18,10 @@ public class MapGeneratorVisualisor extends Application {
 
     private double sceneWidth = 700;
     private double sceneHeight = 700;
-    private final int SIZE = 14;
+    private final int SIZE = 16;
+    
+    private int curX = 0;
+    private int curY = 0;
 
     @Override
     public void start(Stage stage) {
@@ -27,6 +30,27 @@ public class MapGeneratorVisualisor extends Application {
         Canvas canvas = new Canvas(sceneWidth, sceneHeight);
         GraphicsContext gc = canvas.getGraphicsContext2D();
         
+        Tile[][] map = getTileMap();
+        drawTileMap(map, gc, 0, 0, 14, 14);
+        
+        canvas.setOnKeyPressed(e -> {
+            checkKeyPress(e);
+        });
+        
+        root.getChildren().add(canvas);
+        stage.setScene(new Scene(root));
+        stage.show();
+    }
+    
+    private void checkKeyPress(KeyEvent e)
+    {
+        if (e.getCode() == KeyCode.A) {
+            System.out.println("A key was pressed");
+        }
+    }
+    
+    private Tile[][] getTileMap()
+    {
         MapGenerator gen = new MapGenerator(null, 4.0f, SIZE, SIZE);
         gen.init();
         char[][] charMap = gen.createTerrain(SIZE);
@@ -48,15 +72,20 @@ public class MapGeneratorVisualisor extends Application {
                     map[r][c] = new Forest();
                 else if (charMap[r][c] == ',')
                     map[r][c] = new Grass();
-                    
-                map[r][c].drawTile(gc, r, c);
-                System.out.print(charMap[r][c]+" ");
             }
-            System.out.println();
         }
         
-        root.getChildren().add(canvas);
-        stage.setScene(new Scene(root));
-        stage.show();
+        return map;
+    }
+    
+    private void drawTileMap(Tile[][] map, GraphicsContext gc, int startX, int startY, int width, int height)
+    {
+        for (int r = startX; r < width; r++)
+        {
+            for (int c = startY; c < height; c++)
+            {
+                map[r][c].drawTile(gc, r-startX, c-startY);
+            }
+        }
     }
 }

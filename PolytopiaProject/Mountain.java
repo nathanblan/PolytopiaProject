@@ -1,3 +1,4 @@
+import javafx.scene.image.Image;
 
 /**
  * Write a description of class Mountain here.
@@ -36,7 +37,11 @@ public class Mountain extends Tile
     
     public void drawTile(GraphicsContext gc, int x, int y)
     {
-        gc.setFill(Color.GREY);
-        gc.fillRect(x*TILE_SIZE, y*TILE_SIZE, TILE_SIZE, TILE_SIZE);
+        if (hasMine)
+            hasMine = hasMine; // placeholder
+        else if (hasGold)
+            gc.drawImage(new Image("images\\mountain_with_gold.jpg"), x*TILE_SIZE, y*TILE_SIZE, TILE_SIZE, TILE_SIZE);
+        else
+            gc.drawImage(new Image("images\\mountain.jpg"), x*TILE_SIZE, y*TILE_SIZE, TILE_SIZE, TILE_SIZE);
     }
 }

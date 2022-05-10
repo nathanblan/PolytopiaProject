@@ -1,3 +1,4 @@
+import javafx.scene.image.Image;
 
 /**
  * A basic land tile.
@@ -11,17 +12,29 @@ import javafx.scene.paint.Color;
 
 public class Land extends Tile
 {
+    private boolean hasFruit;
+    
     /**
      * Constructor for objects of class Land
      */
     public Land()
     {
+        hasFruit = Math.random() < 0.2;
     }
     
+    public int harvestFruit()
+    {
+        if (!hasFruit)
+            return -1;
+        hasFruit = false;
+        
+        city.incPopulation(1);
+        
+        return 1;
+    }
     
     public void drawTile(GraphicsContext gc, int x, int y)
     {
-        gc.setFill(Color.PALEGREEN);
-        gc.fillRect(x*TILE_SIZE, y*TILE_SIZE, TILE_SIZE, TILE_SIZE);
+        gc.drawImage(new Image("images\\land.jpg"), x*TILE_SIZE, y*TILE_SIZE, TILE_SIZE, TILE_SIZE);
     }
 }
