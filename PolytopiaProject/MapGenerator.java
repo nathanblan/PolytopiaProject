@@ -197,7 +197,7 @@ public class MapGenerator {
                     }
                     if(map[i][j] == '-' && map[i][j-1] == '=')
                     {
-                        map[i][j-1] = '~';//so shallow water is next to land
+                        map[i][j+1] = '~';//so shallow water is next to land
                     }
                 }
                 else if(i==0 && j==map[0].length-1){
