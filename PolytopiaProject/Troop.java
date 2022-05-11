@@ -8,7 +8,9 @@
 public class Troop
 {
     // instance variables - replace the example below with your own
-    private int x;
+    private int health;
+    private int attack;
+    private int speed; // 1 for 1 tile/turn, increase for riders or cavalry
 
     /**
      * Constructor for objects of class Troop
@@ -16,18 +18,5 @@ public class Troop
     public Troop()
     {
         // initialise instance variables
-        x = 0;
-    }
-
-    /**
-     * An example of a method - replace this comment with your own
-     *
-     * @param  y  a sample parameter for a method
-     * @return    the sum of x and y
-     */
-    public int sampleMethod(int y)
-    {
-        // put your code here
-        return x + y;
     }
 }
