@@ -49,8 +49,11 @@ public class Forest extends Tile
     
     public void drawTile(GraphicsContext gc, int x, int y)
     {
-        //gc.setFill(Color.GREEN);
-        //gc.fillRect(x*TILE_SIZE, y*TILE_SIZE, TILE_SIZE, TILE_SIZE);
-        gc.drawImage(new Image("images\\forest.jpg"), x*TILE_SIZE, y*TILE_SIZE, TILE_SIZE, TILE_SIZE);
+        if (hasLumberHut)
+            hasLumberHut = true; // placeholder
+        else if (hasAnimal)
+            gc.drawImage(new Image("images\\forest_animal.jpg"), x*TILE_SIZE, y*TILE_SIZE, TILE_SIZE, TILE_SIZE);
+        else
+            gc.drawImage(new Image("images\\forest.jpg"), x*TILE_SIZE, y*TILE_SIZE, TILE_SIZE, TILE_SIZE);
     }
 }
