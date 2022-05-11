@@ -110,7 +110,7 @@ public class MapGenerator {
     }
 
     /** For testing */
-    public static void main(String[] args) {
+    public static void test(String[] args) {
         MapGenerator n = new MapGenerator(null, 4.0f, 20, 20);
         int i=5;
         while(i >= 1)
@@ -128,22 +128,26 @@ public class MapGenerator {
     /**
      * Make a map with land and water
      */
-    public char[][] createTerrain(int size) {
+    public char[][] createTerrain(int size) 
+    {
         char[][] map = new char[size][size];
-        for(int i = 0;i < map.length;i++) {
-            for(int j = 0;j < map[0].length;j++) {
+        for(int i = 0;i < map.length;i++) 
+        {
+            for(int j = 0;j < map[0].length;j++) 
+            {
                 if(grid_[i][j]+0.5 < -0.75)
                 {
                     map[i][j] = '=';//deep water
-                }
+                } /*
                 else if(grid_[i][j] <= 0)
                 {
                     map[i][j] = '~';//shallow water
-                }
+                } */
+                /*
                 else if(grid_[i][j]+0.5 >=5.5)
                 {
                     map[i][j] = 'A'; //mountain
-                }
+                }*/
                 else if(grid_[i][j]+0.5 >=3.75)
                 {
                     map[i][j] = 'A'; //mountain
@@ -155,8 +159,10 @@ public class MapGenerator {
             }
         }
         
-        for(int i = 2;i < map.length-2;i++) {
-            for(int j = 2;j < map[0].length-2;j++) {
+        for(int i = 2;i < map.length-2;i++) 
+        {
+            for(int j = 2;j < map[0].length-2;j++) 
+            {
                 //mountain conditions
                 if(map[i][j] == 'A' && map[i][j-2] == 'A')
                 {
@@ -177,8 +183,10 @@ public class MapGenerator {
             }
         }
         
-        for(int i = 0;i < map.length-1;i++) {
-            for(int j = 0;j < map[0].length-1;j++) {
+        for(int i = 0;i < map.length-1;i++) 
+        {
+            for(int j = 0;j < map[0].length-1;j++) 
+            {
                 //shallow water conditions
                 if(i==0 && j==0){
                     if(map[i][j] == '-' && map[i+1][j] == '=')
@@ -210,7 +218,8 @@ public class MapGenerator {
                         map[i][j-1] = '~';//so shallow water is next to land
                     }
                 }
-                else if(i==map.length-1 && j==map[0].length-1){
+                else if(i==map.length-1 && j==map[0].length-1)
+                {
                     if(map[i][j] == '-' && map[i-1][j] == '=')
                     {
                         map[i-1][j] = '~';//so shallow water is next to land
@@ -270,7 +279,8 @@ public class MapGenerator {
                         map[i+1][j] = '~';//so shallow water is next to land
                     }
                 }
-                else{
+                else
+                {
                     if(map[i][j] == '-' && map[i-1][j-1] == '=')
                     {
                         map[i-1][j-1] = '~';//so shallow water is next to land
@@ -307,17 +317,20 @@ public class MapGenerator {
             }
         }
         
-        for(int i = 0;i < map.length;i++) {
-            for(int j = 0;j < map[0].length;j++) {
+        for(int i = 0;i < map.length;i++) 
+        {
+            for(int j = 0;j < map[0].length;j++) 
+            {
                 if(map[i][j] == '-')
                 {
-                    if((Math.random()*10) < 2.5)
+                    double foliageVal = (Math.random()*10);
+                    if(foliageVal < 2.5)
                     {
-                        map[i][j] = '+';
+                        map[i][j] = '+'; // forrest
                     }
-                    else if((Math.random()*10) < 5)
+                    else if(foliageVal < 3.75)
                     {
-                        map[i][j] = ',';
+                        map[i][j] = ','; // grass
                     }
                 }
             }

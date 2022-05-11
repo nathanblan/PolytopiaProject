@@ -1,5 +1,4 @@
 /**
- * I DONT KNOW HOW THIS WORKS. ACTUALLY IT DOESNT. PLEASE MAKE THIS WORK LOL.
  * Use to visualize the map made by MapGenerator.
  */
 
