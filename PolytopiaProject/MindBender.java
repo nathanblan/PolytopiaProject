@@ -12,6 +12,8 @@ public class MindBender extends Troop
      */
     public MindBender()
     {
-        super(10);
+        super(10, 0, 1);
+        movement = 1;
+        range = 1;
     }
 }

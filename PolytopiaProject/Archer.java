@@ -12,6 +12,8 @@ public class Archer extends Troop
      */
     public Archer()
     {
-        super(10);
+        super(10, 2, 1);
+        movement = 1;
+        range = 2;
     }
 }

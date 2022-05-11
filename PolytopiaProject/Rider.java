@@ -12,6 +12,8 @@ public class Rider extends Troop
      */
     public Rider()
     {
-        super(10);
+        super(10, 2, 1);
+        movement = 2;
+        range = 1;
     }
 }

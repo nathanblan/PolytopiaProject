@@ -12,6 +12,8 @@ public class Catapult extends Troop
      */
     public Catapult()
     {
-        super(10);
+        super(10, 4, 0);
+        movement = 1;
+        range = 3;
     }
 }

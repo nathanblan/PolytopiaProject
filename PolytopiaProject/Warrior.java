@@ -12,6 +12,8 @@ public class Warrior extends Troop
      */
     public Warrior()
     {
-        super(10);
+        super(10, 2, 2);
+        movement = 1;
+        range = 1;
     }
 }

@@ -1,13 +1,18 @@
 #BlueJ class context
 comment0.target=Troop
 comment0.text=\r\n\ Main\ class\ for\ Troops\r\n\r\n\ @author\ (your\ name)\r\n\ @version\ (a\ version\ number\ or\ a\ date)\r\n
-comment1.params=h
-comment1.target=Troop(int)
+comment1.params=h\ a\ d
+comment1.target=Troop(int,\ double,\ double)
 comment1.text=\r\n\ Constructor\ for\ objects\ of\ class\ Troop\r\n
-comment2.params=d
-comment2.target=void\ takeDamage(int)
-comment3.params=h
-comment3.target=void\ heal(int)
-comment4.params=other
-comment4.target=void\ attack(Troop)
-numComments=5
+comment2.params=h
+comment2.target=void\ heal(int)
+comment3.params=other\ distance
+comment3.target=boolean\ attack(Troop,\ int)
+comment3.text=\r\n\ @return\ true\ if\ kills\ the\ other\ troop,\ false\ otherwise\r\n
+comment4.params=
+comment4.target=int\ getMovement()
+comment5.params=
+comment5.target=int\ getRange()
+comment6.params=num
+comment6.target=int\ round(double)
+numComments=7

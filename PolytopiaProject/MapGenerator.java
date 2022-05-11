@@ -18,7 +18,6 @@ public class MapGenerator {
     /** Plasma fractal grid */
     private float[][] grid_;
 
-
     /** Generate a noise source based upon the midpoint displacement fractal.
      * 
      * @param rand The random number generator
@@ -31,7 +30,6 @@ public class MapGenerator {
         grid_ = new float[width][height];
         rand_ = (rand == null) ? new Random() : rand;
     }
-
 
     public void init() {
         int xh = grid_.length - 1;
@@ -47,12 +45,10 @@ public class MapGenerator {
         generate(0, 0, xh, yh);
     }
 
-
     // Add a suitable amount of random displacement to a point
     private float roughen(float v, int l, int h) {
         return v + roughness_ * (float) (rand_.nextGaussian() * (h - l));
     }
-
 
     // generate the fractal
     private void generate(int xl, int yl, int xh, int yh) {
@@ -78,7 +74,6 @@ public class MapGenerator {
         generate(xl, ym, xm, yh);
         generate(xm, ym, xh, yh);
     }
-
 
     /**
      * Dump out as a CSV [DONT NEED THIS]
@@ -122,9 +117,9 @@ public class MapGenerator {
             System.out.println();
             i--;
         }
-        
+
     }
-    
+
     /**
      * Make a map with land and water
      */
@@ -141,12 +136,12 @@ public class MapGenerator {
                 } /*
                 else if(grid_[i][j] <= 0)
                 {
-                    map[i][j] = '~';//shallow water
+                map[i][j] = '~';//shallow water
                 } */
                 /*
                 else if(grid_[i][j]+0.5 >=5.5)
                 {
-                    map[i][j] = 'A'; //mountain
+                map[i][j] = 'A'; //mountain
                 }*/
                 else if(grid_[i][j]+0.5 >=3.75)
                 {
@@ -158,7 +153,7 @@ public class MapGenerator {
                 }
             }
         }
-        
+
         for(int i = 2;i < map.length-2;i++) 
         {
             for(int j = 2;j < map[0].length-2;j++) 
@@ -182,141 +177,216 @@ public class MapGenerator {
                 }
             }
         }
-        
-        for(int i = 0;i < map.length-1;i++) 
+
+        for (int i = 0; i < map.length; i++) 
         {
-            for(int j = 0;j < map[0].length-1;j++) 
+            for (int j = 0; j < map[0].length;j++) 
             {
                 //shallow water conditions
-                if(i==0 && j==0){
-                    if(map[i][j] == '-' && map[i+1][j] == '=')
-                    {
-                        map[i+1][j] = '~';//so shallow water is next to land
-                    }
-                    if(map[i][j] == '-' && map[i][j+1] == '=')
-                    {
-                        map[i][j+1] = '~';//so shallow water is next to land
-                    }
-                }
-                else if(i==map.length-1 && j==0){
-                    if(map[i][j] == '-' && map[i-1][j] == '=')
-                    {
-                        map[i-1][j] = '~';//so shallow water is next to land
-                    }
-                    if(map[i][j] == '-' && map[i][j+1] == '=')
-                    {
-                        map[i][j+1] = '~';//so shallow water is next to land
-                    }
-                }
-                else if(i==0 && j==map[0].length-1){
-                    if(map[i][j] == '-' && map[i+1][j] == '=')
-                    {
-                        map[i+1][j] = '~';//so shallow water is next to land
-                    }
-                    if(map[i][j] == '-' && map[i][j-1] == '=')
-                    {
-                        map[i][j-1] = '~';//so shallow water is next to land
-                    }
-                }
-                else if(i==map.length-1 && j==map[0].length-1)
+                
+                // if land or mountain
+                if (map[i][j] == '-' || map[i][j] == 'A')
                 {
-                    if(map[i][j] == '-' && map[i-1][j] == '=')
+                    // top left corner
+                    if (i==0 && j==0)
                     {
-                        map[i-1][j] = '~';//so shallow water is next to land
+                        if (map[i+1][j] == '=')
+                        {
+                            map[i+1][j] = '~';
+                        }
+                        if (map[i][j+1] == '=')
+                        {
+                            map[i][j+1] = '~';
+                        }
+                        if (map[i+1][j+1] == '=')
+                        {
+                            map[i+1][j+1] = '~';
+                        }
                     }
-                    if(map[i][j] == '-' && map[i][j-1] == '=')
+                    // bottom left corner
+                    else if(i==map.length-1 && j==0)
                     {
-                        map[i][j-1] = '~';//so shallow water is next to land
+                        if (map[i-1][j] == '=')
+                        {
+                            map[i-1][j] = '~';
+                        }
+                        if (map[i][j+1] == '=')
+                        {
+                            map[i][j+1] = '~';
+                        }
+                        if (map[i-1][j+1] == '=')
+                        {
+                            map[i-1][j+1] = '~';
+                        }
                     }
-                }
-                else if(i==0 && j<map[0].length-1)
-                {
-                    if(map[i][j] == '-' && map[i+1][j] == '=')
+                    // top right corner
+                    else if (i == 0 && j == map[0].length-1)
                     {
-                        map[i+1][j] = '~';//so shallow water is next to land
+                        if (map[i+1][j] == '=')
+                        {
+                            map[i+1][j] = '~';
+                        }
+                        if (map[i][j-1] == '=')
+                        {
+                            map[i][j-1] = '~';
+                        }
+                        if (map[i+1][j-1] == '=')
+                        {
+                            map[i+1][j-1] = '~';
+                        }
                     }
-                    if(map[i][j] == '-' && map[i][j+1] == '=')
+                    // bottom right corner
+                    else if (i == map.length-1 && j == map[0].length-1)
                     {
-                        map[i][j+1] = '~';//so shallow water is next to land
+                        if (map[i-1][j] == '=')
+                        {
+                            map[i-1][j] = '~';
+                        }
+                        if (map[i][j-1] == '=')
+                        {
+                            map[i][j-1] = '~';
+                        }
+                        if (map[i-1][j-1] == '=')
+                        {
+                            map[i-1][j-1] = '~';
+                        }
                     }
-                }
-                else if(i==map.length-1 && j<map[0].length-1)
-                {
-                    if(map[i][j] == '-' && map[i-1][j] == '=')
+                    // top row, not corners
+                    else if (i == 0)
                     {
-                        map[i+1][j] = '~';//so shallow water is next to land
+                        if (map[i+1][j] == '=')
+                        {
+                            map[i+1][j] = '~';
+                        }
+                        if (map[i][j+1] == '=')
+                        {
+                            map[i][j+1] = '~';
+                        }
+                        if (map[i][j-1] == '=')
+                        {
+                            map[i][j-1] = '~';
+                        }
+                        if (map[i+1][j-1] == '=')
+                        {
+                            map[i+1][j-1] = '~';
+                        }
+                        if (map[i+1][j+1] == '=')
+                        {
+                            map[i+1][j+1] = '~';
+                        }
                     }
-                    if(map[i][j] == '-' && map[i][j+1] == '=')
+                    // bottom row, not corners
+                    else if (i == map.length-1)
                     {
-                        map[i][j+1] = '~';//so shallow water is next to land
+                        if (map[i-1][j] == '=')
+                        {
+                            map[i-1][j] = '~';
+                        }
+                        if (map[i][j+1] == '=')
+                        {
+                            map[i][j+1] = '~';
+                        }
+                        if (map[i][j-1] == '=')
+                        {
+                            map[i][j-1] = '~';
+                        }
+                        if (map[i-1][j-1] == '=')
+                        {
+                            map[i-1][j-1] = '~';
+                        }
+                        if (map[i-1][j+1] == '=')
+                        {
+                            map[i-1][j+1] = '~';
+                        }
                     }
-                }
-                else if(i<map.length-1 && j==0)
-                {
-                    if(map[i][j] == '-' && map[i-1][j] == '=')
+                    // left column, not corners
+                    else if (j == 0)
                     {
-                        map[i+1][j] = '~';//so shallow water is next to land
+                        if (map[i-1][j] == '=')
+                        {
+                            map[i-1][j] = '~';
+                        }
+                        if (map[i][j+1] == '=')
+                        {
+                            map[i][j+1] = '~';
+                        }
+                        if (map[i+1][j] == '=')
+                        {
+                            map[i+1][j] = '~';
+                        }
+                        if (map[i+1][j+1] == '=')
+                        {
+                            map[i+1][j+1] = '~';
+                        }
+                        if (map[i-1][j+1] == '=')
+                        {
+                            map[i-1][j+1] = '~';
+                        }
                     }
-                    if(map[i][j] == '-' && map[i][j+1] == '=')
+                    // right column, not corners
+                    else if (j == map[0].length-1)
                     {
-                        map[i][j+1] = '~';//so shallow water is next to land
-                    }if(map[i][j] == '-' && map[i+1][j] == '=')
-                    {
-                        map[i+1][j] = '~';//so shallow water is next to land
+                        if (map[i-1][j] == '=')
+                        {
+                            map[i-1][j] = '~';
+                        }
+                        if (map[i][j-1] == '=')
+                        {
+                            map[i][j-1] = '~';
+                        }
+                        if(map[i+1][j] == '=')
+                        {
+                            map[i+1][j] = '~';
+                        }
+                        if(map[i+1][j-1] == '=')
+                        {
+                            map[i+1][j-1] = '~';
+                        }
+                        if (map[i-1][j-1] == '=')
+                        {
+                            map[i-1][j-1] = '~';
+                        }
                     }
-                }
-                else if(i<map.length-1 && j==map[0].length-1)
-                {
-                    if(map[i][j] == '-' && map[i-1][j] == '=')
+                    // literally any other tile
+                    else
                     {
-                        map[i+1][j] = '~';//so shallow water is next to land
-                    }
-                    if(map[i][j] == '-' && map[i][j-1] == '=')
-                    {
-                        map[i][j+1] = '~';//so shallow water is next to land
-                    }if(map[i][j] == '-' && map[i+1][j] == '=')
-                    {
-                        map[i+1][j] = '~';//so shallow water is next to land
-                    }
-                }
-                else
-                {
-                    if(map[i][j] == '-' && map[i-1][j-1] == '=')
-                    {
-                        map[i-1][j-1] = '~';//so shallow water is next to land
-                    }
-                    if(map[i][j] == '-' && map[i-1][j] == '=')
-                    {
-                        map[i-1][j] = '~';//so shallow water is next to land
-                    }
-                    if(map[i][j] == '-' && map[i-1][j+1] == '=')
-                    {
-                        map[i-1][j+1] = '~';//so shallow water is next to land
-                    }
-                    if(map[i][j] == '-' && map[i][j-1] == '=')
-                    {
-                        map[i][j-1] = '~';//so shallow water is next to land
-                    }
-                    if(map[i][j] == '-' && map[i][j+1] == '=')
-                    {
-                        map[i][j+1] = '~';//so shallow water is next to land
-                    }
-                    if(map[i][j] == '-' && map[i+1][j-1] == '=')
-                    {
-                        map[i+1][j-1] = '~';//so shallow water is next to land
-                    }
-                    if(map[i][j] == '-' && map[i+1][j] == '=')
-                    {
-                        map[i+1][j] = '~';//so shallow water is next to land
-                    }
-                    if(map[i][j] == '-' && map[i+1][j+1] == '=')
-                    {
-                        map[i+1][j+1] = '~';//so shallow water is next to land
+                        if (map[i-1][j-1] == '=')
+                        {
+                            map[i-1][j-1] = '~';
+                        }
+                        if (map[i-1][j] == '=')
+                        {
+                            map[i-1][j] = '~';
+                        }
+                        if (map[i-1][j+1] == '=')
+                        {
+                            map[i-1][j+1] = '~';
+                        }
+                        if (map[i][j-1] == '=')
+                        {
+                            map[i][j-1] = '~';
+                        }
+                        if (map[i][j+1] == '=')
+                        {
+                            map[i][j+1] = '~';
+                        }
+                        if (map[i+1][j-1] == '=')
+                        {
+                            map[i+1][j-1] = '~';
+                        }
+                        if (map[i+1][j] == '=')
+                        {
+                            map[i+1][j] = '~';
+                        }
+                        if (map[i+1][j+1] == '=')
+                        {
+                            map[i+1][j+1] = '~';
+                        }
                     }
                 }
             }
         }
-        
+
         for(int i = 0;i < map.length;i++) 
         {
             for(int j = 0;j < map[0].length;j++) 

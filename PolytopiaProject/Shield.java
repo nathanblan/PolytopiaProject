@@ -12,6 +12,8 @@ public class Shield extends Troop
      */
     public Shield()
     {
-        super(10);
+        super(10, 1, 3);
+        movement = 1;
+        range = 1;
     }
 }

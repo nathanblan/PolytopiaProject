@@ -12,6 +12,8 @@ public class Swordsman extends Troop
      */
     public Swordsman()
     {
-        super(10);
+        super(15, 3, 3);
+        movement = 1;
+        range = 1;
     }
 }
