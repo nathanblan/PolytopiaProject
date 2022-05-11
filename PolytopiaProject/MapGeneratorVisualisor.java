@@ -1,7 +1,3 @@
-/**
- * Use to visualize the map made by MapGenerator.
- */
-
 import javafx.application.Application;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -13,6 +9,9 @@ import javafx.scene.canvas.*;
 import javafx.scene.input.*;
 import javafx.scene.text.*;
 
+/**
+ * Use to visualize the map made by MapGenerator.
+ */
 public class MapGeneratorVisualisor extends Application {
 
     private double sceneWidth = 800;
@@ -36,9 +35,26 @@ public class MapGeneratorVisualisor extends Application {
             checkKeyPress(e, map, gc);
         });*/
         
+        takeUserInput(canvas);
+        
         root.getChildren().add(canvas);
         stage.setScene(new Scene(root));
         stage.show();
+    }
+    
+    private void takeUserInput(Canvas canvas)
+    {
+        canvas.addEventHandler(MouseEvent.MOUSE_CLICKED, new EventHandler<MouseEvent>()
+        {
+            @Override
+            public void handle(MouseEvent e)
+            {
+                int x = (int)(e.getX()/Tile.TILE_SIZE);
+                int y = (int)(e.getY()/Tile.TILE_SIZE);
+                
+                System.out.println("Pressed tile ("+x+", "+y+")");
+            }
+        });
     }
     
     private void checkKeyPress(KeyEvent e, Tile[][] map, GraphicsContext gc)
@@ -84,6 +100,9 @@ public class MapGeneratorVisualisor extends Application {
         char[][] charMap = gen.createTerrain(SIZE);
         Tile[][] map = new Tile[SIZE][SIZE];
         
+        int numWater = 0;
+        int numLand = 0;
+        
         for (int r = 0; r < SIZE; r++)
         {
             for (int c = 0; c < SIZE; c++)
@@ -95,13 +114,23 @@ public class MapGeneratorVisualisor extends Application {
                 else if (charMap[r][c] == '~')
                     map[r][c] = new Water();
                 else if (charMap[r][c] == '-')
-                    map[r][c] = new Land();
+                    map[r][c] = new Field();
                 else if (charMap[r][c] == '+')
                     map[r][c] = new Forest();
                 else if (charMap[r][c] == ',')
                     map[r][c] = new Grass();
+                    
+                if (charMap[r][c] == '~' || charMap[r][c] == '=')
+                    numWater++;
+                else
+                    numLand++;
             }
         }
+        
+        // make sure it isn't too much water or land
+        double total = SIZE*SIZE;
+        if (numWater/total < 0.25 || numLand/total < 0.25)
+            return getTileMap();
         
         return map;
     }

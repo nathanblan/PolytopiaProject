@@ -10,14 +10,14 @@ import javafx.scene.image.Image;
 import javafx.scene.canvas.*;
 import javafx.scene.paint.Color;
 
-public class Land extends Tile
+public class Field extends Tile
 {
     private boolean hasFruit;
     
     /**
      * Constructor for objects of class Land
      */
-    public Land()
+    public Field()
     {
         hasFruit = Math.random() < 0.2;
     }

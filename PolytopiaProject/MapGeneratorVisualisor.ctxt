@@ -1,11 +1,16 @@
 #BlueJ class context
 comment0.target=MapGeneratorVisualisor
+comment0.text=\r\n\ Use\ to\ visualize\ the\ map\ made\ by\ MapGenerator.\r\n
 comment1.params=stage
 comment1.target=void\ start(javafx.stage.Stage)
-comment2.params=e\ map\ gc
-comment2.target=void\ checkKeyPress(javafx.scene.input.KeyEvent,\ Tile[][],\ javafx.scene.canvas.GraphicsContext)
-comment3.params=
-comment3.target=Tile[][]\ getTileMap()
-comment4.params=map\ gc\ startX\ startY\ width\ height
-comment4.target=void\ drawTileMap(Tile[][],\ javafx.scene.canvas.GraphicsContext,\ int,\ int,\ int,\ int)
-numComments=5
+comment2.params=canvas
+comment2.target=void\ takeUserInput(javafx.scene.canvas.Canvas)
+comment3.params=e
+comment3.target=void\ handle(javafx.scene.input.MouseEvent)
+comment4.params=e\ map\ gc
+comment4.target=void\ checkKeyPress(javafx.scene.input.KeyEvent,\ Tile[][],\ javafx.scene.canvas.GraphicsContext)
+comment5.params=
+comment5.target=Tile[][]\ getTileMap()
+comment6.params=map\ gc\ startX\ startY\ width\ height
+comment6.target=void\ drawTileMap(Tile[][],\ javafx.scene.canvas.GraphicsContext,\ int,\ int,\ int,\ int)
+numComments=7
