@@ -1,13 +1,13 @@
 
 /**
- * Write a description of class City here.
+ * City buildings
  *
  * @author (your name)
  * @version (a version number or a date)
  */
 public class City
 {
-    private int owner;
+    private int player;
     private int population;
     private int level;
     /**
@@ -15,18 +15,18 @@ public class City
      */
     public City()
     {
-        owner = 0;
+        player = 0;
         level = 0;
         population = 0;
     }
     
-    public void setOwner (int newOwner)
+    public void setPlayer (int newPlayer)
     {
-        owner = newOwner;
+        player = newPlayer;
     }
-    public int getOwner()
+    public int getPlayer()
     {
-        return owner;
+        return player;
     }
     
     public void incPopulation(int num)

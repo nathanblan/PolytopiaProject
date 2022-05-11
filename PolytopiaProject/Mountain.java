@@ -27,8 +27,10 @@ public class Mountain extends Tile
     public int buildMine()
     {
         if (!hasGold || hasMine)
+        {
             return -1;
-        hasMine = true;
+        }
+        hasMine = true; 
         
         city.incPopulation(2);
         
@@ -43,5 +45,14 @@ public class Mountain extends Tile
             gc.drawImage(new Image("images\\mountain_with_gold.jpg"), x*TILE_SIZE, y*TILE_SIZE, TILE_SIZE, TILE_SIZE);
         else
             gc.drawImage(new Image("images\\mountain.jpg"), x*TILE_SIZE, y*TILE_SIZE, TILE_SIZE, TILE_SIZE);
+    }
+    
+    public boolean hasGold()
+    {
+        if(hasGold)
+        {
+            return true;
+        }
+        return false;
     }
 }
