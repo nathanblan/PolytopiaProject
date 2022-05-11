@@ -9,14 +9,29 @@ public class Troop
 {
     // instance variables - replace the example below with your own
     private int health;
-    private int attack;
-    private int speed; // 1 for 1 tile/turn, increase for riders or cavalry
-
+    private final int maxHealth;
+    
     /**
      * Constructor for objects of class Troop
      */
-    public Troop()
+    public Troop(int h)
     {
-        // initialise instance variables
+        maxHealth = h;
+        health = maxHealth;
     }
+    
+    public void takeDamage(int d)
+    {
+        health -= d;
+    }
+    
+    public void heal(int h)
+    {
+        health += h;
+        if (health > maxHealth)
+            health = maxHealth;
+    }
+    
+    public void attack(Troop other)
+    {}
 }

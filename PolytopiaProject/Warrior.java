@@ -7,13 +7,11 @@
  */
 public class Warrior extends Troop
 {
-      
-
     /**
      * Constructor for objects of class Warrior
      */
     public Warrior()
     {
-        // initialise instance variables
+        super(10);
     }
 }

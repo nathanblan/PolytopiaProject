@@ -15,8 +15,8 @@ import javafx.scene.text.*;
 
 public class MapGeneratorVisualisor extends Application {
 
-    private double sceneWidth = 700;
-    private double sceneHeight = 700;
+    private double sceneWidth = 800;
+    private double sceneHeight = 800;
     private final int SIZE = 16;
     
     private int curX = 0;
@@ -30,11 +30,11 @@ public class MapGeneratorVisualisor extends Application {
         GraphicsContext gc = canvas.getGraphicsContext2D();
         
         Tile[][] map = getTileMap();
-        drawTileMap(map, gc, 0, 0, 14, 14);
+        drawTileMap(map, gc, 0, 0, 16, 16);
         
-        canvas.setOnKeyPressed(e -> {
+        /*canvas.setOnKeyPressed(e -> {
             checkKeyPress(e, map, gc);
-        });
+        });*/
         
         root.getChildren().add(canvas);
         stage.setScene(new Scene(root));
