@@ -25,7 +25,9 @@ public class Land extends Tile
     public int harvestFruit()
     {
         if (!hasFruit)
+        {
             return -1;
+        }
         hasFruit = false;
         
         city.incPopulation(1);
