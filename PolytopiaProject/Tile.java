@@ -38,4 +38,9 @@ public class Tile
     {
         return city;
     }
+    
+    public String getInfo()
+    {
+        return "basic";
+    }
 }

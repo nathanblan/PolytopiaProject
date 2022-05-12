@@ -30,7 +30,7 @@ public class Water extends Tile
      */
     public int buildPort()
     {
-        if (hasPort)
+        if (!canBuildPort())
             return -1;
         hasPort = true;
         hasFish = false;
@@ -46,7 +46,7 @@ public class Water extends Tile
      */
     public int fish()
     {
-        if (!hasFish)
+        if (!canFish())
             return -1;
         hasFish = false;
         
@@ -57,8 +57,21 @@ public class Water extends Tile
     
     public void drawTile(GraphicsContext gc, int x, int y)
     {
-        //gc.setFill(Color.BLUE);
-        //gc.fillRect(x*TILE_SIZE, y*TILE_SIZE, TILE_SIZE, TILE_SIZE);
         gc.drawImage(new Image("images\\shallow water.jpg"), x*TILE_SIZE, y*TILE_SIZE, TILE_SIZE, TILE_SIZE);
+    }
+    
+    public String getInfo()
+    {
+        return "water";
+    }
+    
+    public boolean canFish()
+    {
+        return hasFish;
+    }
+    
+    public boolean canBuildPort()
+    {
+        return !hasPort;
     }
 }

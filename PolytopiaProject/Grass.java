@@ -24,7 +24,7 @@ public class Grass extends Tile
     
     public int buildFarm()
     {
-        if (isFarm)
+        if (!canBuildFarm())
             return -1;
         isFarm = true;
         
@@ -36,5 +36,15 @@ public class Grass extends Tile
     public void drawTile(GraphicsContext gc, int x, int y)
     {
         gc.drawImage(new Image("images\\grass.jpg"), x*TILE_SIZE, y*TILE_SIZE, TILE_SIZE, TILE_SIZE);
+    }
+    
+    public String getInfo()
+    {
+        return "grass";
+    }
+    
+    public boolean canBuildFarm()
+    {
+        return !isFarm;
     }
 }
