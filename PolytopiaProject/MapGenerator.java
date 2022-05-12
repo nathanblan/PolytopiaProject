@@ -178,6 +178,15 @@ public class MapGenerator {
                 // if land or mountain
                 if (map[i][j] == '-' || map[i][j] == 'A')
                 {
+                    double randCity = (Math.random()); // likelyhood of a city
+                    if(i!=0 || j!=0)
+                    {
+                        if(randCity < 0.1)
+                        {
+                            map[i][j] = 'c';
+                        }
+                    }
+                    
                     // top left corner
                     if (i==0 && j==0)
                     {
@@ -245,6 +254,7 @@ public class MapGenerator {
                     // top row, not corners
                     else if (i == 0)
                     {
+                        // shallow water
                         if (map[i+1][j] == '=')
                         {
                             map[i+1][j] = '~';
@@ -264,6 +274,27 @@ public class MapGenerator {
                         if (map[i+1][j+1] == '=')
                         {
                             map[i+1][j+1] = '~';
+                        }
+                        //city generation
+                        if (map[i+1][j] == 'c')
+                        {
+                            map[i+1][j] = '-';
+                        }
+                        if (map[i][j+1] == 'c')
+                        {
+                            map[i][j+1] = '-';
+                        }
+                        if (map[i][j-1] == 'c')
+                        {
+                            map[i][j-1] = '-';
+                        }
+                        if (map[i+1][j-1] == 'c')
+                        {
+                            map[i+1][j-1] = '-';
+                        }
+                        if (map[i+1][j+1] == 'c')
+                        {
+                            map[i+1][j+1] = '-';
                         }
                     }
                     // bottom row, not corners
@@ -289,6 +320,27 @@ public class MapGenerator {
                         {
                             map[i-1][j+1] = '~';
                         }
+                        //city generation
+                        if (map[i-1][j] == 'c')
+                        {
+                            map[i-1][j] = '-';
+                        }
+                        if (map[i][j+1] == 'c')
+                        {
+                            map[i][j+1] = '-';
+                        }
+                        if (map[i][j-1] == 'c')
+                        {
+                            map[i][j-1] = '-';
+                        }
+                        if (map[i-1][j-1] == 'c')
+                        {
+                            map[i-1][j-1] = '-';
+                        }
+                        if (map[i-1][j+1] == 'c')
+                        {
+                            map[i-1][j+1] = '-';
+                        }
                     }
                     // left column, not corners
                     else if (j == 0)
@@ -313,6 +365,27 @@ public class MapGenerator {
                         {
                             map[i-1][j+1] = '~';
                         }
+                        //city generation
+                        if (map[i-1][j] == 'c')
+                        {
+                            map[i-1][j] = '-';
+                        }
+                        if (map[i][j+1] == 'c')
+                        {
+                            map[i][j+1] = '-';
+                        }
+                        if (map[i+1][j] == 'c')
+                        {
+                            map[i+1][j] = '-';
+                        }
+                        if (map[i+1][j+1] == 'c')
+                        {
+                            map[i+1][j+1] = '-';
+                        }
+                        if (map[i-1][j+1] == 'c')
+                        {
+                            map[i-1][j+1] = '-';
+                        }
                     }
                     // right column, not corners
                     else if (j == map[0].length-1)
@@ -336,6 +409,27 @@ public class MapGenerator {
                         if (map[i-1][j-1] == '=')
                         {
                             map[i-1][j-1] = '~';
+                        }
+                        // city generation
+                        if (map[i-1][j] == 'c')
+                        {
+                            map[i-1][j] = '-';
+                        }
+                        if (map[i][j-1] == 'c')
+                        {
+                            map[i][j-1] = '-';
+                        }
+                        if(map[i+1][j] == 'c')
+                        {
+                            map[i+1][j] = '-';
+                        }
+                        if(map[i+1][j-1] == 'c')
+                        {
+                            map[i+1][j-1] = '-';
+                        }
+                        if (map[i-1][j-1] == 'c')
+                        {
+                            map[i-1][j-1] = '-';
                         }
                     }
                     // literally any other tile
@@ -373,30 +467,45 @@ public class MapGenerator {
                         {
                             map[i+1][j+1] = '~';
                         }
-                    }
-                }
-            }
-        }
-
-        for(int i = 0;i < map.length;i++) 
-        {
-            for(int j = 0;j < map[0].length;j++) 
-            {
-                if(map[i][j] == '-')
-                {
-                    double foliageVal = (Math.random()*10);
-                    if(foliageVal < 2.5)
-                    {
-                        map[i][j] = '+'; // forrest
-                    }
-                    else if(foliageVal < 3.75)
-                    {
-                        map[i][j] = ','; // grass
+                        // city gen
+                        if (map[i-1][j-1] == 'c')
+                        {
+                            map[i-1][j-1] = '-';
+                        }
+                        if (map[i-1][j] == 'c')
+                        {
+                            map[i-1][j] = '-';
+                        }
+                        if (map[i-1][j+1] == 'c')
+                        {
+                            map[i-1][j+1] = '-';
+                        }
+                        if (map[i][j-1] == 'c')
+                        {
+                            map[i][j-1] = '-';
+                        }
+                        if (map[i][j+1] == 'c')
+                        {
+                            map[i][j+1] = '-';
+                        }
+                        if (map[i+1][j-1] == 'c')
+                        {
+                            map[i+1][j-1] = '-';
+                        }
+                        if (map[i+1][j] == 'c')
+                        {
+                            map[i+1][j] = '-';
+                        }
+                        if (map[i+1][j+1] == 'c')
+                        {
+                            map[i+1][j+1] = '-';
+                        }
                     }
                 }
             }
         }
         
+        //populate with grass and forrests
         for(int i = 0;i < map.length;i++) 
         {
             for(int j = 0;j < map[0].length;j++) 
@@ -404,11 +513,11 @@ public class MapGenerator {
                 if(map[i][j] == '-')
                 {
                     double foliageVal = (Math.random()*10);
-                    if(foliageVal < 2.5)
+                    if(foliageVal < 2)
                     {
                         map[i][j] = '+'; // forrest
                     }
-                    else if(foliageVal < 3.75)
+                    else if(foliageVal < 3)
                     {
                         map[i][j] = ','; // grass
                     }
