@@ -9,13 +9,20 @@ public class Troop
 {
     // instance variables - replace the example below with your own
     private int health;
-    private final int maxHealth;
+    private int maxHealth;
     
-    private final double attack;
-    private final double defense;
+    private double attack;
+    private double defense;
+    
+    // if 0, not a ship
+    // if 1, sailboat
+    // if 2, cruiser
+    // if 3, battleship
+    private int shipLevel = 0;
     
     protected int range;
     protected int movement;
+    protected boolean waterMovement = false;
     
     /**
      * Constructor for objects of class Troop
@@ -60,11 +67,39 @@ public class Troop
         return movement;
     }
     
+    public boolean getWaterMovement()
+    {
+        return waterMovement;
+    }
+    
     public int getRange()
     {
         return range;
     }
     
+    public void upgradeShip() // upgrading ships
+    {
+        shipLevel++;
+        if(shipLevel == 1)
+        {
+            waterMovement = true;
+            movement = 1;
+        }
+        if(shipLevel == 2)
+        {
+            movement = 3;
+        }
+        if(shipLevel == 3)
+        {
+            attack = 10;
+        }
+    }
+    
+    public void destroyShip() // when you turn a waterborne troop back into a land troop
+    {
+        shipLevel = 0;
+        waterMovement = false;
+    }
     private int round (double num)
     {
         return (int)(num+0.5);
