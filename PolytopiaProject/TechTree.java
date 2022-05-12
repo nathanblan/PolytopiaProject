@@ -7,9 +7,17 @@
  */
 public class TechTree
 {
-    /**
-     * Constructor for objects of class TechTree
-     */
+    private boolean hasHunting;
+    private boolean hasOrganization;
+    private boolean hasFishing;
+    private boolean hasClimbing;
+    private boolean hasSailing;
+    private boolean hasNavigation;
+    private boolean hasArchery;
+    private boolean hasForestry;
+    private boolean hasFarming;
+    private boolean hasSheilds;
+    private boolean hasMining;
     public TechTree()
     {
         

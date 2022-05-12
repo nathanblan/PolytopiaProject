@@ -40,7 +40,7 @@ public class Mountain extends Tile
     public void drawTile(GraphicsContext gc, int x, int y)
     {
         if (hasMine)
-            hasMine = hasMine; // placeholder
+            gc.drawImage(new Image("images\\mine.jpg"), x*TILE_SIZE, y*TILE_SIZE, TILE_SIZE, TILE_SIZE);
         else if (hasGold)
             gc.drawImage(new Image("images\\mountain_with_gold.jpg"), x*TILE_SIZE, y*TILE_SIZE, TILE_SIZE, TILE_SIZE);
         else
