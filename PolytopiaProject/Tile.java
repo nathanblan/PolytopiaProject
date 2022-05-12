@@ -19,16 +19,16 @@ public class Tile
     public Tile()
     {}
     
-    public void setOwner (int newOwner)
+    public void setPlayer (int newPlayer)
     {
         if (city != null)
-            city.setOwner(newOwner);
+            city.setPlayer(newPlayer);
     }
-    public int getOwner()
+    public int getPlayer()
     {
         if (city == null)
             return 0;
-        return city.getOwner();
+        return city.getPlayer();
     }
     
     public void drawTile(GraphicsContext gc, int x, int y)

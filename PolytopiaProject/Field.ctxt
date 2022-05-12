@@ -1,7 +1,7 @@
 #BlueJ class context
-comment0.target=Land
+comment0.target=Field
 comment1.params=
-comment1.target=Land()
+comment1.target=Field()
 comment1.text=\r\n\ Constructor\ for\ objects\ of\ class\ Land\r\n
 comment2.params=
 comment2.target=int\ harvestFruit()

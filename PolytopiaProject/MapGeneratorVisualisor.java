@@ -1,8 +1,3 @@
-/**
- * I DONT KNOW HOW THIS WORKS. ACTUALLY IT DOESNT. PLEASE MAKE THIS WORK LOL.
- * Use to visualize the map made by MapGenerator.
- */
-
 import javafx.application.Application;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -14,10 +9,13 @@ import javafx.scene.canvas.*;
 import javafx.scene.input.*;
 import javafx.scene.text.*;
 
+/**
+ * Use to visualize the map made by MapGenerator.
+ */
 public class MapGeneratorVisualisor extends Application {
 
-    private double sceneWidth = 700;
-    private double sceneHeight = 700;
+    private double sceneWidth = 800;
+    private double sceneHeight = 800;
     private final int SIZE = 16;
     
     private int curX = 0;
@@ -31,21 +29,67 @@ public class MapGeneratorVisualisor extends Application {
         GraphicsContext gc = canvas.getGraphicsContext2D();
         
         Tile[][] map = getTileMap();
-        drawTileMap(map, gc, 0, 0, 14, 14);
+        drawTileMap(map, gc, 0, 0, 16, 16);
         
-        canvas.setOnKeyPressed(e -> {
-            checkKeyPress(e);
-        });
+        /*canvas.setOnKeyPressed(e -> {
+            checkKeyPress(e, map, gc);
+        });*/
+        
+        takeUserInput(canvas);
         
         root.getChildren().add(canvas);
         stage.setScene(new Scene(root));
         stage.show();
     }
     
-    private void checkKeyPress(KeyEvent e)
+    private void takeUserInput(Canvas canvas)
     {
-        if (e.getCode() == KeyCode.A) {
-            System.out.println("A key was pressed");
+        canvas.addEventHandler(MouseEvent.MOUSE_CLICKED, new EventHandler<MouseEvent>()
+        {
+            @Override
+            public void handle(MouseEvent e)
+            {
+                int x = (int)(e.getX()/Tile.TILE_SIZE);
+                int y = (int)(e.getY()/Tile.TILE_SIZE);
+                
+                System.out.println("Pressed tile ("+x+", "+y+")");
+            }
+        });
+    }
+    
+    private void checkKeyPress(KeyEvent e, Tile[][] map, GraphicsContext gc)
+    {
+        if (e.getCode() == KeyCode.A)
+        {
+            if (curX > 0)
+            {
+                curX--;
+                drawTileMap(map, gc, curX, curY, 14, 14);
+            }
+        }
+        else if (e.getCode() == KeyCode.D)
+        {
+            if (curX < SIZE - sceneWidth/Tile.TILE_SIZE)
+            {
+                curX++;
+                drawTileMap(map, gc, curX, curY, 14, 14);
+            }
+        }
+        else if (e.getCode() == KeyCode.W)
+        {
+            if (curY > 0)
+            {
+                curY--;
+                drawTileMap(map, gc, curX, curY, 14, 14);
+            }
+        }
+        else if (e.getCode() == KeyCode.S)
+        {
+            if (curY < SIZE - sceneHeight/Tile.TILE_SIZE)
+            {
+                curY++;
+                drawTileMap(map, gc, curX, curY, 14, 14);
+            }
         }
     }
     
@@ -55,6 +99,9 @@ public class MapGeneratorVisualisor extends Application {
         gen.init();
         char[][] charMap = gen.createTerrain(SIZE);
         Tile[][] map = new Tile[SIZE][SIZE];
+        
+        int numWater = 0;
+        int numLand = 0;
         
         for (int r = 0; r < SIZE; r++)
         {
@@ -67,13 +114,23 @@ public class MapGeneratorVisualisor extends Application {
                 else if (charMap[r][c] == '~')
                     map[r][c] = new Water();
                 else if (charMap[r][c] == '-')
-                    map[r][c] = new Land();
+                    map[r][c] = new Field();
                 else if (charMap[r][c] == '+')
                     map[r][c] = new Forest();
                 else if (charMap[r][c] == ',')
                     map[r][c] = new Grass();
+                    
+                if (charMap[r][c] == '~' || charMap[r][c] == '=')
+                    numWater++;
+                else
+                    numLand++;
             }
         }
+        
+        // make sure it isn't too much water or land
+        double total = SIZE*SIZE;
+        if (numWater/total < 0.25 || numLand/total < 0.25)
+            return getTileMap();
         
         return map;
     }
