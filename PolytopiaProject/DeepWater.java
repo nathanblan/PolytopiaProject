@@ -26,6 +26,6 @@ public class DeepWater extends Tile
     
     public String getInfo()
     {
-        return "deep";
+        return "deep water";
     }
 }

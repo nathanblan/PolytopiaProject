@@ -97,16 +97,38 @@ public class MapGeneratorVisualisor extends Application {
                 }
                 System.out.println();
                 
+                GraphicsContext gc = canvas.getGraphicsContext2D();
+                if (curSelectedX != -1 && curSelectedY != -1)
+                {
+                    map[curSelectedX][curSelectedY].drawTile(gc, curSelectedX, curSelectedY);
+                    gc.setFill(Color.GREY);
+                    gc.fillRect(sceneWidth, 0, 200, sceneHeight);
+                }
+                
                 // selected same tile
                 if (x == curSelectedX && y == curSelectedY)
                 {
-                    // unselect tile
-                    GraphicsContext gc = canvas.getGraphicsContext2D();
-                    drawTileMap(map, gc, 0, 0, 16, 16);
+                    curSelectedX = -1;
+                    curSelectedY = -1;
                 }
                 else
                 {
+                    curSelectedX = x;
+                    curSelectedY = y;
+                    
                     // show selected tile
+                    gc.setFill(Color.GAINSBORO);
+                    gc.fillRect(x*Tile.TILE_SIZE, y*Tile.TILE_SIZE, Tile.TILE_SIZE, 5);
+                    gc.fillRect(x*Tile.TILE_SIZE, y*Tile.TILE_SIZE, 5, Tile.TILE_SIZE);
+                    gc.fillRect(x*Tile.TILE_SIZE, y*Tile.TILE_SIZE+Tile.TILE_SIZE-5, Tile.TILE_SIZE, 5);
+                    gc.fillRect(x*Tile.TILE_SIZE+Tile.TILE_SIZE-5, y*Tile.TILE_SIZE, 5, Tile.TILE_SIZE);
+                    
+                    gc.setTextAlign(TextAlignment.CENTER);
+                    gc.setFont(new Font(30));
+                    gc.setFill(Color.LIGHTGREY);
+                    gc.setLineWidth(10);
+                    
+                    gc.fillText(type, sceneWidth+100, 40);
                 }
             }
         });
@@ -184,7 +206,7 @@ public class MapGeneratorVisualisor extends Application {
         
         // make sure it isn't too much water or land
         double total = SIZE*SIZE;
-        if (numWater/total < 0.25 || numLand/total < 0.25)
+        if (numWater/total < 0.25 || numLand/total < 0.35)
             return getTileMap();
         
         return map;
