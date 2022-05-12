@@ -133,16 +133,7 @@ public class MapGenerator {
                 if(grid_[i][j]+0.5 < -0.75)
                 {
                     map[i][j] = '=';//deep water
-                } /*
-                else if(grid_[i][j] <= 0)
-                {
-                map[i][j] = '~';//shallow water
-                } */
-                /*
-                else if(grid_[i][j]+0.5 >=5.5)
-                {
-                map[i][j] = 'A'; //mountain
-                }*/
+                }
                 else if(grid_[i][j]+0.5 >=3.75)
                 {
                     map[i][j] = 'A'; //mountain
@@ -405,6 +396,26 @@ public class MapGenerator {
                 }
             }
         }
+        
+        for(int i = 0;i < map.length;i++) 
+        {
+            for(int j = 0;j < map[0].length;j++) 
+            {
+                if(map[i][j] == '-')
+                {
+                    double foliageVal = (Math.random()*10);
+                    if(foliageVal < 2.5)
+                    {
+                        map[i][j] = '+'; // forrest
+                    }
+                    else if(foliageVal < 3.75)
+                    {
+                        map[i][j] = ','; // grass
+                    }
+                }
+            }
+        }
+    
         return map;
     }
 }
