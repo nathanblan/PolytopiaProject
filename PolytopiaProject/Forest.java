@@ -26,7 +26,7 @@ public class Forest extends Tile
     
     public int hunt()
     {
-        if (!hasAnimal)
+        if (!canHunt())
             return -1;
         hasAnimal = false;
         
@@ -37,7 +37,7 @@ public class Forest extends Tile
     
     public int buildLumberHut()
     {
-        if (hasLumberHut)
+        if (!canBuildHut())
             return -1;
         hasLumberHut = true;
         hasAnimal = false;
@@ -55,5 +55,20 @@ public class Forest extends Tile
             gc.drawImage(new Image("images\\forest_animal.jpg"), x*TILE_SIZE, y*TILE_SIZE, TILE_SIZE, TILE_SIZE);
         else
             gc.drawImage(new Image("images\\forest.jpg"), x*TILE_SIZE, y*TILE_SIZE, TILE_SIZE, TILE_SIZE);
+    }
+    
+    public String getInfo()
+    {
+        return "forest";
+    }
+    
+    public boolean canHunt()
+    {
+        return hasAnimal;
+    }
+    
+    public boolean canBuildHut()
+    {
+        return !hasLumberHut;
     }
 }

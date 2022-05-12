@@ -8,6 +8,7 @@ import javafx.stage.Stage;
 import javafx.scene.canvas.*;
 import javafx.scene.input.*;
 import javafx.scene.text.*;
+import java.util.ArrayList;
 
 /**
  * Use to visualize the map made by MapGenerator.
@@ -20,12 +21,15 @@ public class MapGeneratorVisualisor extends Application {
     
     private int curX = 0;
     private int curY = 0;
+    
+    private int curSelectedX = -1;
+    private int curSelectedY = -1;
 
     @Override
     public void start(Stage stage) {
         stage.setTitle("Polytopia");
         Group root = new Group();
-        Canvas canvas = new Canvas(sceneWidth, sceneHeight);
+        Canvas canvas = new Canvas(sceneWidth+200, sceneHeight);
         GraphicsContext gc = canvas.getGraphicsContext2D();
         
         Tile[][] map = getTileMap();
@@ -35,14 +39,14 @@ public class MapGeneratorVisualisor extends Application {
             checkKeyPress(e, map, gc);
         });*/
         
-        takeUserInput(canvas);
+        takeUserInput(canvas, map);
         
         root.getChildren().add(canvas);
         stage.setScene(new Scene(root));
         stage.show();
     }
     
-    private void takeUserInput(Canvas canvas)
+    private void takeUserInput(Canvas canvas, Tile[][] map)
     {
         canvas.addEventHandler(MouseEvent.MOUSE_CLICKED, new EventHandler<MouseEvent>()
         {
@@ -52,7 +56,58 @@ public class MapGeneratorVisualisor extends Application {
                 int x = (int)(e.getX()/Tile.TILE_SIZE);
                 int y = (int)(e.getY()/Tile.TILE_SIZE);
                 
-                System.out.println("Pressed tile ("+x+", "+y+")");
+                System.out.println("Pressed tile ("+x+", "+y+") "+map[x][y].getInfo());
+                ArrayList<String> actions = new ArrayList<String>();
+                
+                Tile t = map[x][y];
+                String type = t.getInfo();
+                if (type.equals("mountain"))
+                {
+                    if (((Mountain)t).canBuildMine())
+                        actions.add("build mine");
+                }
+                else if (type.equals("field"))
+                {
+                    if (((Field)t).canHarvestFruit())
+                        actions.add("harvest fruit");
+                }
+                else if (type.equals("forest"))
+                {
+                    if (((Forest)t).canHunt())
+                        actions.add("hunt");
+                    if (((Forest)t).canBuildHut())
+                        actions.add("build hut");
+                }
+                else if (type.equals("water"))
+                {
+                    if (((Water)t).canFish())
+                        actions.add("fish");
+                    if (((Water)t).canBuildPort())
+                        actions.add("build port");
+                }
+                else if (type.equals("grass"))
+                {
+                    if (((Grass)t).canBuildFarm())
+                        actions.add("build farm");
+                }
+                
+                for (String s : actions)
+                {
+                    System.out.print(s+" ");
+                }
+                System.out.println();
+                
+                // selected same tile
+                if (x == curSelectedX && y == curSelectedY)
+                {
+                    // unselect tile
+                    GraphicsContext gc = canvas.getGraphicsContext2D();
+                    drawTileMap(map, gc, 0, 0, 16, 16);
+                }
+                else
+                {
+                    // show selected tile
+                }
             }
         });
     }
@@ -144,5 +199,8 @@ public class MapGeneratorVisualisor extends Application {
                 map[r][c].drawTile(gc, r-startX, c-startY);
             }
         }
+        
+        gc.setFill(Color.GREY);
+        gc.fillRect(sceneWidth, 0, 200, sceneHeight);
     }
 }

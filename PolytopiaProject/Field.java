@@ -24,7 +24,7 @@ public class Field extends Tile
     
     public int harvestFruit()
     {
-        if (!hasFruit)
+        if (!canHarvestFruit())
         {
             return -1;
         }
@@ -38,5 +38,15 @@ public class Field extends Tile
     public void drawTile(GraphicsContext gc, int x, int y)
     {
         gc.drawImage(new Image("images\\land.jpg"), x*TILE_SIZE, y*TILE_SIZE, TILE_SIZE, TILE_SIZE);
+    }
+    
+    public String getInfo()
+    {
+        return "field";
+    }
+    
+    public boolean canHarvestFruit()
+    {
+        return hasFruit;
     }
 }

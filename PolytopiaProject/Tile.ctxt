@@ -11,4 +11,6 @@ comment4.params=gc\ x\ y
 comment4.target=void\ drawTile(javafx.scene.canvas.GraphicsContext,\ int,\ int)
 comment5.params=
 comment5.target=City\ getCity()
-numComments=6
+comment6.params=
+comment6.target=java.lang.String\ getInfo()
+numComments=7
