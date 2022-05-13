@@ -14,4 +14,6 @@ comment5.params=num
 comment5.target=void\ incPopulation(int)
 comment6.params=
 comment6.target=int\ getLevel()
-numComments=7
+comment7.params=gc\ x\ y
+comment7.target=void\ drawTile(javafx.scene.canvas.GraphicsContext,\ int,\ int)
+numComments=8
