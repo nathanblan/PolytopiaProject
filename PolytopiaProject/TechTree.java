@@ -104,7 +104,7 @@ public class TechTree
         return hasCityBuilding;
     }
     
-    //Lvl 1 = 5 Stars, Lvl 2 = 10 Stars, Lvl 3 = 20 Stars
+    //Unlocking!!! Lvl 1 = 5 Stars, Lvl 2 = 10 Stars, Lvl 3 = 20 Stars
     
     //Lvl 1s
     public void unlockClimbing(Player person)
