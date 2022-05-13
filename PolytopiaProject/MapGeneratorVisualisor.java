@@ -172,13 +172,8 @@ public class MapGeneratorVisualisor extends Application {
     
     private Tile[][] getTileMap()
     {
-        MapGenerator gen = new MapGenerator(null, 4.0f, SIZE, SIZE);
-        gen.init();
-        char[][] charMap = gen.createTerrain(SIZE);
+        char[][] charMap = MapGenerator.createTerrain(SIZE);
         Tile[][] map = new Tile[SIZE][SIZE];
-        
-        int numWater = 0;
-        int numLand = 0;
         
         for (int r = 0; r < SIZE; r++)
         {
@@ -190,24 +185,16 @@ public class MapGeneratorVisualisor extends Application {
                     map[r][c] = new DeepWater();
                 else if (charMap[r][c] == '~')
                     map[r][c] = new Water();
-                else if (charMap[r][c] == '-')
-                    map[r][c] = new Field();
                 else if (charMap[r][c] == '+')
                     map[r][c] = new Forest();
                 else if (charMap[r][c] == ',')
                     map[r][c] = new Grass();
-                    
-                if (charMap[r][c] == '~' || charMap[r][c] == '=')
-                    numWater++;
-                else
-                    numLand++;
+                else if (charMap[r][c] == '-')
+                    map[r][c] = new Field();
+                else if (charMap[r][c] == 'c')
+                    map[r][c] = new City();
             }
         }
-        
-        // make sure it isn't too much water or land
-        double total = SIZE*SIZE;
-        if (numWater/total < 0.25 || numLand/total < 0.35)
-            return getTileMap();
         
         return map;
     }

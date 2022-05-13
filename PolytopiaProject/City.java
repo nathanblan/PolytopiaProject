@@ -50,4 +50,9 @@ public class City extends Tile
             population = population%level;
         }
     }
+    
+    public int getLevel()
+    {
+        return level;
+    }
 }

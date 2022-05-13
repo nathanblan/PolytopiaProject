@@ -37,6 +37,17 @@ public class Mountain extends Tile
         return 1;
     }
     
+    public int grabGold(Player p)
+    {
+        if (!canGrabGold())
+            return -1;
+        
+        hasGold = false;
+        p.incStars(5);
+        
+        return 1;
+    }
+    
     public void drawTile(GraphicsContext gc, int x, int y)
     {
         if (hasMine)
@@ -54,6 +65,11 @@ public class Mountain extends Tile
     
     public boolean canBuildMine()
     {
-        return hasGold && !hasMine;
+        return !hasMine;
+    }
+    
+    public boolean canGrabGold()
+    {
+        return hasGold;
     }
 }

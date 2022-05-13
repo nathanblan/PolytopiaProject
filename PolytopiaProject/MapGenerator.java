@@ -10,28 +10,19 @@ import java.util.Random;
 
 public class MapGenerator {
     /** Source of entropy */
-    private Random rand_;
+    private static Random rand_;
 
     /** Amount of roughness */
-    float roughness_;
+    private static float roughness_;
 
     /** Plasma fractal grid */
-    private float[][] grid_;
+    private static float[][] grid_;
 
-    /** Generate a noise source based upon the midpoint displacement fractal.
-     * 
-     * @param rand The random number generator
-     * @param roughness a roughness parameter
-     * @param width the width of the grid
-     * @param height the height of the grid
-     */
-    public MapGenerator(Random rand, float roughness, int width, int height) {
+    public static void init(Random rand, float roughness, int width, int height) {
         roughness_ = roughness / width;
         grid_ = new float[width][height];
         rand_ = (rand == null) ? new Random() : rand;
-    }
-
-    public void init() {
+        
         int xh = grid_.length - 1;
         int yh = grid_[0].length - 1;
 
@@ -46,12 +37,12 @@ public class MapGenerator {
     }
 
     // Add a suitable amount of random displacement to a point
-    private float roughen(float v, int l, int h) {
+    private static float roughen(float v, int l, int h) {
         return v + roughness_ * (float) (rand_.nextGaussian() * (h - l));
     }
 
     // generate the fractal
-    private void generate(int xl, int yl, int xh, int yh) {
+    private static void generate(int xl, int yl, int xh, int yh) {
         int xm = (xl + xh) / 2;
         int ym = (yl + yh) / 2;
         if ((xl == xm) && (yl == ym)) return;
@@ -74,83 +65,62 @@ public class MapGenerator {
         generate(xl, ym, xm, yh);
         generate(xm, ym, xh, yh);
     }
-
-    /**
-     * Dump out as a CSV [DONT NEED THIS]
-     */
-    public void printAsCSV() {
-        for(int i = 0;i < grid_.length;i++) {
-            for(int j = 0;j < grid_[0].length;j++) {
-                System.out.print(grid_[i][j]);
-                //System.out.print(",");
-            }
-            System.out.println();
-        }
-    }
-
-    /**
-     * Convert to a Boolean array
-     * @return the boolean array
-     */
-    public boolean[][] toBooleans() {
-        int w = grid_.length;
-        int h = grid_[0].length;
-        boolean[][] ret = new boolean[w][h];
-        for(int i = 0;i < w;i++) {
-            for(int j = 0;j < h;j++) {
-                ret[i][j] = grid_[i][j] < 0;
-            }
-        }
-        return ret;
-    }
-
-    /** For testing */
-    public static void test(String[] args) {
-        MapGenerator n = new MapGenerator(null, 4.0f, 20, 20);
-        int i=5;
-        while(i >= 1)
+    
+    private static char[][] getBasicTerrain (double shift, int size)
+    {
+        char[][] map = new char[size][size];
+        int waterCounter = 0;
+        int landCounter = 0;
+        
+        for(int i = 0;i < map.length;i++) 
         {
-            n.init();
-            //n.printAsCSV();
-            char[][] a = n.createTerrain(20);
-            //n.printAsCSV(a);
-            System.out.println();
-            i--;
+            for(int j = 0;j < map[0].length;j++) 
+            {
+                if(grid_[i][j]+shift < -1.25)
+                {
+                    map[i][j] = '=';//deep water
+                    waterCounter++;
+                }
+                else if(grid_[i][j]+shift >= 3.25)
+                {
+                    map[i][j] = 'A'; //mountain
+                    landCounter++;
+                }
+                else
+                {
+                    map[i][j] = '-';//land
+                    landCounter++;
+                }
+            }
         }
-
+        
+        double total = size*size;
+        
+        // if too much water
+        if (waterCounter/total > 0.6)
+            return getBasicTerrain(shift+0.1, size);
+        // if too much land
+        else if (landCounter/total > 0.75)
+            return getBasicTerrain(shift-0.1, size);
+        
+        return map;
     }
 
     /**
      * Make a map with land and water
      */
-    public char[][] createTerrain(int size) 
+    public static char[][] createTerrain(int size) 
     {
-        char[][] map = new char[size][size];
-        for(int i = 0;i < map.length;i++) 
-        {
-            for(int j = 0;j < map[0].length;j++) 
-            {
-                if(grid_[i][j]+0.5 < -0.75)
-                {
-                    map[i][j] = '=';//deep water
-                }
-                else if(grid_[i][j]+0.5 >=3.75)
-                {
-                    map[i][j] = 'A'; //mountain
-                }
-                else
-                {
-                    map[i][j] = '-';//land
-                }
-            }
-        }
+        init(null, 4.0f, 20, 20);
+        
+        char map[][] = getBasicTerrain(0, size);
 
-        for(int i = 2;i < map.length-2;i++) 
+        for(int i = 2; i < map.length-2;i++) 
         {
-            for(int j = 2;j < map[0].length-2;j++) 
+            for(int j = 2; j < map[0].length-2;j++) 
             {
-                //mountain conditions
-                if(map[i][j] == 'A' && map[i][j-2] == 'A')
+                // mountain conditions
+                if (map[i][j] == 'A' && map[i][j-2] == 'A')
                 {
                     map[i][j-1] = '-';//so there are not huge amounts of mountains
                 }
@@ -178,10 +148,9 @@ public class MapGenerator {
                 // if land or mountain
                 if (map[i][j] == '-' || map[i][j] == 'A')
                 {
-                    double randCity = (Math.random()); // likelyhood of a city
-                    if(i!=0 || j!=0)
+                    if (i != 0 || j != 0)
                     {
-                        if(randCity < 0.1)
+                        if (Math.random() < 0.1)
                         {
                             map[i][j] = 'c';
                         }
