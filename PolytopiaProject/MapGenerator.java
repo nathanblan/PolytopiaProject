@@ -148,14 +148,13 @@ public class MapGenerator {
                 // if land or mountain
                 if (map[i][j] == '-' || map[i][j] == 'A')
                 {
-                    if (i != 0 || j != 0)
+                    if(i!=0 && j!=0 && i!=map.length && j!=map.length)
                     {
-                        if (Math.random() < 0.1)
+                        if (Math.random() < 0.25)
                         {
                             map[i][j] = 'c';
                         }
-                    }
-                    
+                    }                    
                     // top left corner
                     if (i==0 && j==0)
                     {
@@ -245,6 +244,7 @@ public class MapGenerator {
                             map[i+1][j+1] = '~';
                         }
                         //city generation
+                        
                         if (map[i+1][j] == 'c')
                         {
                             map[i+1][j] = '-';
@@ -264,7 +264,7 @@ public class MapGenerator {
                         if (map[i+1][j+1] == 'c')
                         {
                             map[i+1][j+1] = '-';
-                        }
+                        } 
                     }
                     // bottom row, not corners
                     else if (i == map.length-1)
@@ -290,6 +290,7 @@ public class MapGenerator {
                             map[i-1][j+1] = '~';
                         }
                         //city generation
+                        
                         if (map[i-1][j] == 'c')
                         {
                             map[i-1][j] = '-';
@@ -309,7 +310,7 @@ public class MapGenerator {
                         if (map[i-1][j+1] == 'c')
                         {
                             map[i-1][j+1] = '-';
-                        }
+                        } 
                     }
                     // left column, not corners
                     else if (j == 0)
@@ -335,6 +336,7 @@ public class MapGenerator {
                             map[i-1][j+1] = '~';
                         }
                         //city generation
+                        
                         if (map[i-1][j] == 'c')
                         {
                             map[i-1][j] = '-';
@@ -437,6 +439,7 @@ public class MapGenerator {
                             map[i+1][j+1] = '~';
                         }
                         // city gen
+                        
                         if (map[i-1][j-1] == 'c')
                         {
                             map[i-1][j-1] = '-';
@@ -468,7 +471,7 @@ public class MapGenerator {
                         if (map[i+1][j+1] == 'c')
                         {
                             map[i+1][j+1] = '-';
-                        }
+                        } 
                     }
                 }
             }
@@ -481,12 +484,12 @@ public class MapGenerator {
             {
                 if(map[i][j] == '-')
                 {
-                    double foliageVal = (Math.random()*10);
-                    if(foliageVal < 2)
+                    double foliageVal = (Math.random());
+                    if(foliageVal < 0.2)
                     {
                         map[i][j] = '+'; // forrest
                     }
-                    else if(foliageVal < 3)
+                    else if(foliageVal < 0.3)
                     {
                         map[i][j] = ','; // grass
                     }
