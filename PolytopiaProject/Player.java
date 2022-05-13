@@ -29,7 +29,7 @@ public class Player
     {
         for (City c : cities)
         {
-            
+            stars += c.getLevel();
         }
     }
     
