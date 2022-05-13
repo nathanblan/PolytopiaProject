@@ -13,4 +13,6 @@ comment5.params=
 comment5.target=Tile[][]\ getTileMap()
 comment6.params=map\ gc\ startX\ startY\ width\ height
 comment6.target=void\ drawTileMap(Tile[][],\ javafx.scene.canvas.GraphicsContext,\ int,\ int,\ int,\ int)
-numComments=7
+comment7.params=gc
+comment7.target=void\ fillSide(javafx.scene.canvas.GraphicsContext)
+numComments=8

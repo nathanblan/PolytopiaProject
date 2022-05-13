@@ -9,6 +9,7 @@ import javafx.scene.canvas.*;
 import javafx.scene.input.*;
 import javafx.scene.text.*;
 import java.util.ArrayList;
+import javafx.scene.image.Image;
 
 /**
  * Use to visualize the map made by MapGenerator.
@@ -102,8 +103,7 @@ public class MapGeneratorVisualisor extends Application {
                     if (curSelectedX != -1 && curSelectedY != -1)
                     {
                         map[curSelectedX][curSelectedY].drawTile(gc, curSelectedX, curSelectedY);
-                        gc.setFill(Color.GREY);
-                        gc.fillRect(sceneWidth, 0, 200, sceneHeight);
+                        fillSide(gc);
                     }
 
                     // selected same tile
@@ -125,11 +125,11 @@ public class MapGeneratorVisualisor extends Application {
                         gc.fillRect(x*Tile.TILE_SIZE+Tile.TILE_SIZE-5, y*Tile.TILE_SIZE, 5, Tile.TILE_SIZE);
 
                         gc.setTextAlign(TextAlignment.CENTER);
-                        gc.setFont(new Font(30));
-                        gc.setFill(Color.LIGHTGREY);
-                        gc.setLineWidth(10);
+                        gc.setFont(new Font(35));
+                        gc.setStroke(Color.LIGHTGREY);
+                        gc.setLineWidth(3);
 
-                        gc.fillText(type, sceneWidth+100, 40);
+                        gc.strokeText(type, sceneWidth+100, 50);
                     }
                 }
             }
@@ -211,7 +211,11 @@ public class MapGeneratorVisualisor extends Application {
             }
         }
 
-        gc.setFill(Color.GREY);
-        gc.fillRect(sceneWidth, 0, 200, sceneHeight);
+        fillSide(gc);
+    }
+    
+    private void fillSide(GraphicsContext gc)
+    {
+        gc.drawImage(new Image("images\\starbackground.png"), sceneWidth, 0, 200, sceneHeight);
     }
 }

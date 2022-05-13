@@ -1,5 +1,3 @@
-import javafx.scene.image.Image;
-
 /**
  * A water tile. Can fish (30% chance to have fish) and build ports
  *
@@ -8,7 +6,7 @@ import javafx.scene.image.Image;
  */
 
 import javafx.scene.canvas.*;
-import javafx.scene.paint.Color;
+import javafx.scene.image.Image;
 
 public class Water extends Tile
 {
