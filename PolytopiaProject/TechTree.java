@@ -20,6 +20,7 @@ public class TechTree
     private boolean hasMining;
     private boolean hasRiding;
     private boolean hasCityBuilding;
+    private boolean hasMountainDestroyer;
     public TechTree()
     {
         hasOrganization = true;
@@ -39,6 +40,7 @@ public class TechTree
         
         hasRiding = false;
         hasCityBuilding = false;
+        hasMountainDestroyer = false;
     }
     
     //All the gets!
@@ -211,6 +213,15 @@ public class TechTree
         if(person.getStars() >= 20 && hasSailing)
         {
             hasNavigation = true;
+        }
+        person.decStars(20);
+    }
+    
+    public void unlockMountainDestroyer(Player person)
+    {
+        if(person.getStars() >= 20 && hasCityBuilding)
+        {
+            hasMountainDestroyer = true;
         }
         person.decStars(20);
     }
