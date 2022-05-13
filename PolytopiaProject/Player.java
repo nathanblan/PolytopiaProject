@@ -1,7 +1,7 @@
 import java.util.ArrayList;
 
 /**
- * Write a description of class Player here.
+ * Store all player information in objects from this class.
  *
  * @author (your name)
  * @version (a version number or a date)
