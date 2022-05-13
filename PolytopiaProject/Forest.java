@@ -1,5 +1,3 @@
-import javafx.scene.image.Image;
-
 /**
  * A forest tile. Can hunt (30% chance to have animal) and build lumber hut.
  *
@@ -8,7 +6,7 @@ import javafx.scene.image.Image;
  */
 
 import javafx.scene.canvas.*;
-import javafx.scene.paint.Color;
+import javafx.scene.image.Image;
 
 public class Forest extends Tile
 {

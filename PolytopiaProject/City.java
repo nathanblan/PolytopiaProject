@@ -1,3 +1,5 @@
+import javafx.scene.image.Image;
+import javafx.scene.canvas.*;
 
 /**
  * City buildings
@@ -11,12 +13,13 @@ public class City extends Tile
     private int population;
     private int level;
     private int levelInc; // incrementor for population until next level
+    
     /**
      * Constructor for objects of class City
      */
     public City()
     {
-        player = 1;
+        player = 0;
         level = 1;
         levelInc = 2;
         population = 0;
@@ -54,5 +57,12 @@ public class City extends Tile
     public int getLevel()
     {
         return level;
+    }
+    
+    public void drawTile(GraphicsContext gc, int x, int y)
+    {
+        if (player == 0)
+            gc.drawImage(new Image("images\\village.jpg"), x*TILE_SIZE, y*TILE_SIZE, TILE_SIZE, TILE_SIZE);
+        
     }
 }

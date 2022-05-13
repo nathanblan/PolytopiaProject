@@ -18,10 +18,10 @@ public class MapGeneratorVisualisor extends Application {
     private double sceneWidth = 800;
     private double sceneHeight = 800;
     private final int SIZE = 16;
-    
+
     private int curX = 0;
     private int curY = 0;
-    
+
     private int curSelectedX = -1;
     private int curSelectedY = -1;
 
@@ -31,21 +31,21 @@ public class MapGeneratorVisualisor extends Application {
         Group root = new Group();
         Canvas canvas = new Canvas(sceneWidth+200, sceneHeight);
         GraphicsContext gc = canvas.getGraphicsContext2D();
-        
+
         Tile[][] map = getTileMap();
         drawTileMap(map, gc, 0, 0, 16, 16);
-        
+
         /*canvas.setOnKeyPressed(e -> {
-            checkKeyPress(e, map, gc);
+        checkKeyPress(e, map, gc);
         });*/
-        
+
         takeUserInput(canvas, map);
-        
+
         root.getChildren().add(canvas);
         stage.setScene(new Scene(root));
         stage.show();
     }
-    
+
     private void takeUserInput(Canvas canvas, Tile[][] map)
     {
         canvas.addEventHandler(MouseEvent.MOUSE_CLICKED, new EventHandler<MouseEvent>()
@@ -55,85 +55,87 @@ public class MapGeneratorVisualisor extends Application {
             {
                 int x = (int)(e.getX()/Tile.TILE_SIZE);
                 int y = (int)(e.getY()/Tile.TILE_SIZE);
-                
-                System.out.println("Pressed tile ("+x+", "+y+") "+map[x][y].getInfo());
-                ArrayList<String> actions = new ArrayList<String>();
-                
-                Tile t = map[x][y];
-                String type = t.getInfo();
-                if (type.equals("mountain"))
+                if (x < SIZE && y < SIZE)
                 {
-                    if (((Mountain)t).canBuildMine())
-                        actions.add("build mine");
-                }
-                else if (type.equals("field"))
-                {
-                    if (((Field)t).canHarvestFruit())
-                        actions.add("harvest fruit");
-                }
-                else if (type.equals("forest"))
-                {
-                    if (((Forest)t).canHunt())
-                        actions.add("hunt");
-                    if (((Forest)t).canBuildHut())
-                        actions.add("build hut");
-                }
-                else if (type.equals("water"))
-                {
-                    if (((Water)t).canFish())
-                        actions.add("fish");
-                    if (((Water)t).canBuildPort())
-                        actions.add("build port");
-                }
-                else if (type.equals("grass"))
-                {
-                    if (((Grass)t).canBuildFarm())
-                        actions.add("build farm");
-                }
-                
-                for (String s : actions)
-                {
-                    System.out.print(s+" ");
-                }
-                System.out.println();
-                
-                GraphicsContext gc = canvas.getGraphicsContext2D();
-                if (curSelectedX != -1 && curSelectedY != -1)
-                {
-                    map[curSelectedX][curSelectedY].drawTile(gc, curSelectedX, curSelectedY);
-                    gc.setFill(Color.GREY);
-                    gc.fillRect(sceneWidth, 0, 200, sceneHeight);
-                }
-                
-                // selected same tile
-                if (x == curSelectedX && y == curSelectedY)
-                {
-                    curSelectedX = -1;
-                    curSelectedY = -1;
-                }
-                else
-                {
-                    curSelectedX = x;
-                    curSelectedY = y;
-                    
-                    // show selected tile
-                    gc.setFill(Color.GAINSBORO);
-                    gc.fillRect(x*Tile.TILE_SIZE, y*Tile.TILE_SIZE, Tile.TILE_SIZE, 5);
-                    gc.fillRect(x*Tile.TILE_SIZE, y*Tile.TILE_SIZE, 5, Tile.TILE_SIZE);
-                    gc.fillRect(x*Tile.TILE_SIZE, y*Tile.TILE_SIZE+Tile.TILE_SIZE-5, Tile.TILE_SIZE, 5);
-                    gc.fillRect(x*Tile.TILE_SIZE+Tile.TILE_SIZE-5, y*Tile.TILE_SIZE, 5, Tile.TILE_SIZE);
-                    
-                    gc.setTextAlign(TextAlignment.CENTER);
-                    gc.setFont(new Font(30));
-                    gc.setFill(Color.LIGHTGREY);
-                    gc.setLineWidth(10);
-                    
-                    gc.fillText(type, sceneWidth+100, 40);
+                    System.out.println("Pressed tile ("+x+", "+y+") "+map[x][y].getInfo());
+                    ArrayList<String> actions = new ArrayList<String>();
+
+                    Tile t = map[x][y];
+                    String type = t.getInfo();
+                    if (type.equals("mountain"))
+                    {
+                        if (((Mountain)t).canBuildMine())
+                            actions.add("build mine");
+                    }
+                    else if (type.equals("field"))
+                    {
+                        if (((Field)t).canHarvestFruit())
+                            actions.add("harvest fruit");
+                    }
+                    else if (type.equals("forest"))
+                    {
+                        if (((Forest)t).canHunt())
+                            actions.add("hunt");
+                        if (((Forest)t).canBuildHut())
+                            actions.add("build hut");
+                    }
+                    else if (type.equals("water"))
+                    {
+                        if (((Water)t).canFish())
+                            actions.add("fish");
+                        if (((Water)t).canBuildPort())
+                            actions.add("build port");
+                    }
+                    else if (type.equals("grass"))
+                    {
+                        if (((Grass)t).canBuildFarm())
+                            actions.add("build farm");
+                    }
+
+                    for (String s : actions)
+                    {
+                        System.out.print(s+" ");
+                    }
+                    System.out.println();
+
+                    GraphicsContext gc = canvas.getGraphicsContext2D();
+                    if (curSelectedX != -1 && curSelectedY != -1)
+                    {
+                        map[curSelectedX][curSelectedY].drawTile(gc, curSelectedX, curSelectedY);
+                        gc.setFill(Color.GREY);
+                        gc.fillRect(sceneWidth, 0, 200, sceneHeight);
+                    }
+
+                    // selected same tile
+                    if (x == curSelectedX && y == curSelectedY)
+                    {
+                        curSelectedX = -1;
+                        curSelectedY = -1;
+                    }
+                    else
+                    {
+                        curSelectedX = x;
+                        curSelectedY = y;
+
+                        // show selected tile
+                        gc.setFill(Color.GAINSBORO);
+                        gc.fillRect(x*Tile.TILE_SIZE, y*Tile.TILE_SIZE, Tile.TILE_SIZE, 5);
+                        gc.fillRect(x*Tile.TILE_SIZE, y*Tile.TILE_SIZE, 5, Tile.TILE_SIZE);
+                        gc.fillRect(x*Tile.TILE_SIZE, y*Tile.TILE_SIZE+Tile.TILE_SIZE-5, Tile.TILE_SIZE, 5);
+                        gc.fillRect(x*Tile.TILE_SIZE+Tile.TILE_SIZE-5, y*Tile.TILE_SIZE, 5, Tile.TILE_SIZE);
+
+                        gc.setTextAlign(TextAlignment.CENTER);
+                        gc.setFont(new Font(30));
+                        gc.setFill(Color.LIGHTGREY);
+                        gc.setLineWidth(10);
+
+                        gc.fillText(type, sceneWidth+100, 40);
+                    }
                 }
             }
         });
     }
-    
+
     private void checkKeyPress(KeyEvent e, Tile[][] map, GraphicsContext gc)
     {
         if (e.getCode() == KeyCode.A)
@@ -169,12 +171,12 @@ public class MapGeneratorVisualisor extends Application {
             }
         }
     }
-    
+
     private Tile[][] getTileMap()
     {
         char[][] charMap = MapGenerator.createTerrain(SIZE);
         Tile[][] map = new Tile[SIZE][SIZE];
-        
+
         for (int r = 0; r < SIZE; r++)
         {
             for (int c = 0; c < SIZE; c++)
@@ -195,10 +197,10 @@ public class MapGeneratorVisualisor extends Application {
                     map[r][c] = new City();
             }
         }
-        
+
         return map;
     }
-    
+
     private void drawTileMap(Tile[][] map, GraphicsContext gc, int startX, int startY, int width, int height)
     {
         for (int r = startX; r < width; r++)
@@ -208,7 +210,7 @@ public class MapGeneratorVisualisor extends Application {
                 map[r][c].drawTile(gc, r-startX, c-startY);
             }
         }
-        
+
         gc.setFill(Color.GREY);
         gc.fillRect(sceneWidth, 0, 200, sceneHeight);
     }
