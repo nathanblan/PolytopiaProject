@@ -19,15 +19,16 @@ public class Tile
     public Tile()
     {}
     
-    public void setPlayer (int newPlayer)
+    public void setPlayer (Player newPlayer)
     {
         if (city != null)
             city.setPlayer(newPlayer);
     }
-    public int getPlayer()
+    
+    public Player getPlayer()
     {
         if (city == null)
-            return 0;
+            return null;
         return city.getPlayer();
     }
     
@@ -37,6 +38,11 @@ public class Tile
     public City getCity()
     {
         return city;
+    }
+    
+    public void setCity(City c)
+    {
+        city = c;
     }
     
     public String getInfo()

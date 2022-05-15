@@ -8,7 +8,7 @@ import java.util.ArrayList;
  */
 public class Player
 {
-    private static Troop[][] troopMap = new Troop[16][16];
+    public static Troop[][] troopMap = new Troop[16][16];
     private ArrayList<City> cities;
     private TechTree tree;
     private int stars;

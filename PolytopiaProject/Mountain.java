@@ -37,13 +37,13 @@ public class Mountain extends Tile
         return 1;
     }
     
-    public int grabGold(Player p)
+    public int grabGold()
     {
         if (!canGrabGold())
             return -1;
         
         hasGold = false;
-        p.incStars(5);
+        getPlayer().incStars(5);
         
         return 1;
     }

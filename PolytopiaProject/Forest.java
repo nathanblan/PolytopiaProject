@@ -33,7 +33,7 @@ public class Forest extends Tile
         return 1;
     }
     
-    public int buildLumberHut()
+    public int buildHut()
     {
         if (!canBuildHut())
             return -1;

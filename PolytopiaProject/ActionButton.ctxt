@@ -7,4 +7,6 @@ comment2.params=
 comment2.target=javafx.scene.image.Image\ getButton()
 comment3.params=gc\ width
 comment3.target=void\ displayInfo(javafx.scene.canvas.GraphicsContext,\ int)
-numComments=4
+comment4.params=t
+comment4.target=void\ doAction(Tile)
+numComments=5

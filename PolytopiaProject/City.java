@@ -9,7 +9,7 @@ import javafx.scene.canvas.*;
  */
 public class City extends Tile
 {
-    private int player;
+    private Player player;
     private int population;
     private int level;
     private int levelInc; // incrementor for population until next level
@@ -19,13 +19,13 @@ public class City extends Tile
      */
     public City()
     {
-        player = 0;
+        player = null;
         level = 1;
         levelInc = 2;
         population = 0;
     }
     
-    public City(int player)
+    public City(Player player)
     {
         this.player = player;
         level = 1;
@@ -33,12 +33,12 @@ public class City extends Tile
         population = 0;
     }
     
-    public void setPlayer (int newPlayer)
+    public void setPlayer (Player newPlayer)
     {
         player = newPlayer;
     }
     
-    public int getPlayer()
+    public Player getPlayer()
     {
         return player;
     }
@@ -61,8 +61,15 @@ public class City extends Tile
     
     public void drawTile(GraphicsContext gc, int x, int y)
     {
-        if (player == 0)
+        if (player == null)
             gc.drawImage(new Image("images\\village.jpg"), x*TILE_SIZE, y*TILE_SIZE, TILE_SIZE, TILE_SIZE);
         
+    }
+    
+    public String getInfo()
+    {
+        if (player == null)
+            return "village";
+        return "city lvl "+level;
     }
 }
