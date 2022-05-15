@@ -26,7 +26,7 @@ public class Mountain extends Tile
     
     public int buildMine()
     {
-        if (!canBuildMine())
+        if (!canBuildMine() || city == null)
         {
             return -1;
         }
@@ -39,7 +39,7 @@ public class Mountain extends Tile
     
     public int grabGold()
     {
-        if (!canGrabGold())
+        if (!canGrabGold() || city == null)
             return -1;
         
         hasGold = false;

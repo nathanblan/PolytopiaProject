@@ -26,6 +26,8 @@ public class MapGeneratorVisualisor extends Application {
     private int curSelectedX = -1;
     private int curSelectedY = -1;
     private int curLayer = 0; // troops are 1, tiles are 2
+    private boolean isConfirmScreen = false;
+    private ActionButton curButton;
     
     private Player[] players;
     private int curPlayer;
@@ -66,6 +68,8 @@ public class MapGeneratorVisualisor extends Application {
                 // clicked in the map
                 if (x < SIZE && y < SIZE)
                 {
+                    isConfirmScreen = false;
+                    
                     // clear side panel and selected tile
                     if (curSelectedX != -1 && curSelectedY != -1)
                     {
@@ -99,17 +103,17 @@ public class MapGeneratorVisualisor extends Application {
                     // if selected a tile
                     if (curLayer == 2)
                     {
-
-                        gc.setTextAlign(TextAlignment.CENTER);
-                        gc.setFont(new Font(35));
-                        gc.setFill(Color.LIGHTGREY);
-                        
                         Tile t = map[x][y];
                         String type = t.getInfo();
                         ArrayList<ActionButton> actions = getActionButtons(t);
 
+                        // display tile type
+                        gc.setTextAlign(TextAlignment.CENTER);
+                        gc.setFont(new Font(35));
+                        gc.setFill(Color.LIGHTGREY);
                         gc.fillText(type, sceneWidth+100, 50);
                         
+                        // show selected tile
                         if (actions.size() == 0)
                             showSelectedTile(gc, Color.GAINSBORO, x, y);
                         else
@@ -132,25 +136,41 @@ public class MapGeneratorVisualisor extends Application {
                 {
                     x = (int)e.getX();
                     y = (int)e.getY();
+                    
+                    // confirmation screen
+                    if (isConfirmScreen)
+                    {
+                        // do action
+                        Tile t = map[curSelectedX][curSelectedY];
+                        curButton.doAction(t);
+                        
+                        // update tile graphics + clear side panel
+                        t.drawTile(gc, curSelectedX, curSelectedY);
+                        fillSide(gc);
+                        
+                        // clear variables
+                        curSelectedX = -1;
+                        curSelectedY = -1;
+                        curLayer = 0;
+                        isConfirmScreen = false;
+                    }
                     // tile actions
-                    if (curLayer == 2)
+                    else if (curLayer == 2)
                     {
                         Tile t = map[curSelectedX][curSelectedY];
                         ArrayList<ActionButton> actions = getActionButtons(t);
                         int index = getButtonIndex(x, y);
                         
                         // clicked on of the buttons
+                        System.out.println(index+" "+actions.size());
                         if (index < actions.size() && index != -1)
                         {
-                            // clear side panel
-                            actions.get(index).doAction(t);
+                            isConfirmScreen = true;
+                            curButton = actions.get(index);
                             
-                            t.drawTile(gc, curSelectedX, curSelectedY);
                             fillSide(gc);
-                            
-                            curSelectedX = -1;
-                            curSelectedY = -1;
-                            curLayer = 0;
+                            gc.fillText(t.getInfo(), sceneWidth+100, 50);
+                            curButton.displayInfo(gc, sceneWidth);
                         }
                     }
                     // troop actions
@@ -168,6 +188,11 @@ public class MapGeneratorVisualisor extends Application {
         });
     }
     
+    private void drawConfirmScreen(GraphicsContext gc)
+    {
+        
+    }
+    
     /**
      * Returns the index of the button clicked, -1 if not clicking a button
      */
@@ -177,11 +202,13 @@ public class MapGeneratorVisualisor extends Application {
             return -1;
             
         x -= sceneWidth+100;
-        y -= 160;
+        y -= 80;
         
         int index = y/200;
         
         y %= 200;
+        y -= 80;
+        
         if (x*x + y*y > 80*80)
             return -1;
         

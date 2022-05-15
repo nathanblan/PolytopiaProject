@@ -28,7 +28,7 @@ public class Water extends Tile
      */
     public int buildPort()
     {
-        if (!canBuildPort())
+        if (!canBuildPort() || city == null)
             return -1;
         hasPort = true;
         hasFish = false;
@@ -44,7 +44,7 @@ public class Water extends Tile
      */
     public int fish()
     {
-        if (!canFish())
+        if (!canFish() || city == null)
             return -1;
         hasFish = false;
         

@@ -24,7 +24,7 @@ public class Forest extends Tile
     
     public int hunt()
     {
-        if (!canHunt())
+        if (!canHunt() || city == null)
             return -1;
         hasAnimal = false;
         
@@ -35,7 +35,7 @@ public class Forest extends Tile
     
     public int buildHut()
     {
-        if (!canBuildHut())
+        if (!canBuildHut() || city == null)
             return -1;
         hasLumberHut = true;
         hasAnimal = false;

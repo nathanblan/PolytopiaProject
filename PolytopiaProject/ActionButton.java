@@ -51,13 +51,38 @@ public class ActionButton
         return new Image("images\\"+type+"_button.png");
     }
     
-    public void displayInfo(GraphicsContext gc, int width)
+    /**
+     * Displays the text onto the side panel, formats it somewhat nicely
+     */
+    public void displayInfo(GraphicsContext gc, double width)
     {
         gc.setTextAlign(TextAlignment.CENTER);
         gc.setFont(new Font(20));
         gc.setFill(Color.LIGHTGREY);
         
-        gc.fillText(info, width+100, 100, 180);
+        int i = 0;
+        int y = 100;
+        while (i < info.length())
+        {
+            int temp = info.indexOf(" ", i);
+            while (temp != -1 && info.indexOf(" ", temp+1)-i <= 20)
+            {
+                temp = info.indexOf(" ", temp+1);
+            }
+            
+            if (temp == -1)
+            {
+                if (info.length()-i <= 20)
+                    temp = info.length();
+                else
+                    temp = info.lastIndexOf(" ");
+            }
+            
+            gc.fillText(info.substring(i, temp), width+100, y);
+            
+            i = temp+1;
+            y += 30;
+        }
     }
     
     public void doAction(Tile t)

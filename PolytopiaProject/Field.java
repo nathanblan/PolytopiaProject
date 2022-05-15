@@ -24,7 +24,7 @@ public class Field extends Tile
     
     public int harvestFruit()
     {
-        if (!canHarvestFruit())
+        if (!canHarvestFruit() || city == null)
         {
             return -1;
         }

@@ -24,7 +24,7 @@ public class Grass extends Tile
     
     public int buildFarm()
     {
-        if (!canBuildFarm())
+        if (!canBuildFarm() || city == null)
             return -1;
         isFarm = true;
         
