@@ -18,7 +18,9 @@ public class MapGeneratorVisualisor extends Application {
 
     private double sceneWidth = 800;
     private double sceneHeight = 800;
-    private final int SIZE = 16;
+    private static final int SIZE = 16;
+    
+    public static Tile[][] map = getTileMap();
 
     private int curX = 0;
     private int curY = 0;
@@ -40,8 +42,7 @@ public class MapGeneratorVisualisor extends Application {
         Canvas canvas = new Canvas(sceneWidth+200, sceneHeight);
         GraphicsContext gc = canvas.getGraphicsContext2D();
 
-        Tile[][] map = getTileMap();
-        drawTileMap(map, gc, 0, 0, 16, 16);
+        drawTileMap(gc, 0, 0, 16, 16);
         
         players = new Player[NUM_PLAYERS];
         curPlayer = 0;
@@ -263,7 +264,7 @@ public class MapGeneratorVisualisor extends Application {
         return actions;
     }
 
-    private Tile[][] getTileMap()
+    private static Tile[][] getTileMap()
     {
         char[][] charMap = MapGenerator.createTerrain(SIZE);
         Tile[][] map = new Tile[SIZE][SIZE];
@@ -292,7 +293,7 @@ public class MapGeneratorVisualisor extends Application {
         return map;
     }
 
-    private void drawTileMap(Tile[][] map, GraphicsContext gc, int startX, int startY, int width, int height)
+    private void drawTileMap(GraphicsContext gc, int startX, int startY, int width, int height)
     {
         for (int r = startX; r < width; r++)
         {
