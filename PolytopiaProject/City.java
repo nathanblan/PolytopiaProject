@@ -1,5 +1,6 @@
 import javafx.scene.image.Image;
 import javafx.scene.canvas.*;
+import java.util.ArrayList;
 
 /**
  * City buildings
@@ -36,14 +37,30 @@ public class City extends Tile
     public void setPlayer (Player newPlayer, int x, int y)
     {
         player = newPlayer;
-        MapGeneratorVisualisor.map[x-1][y-1].setCity(this); //top left
-        MapGeneratorVisualisor.map[x-1][y].setCity(this); 
-        MapGeneratorVisualisor.map[x-1][y+1].setCity(this); // top right
-        MapGeneratorVisualisor.map[x][y+1].setCity(this);
-        MapGeneratorVisualisor.map[x+1][y+1].setCity(this); // bottom right
-        MapGeneratorVisualisor.map[x+1][y].setCity(this);
-        MapGeneratorVisualisor.map[x+1][y-1].setCity(this); //bottom left
-        MapGeneratorVisualisor.map[x][y-1].setCity(this);
+
+        ArrayList<Integer> xValues = new ArrayList<Integer>();
+        ArrayList<Integer> yValues = new ArrayList<Integer>();
+        
+        xValues.add(x);
+        if (x != 0)
+            xValues.add(x-1);
+        if (x != MapGeneratorVisualisor.map.length-1)
+            xValues.add(x+1);
+        
+        yValues.add(y);
+        if (y != 0)
+            yValues.add(y-1);
+        if (y != MapGeneratorVisualisor.map[0].length-1)
+            yValues.add(y+1);
+            
+        for (int a : xValues)
+        {
+            for (int b : yValues)
+            {
+                if (MapGeneratorVisualisor.map[a][b].getCity() == null)
+                    MapGeneratorVisualisor.map[a][b].setCity(this);
+            }
+        }
     }
     
     public Player getPlayer()
