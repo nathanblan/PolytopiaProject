@@ -141,19 +141,28 @@ public class MapGeneratorVisualisor extends Application {
                     // confirmation screen
                     if (isConfirmScreen)
                     {
-                        // do action
-                        Tile t = map[curSelectedX][curSelectedY];
-                        curButton.doAction(t);
-                        
-                        // update tile graphics + clear side panel
-                        t.drawTile(gc, curSelectedX, curSelectedY);
-                        fillSide(gc);
-                        
-                        // clear variables
-                        curSelectedX = -1;
-                        curSelectedY = -1;
-                        curLayer = 0;
-                        isConfirmScreen = false;
+                        int temp = getConfirmButton(x, y);
+                        if (temp == 1)
+                        {
+                            // do action
+                            Tile t = map[curSelectedX][curSelectedY];
+                            curButton.doAction(t);
+                            
+                            // update tile graphics + clear side panel
+                            t.drawTile(gc, curSelectedX, curSelectedY);
+                            fillSide(gc);
+                            
+                            // clear variables
+                            curSelectedX = -1;
+                            curSelectedY = -1;
+                            curLayer = 0;
+                            isConfirmScreen = false;
+                        }
+                        else if (temp == 0)
+                        {
+                            isConfirmScreen = false;
+                            fillSide(gc);
+                        }
                     }
                     // tile actions
                     else if (curLayer == 2)
@@ -163,13 +172,12 @@ public class MapGeneratorVisualisor extends Application {
                         int index = getButtonIndex(x, y);
                         
                         // clicked on of the buttons
-                        System.out.println(index+" "+actions.size());
                         if (index < actions.size() && index != -1)
                         {
                             isConfirmScreen = true;
                             curButton = actions.get(index);
                             
-                            fillSide(gc);
+                            drawConfirmScreen(gc);
                             gc.fillText(t.getInfo(), sceneWidth+100, 50);
                             curButton.displayInfo(gc, sceneWidth);
                         }
@@ -189,9 +197,37 @@ public class MapGeneratorVisualisor extends Application {
         });
     }
     
+    /**
+     * Returns -1 if neither confirm button pressed
+     * Returns 1 if confirm button pressed
+     * Returns 0 if cancel button pressed
+     */
+    private int getConfirmButton(int x, int y)
+    {
+        if (x < sceneWidth+20 || x > sceneWidth+180)
+            return -1;
+        if (y < sceneHeight+80)
+            return -1;
+        
+        x -= sceneWidth+20;
+        y -= sceneHeight+50;
+        
+        int output = x/100;
+        
+        x %= 100;
+        x -= 30;
+        
+        if (x*x + y*y < 30*30)
+            return output;
+        
+        return -1;
+    }
+    
     private void drawConfirmScreen(GraphicsContext gc)
     {
-        
+        fillSide(gc);
+        gc.drawImage(new Image("images\\X_button.png"), sceneWidth+20, sceneHeight-80, 60, 60);
+        gc.drawImage(new Image("images\\check_button.png"), sceneWidth+120, sceneHeight-80, 60, 60);
     }
     
     /**
