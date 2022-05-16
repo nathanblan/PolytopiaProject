@@ -10,7 +10,7 @@ import javafx.scene.canvas.*;
 
 public class Tile
 {
-    protected City city;
+    protected City city = null;
     public static final int TILE_SIZE = 50;
     
     /**
@@ -18,12 +18,6 @@ public class Tile
      */
     public Tile()
     {}
-    
-    public void setPlayer (Player newPlayer)
-    {
-        if (city != null)
-            city.setPlayer(newPlayer);
-    }
     
     public Player getPlayer()
     {
