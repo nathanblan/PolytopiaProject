@@ -33,9 +33,17 @@ public class City extends Tile
         population = 0;
     }
     
-    public void setPlayer (Player newPlayer)
+    public void setPlayer (Player newPlayer, int x, int y)
     {
         player = newPlayer;
+        MapGeneratorVisualisor.map[x-1][y-1].setCity(this); //top left
+        MapGeneratorVisualisor.map[x-1][y].setCity(this); 
+        MapGeneratorVisualisor.map[x-1][y+1].setCity(this); // top right
+        MapGeneratorVisualisor.map[x][y+1].setCity(this);
+        MapGeneratorVisualisor.map[x+1][y+1].setCity(this); // bottom right
+        MapGeneratorVisualisor.map[x+1][y].setCity(this);
+        MapGeneratorVisualisor.map[x+1][y-1].setCity(this); //bottom left
+        MapGeneratorVisualisor.map[x][y-1].setCity(this);
     }
     
     public Player getPlayer()
