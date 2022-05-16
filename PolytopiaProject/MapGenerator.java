@@ -106,6 +106,336 @@ public class MapGenerator {
         return map;
     }
 
+    public static void addCities(char[][] other, int size)
+    {
+        for(int i = 0; i< other.length; i++)
+        {
+            for(int j = 0; j< other.length; j++)
+            {
+                if (other[i][j] == '-' || other[i][j] == 'A')
+                {
+                    if (Math.random() < 0.2)
+                    {
+                        other[i][j] = 'c';
+                    }
+                }
+            }
+        }
+        for(int i = 0; i< other.length; i++)
+        {
+            for(int j = 0; j< other.length; j+=3)
+            {
+                if (i==0 && j==0)
+                {
+                    if (other[i+1][j] == 'c')
+                    {
+                        other[i+1][j] = '-';
+                    }
+                    if (other[i][j+1] == 'c')
+                    {
+                        other[i][j+1] = '-';
+                    }
+                    if (other[i+1][j+1] == 'c')
+                    {
+                        other[i+1][j+1] = '-';
+                    }
+                }
+                // bottom left corner
+                else if(i==other.length-1 && j==0)
+                {
+                    if (other[i-1][j] == 'c')
+                    {
+                        other[i-1][j] = '-';
+                    }
+                    if (other[i][j+1] == 'c')
+                    {
+                        other[i][j+1] = '-';
+                    }
+                    if (other[i-1][j+1] == 'c')
+                    {
+                        other[i-1][j+1] = '-';
+                    }
+                }
+                // top right corner
+                else if (i == 0 && j == other[0].length-1)
+                {
+                    if (other[i+1][j] == 'c')
+                    {
+                        other[i+1][j] = '-';
+                    }
+                    if (other[i][j-1] == 'c')
+                    {
+                        other[i][j-1] = '-';
+                    }
+                    if (other[i+1][j-1] == 'c')
+                    {
+                        other[i+1][j-1] = '-';
+                    }
+                }
+                // bottom right corner
+                else if (i == other.length-1 && j == other[0].length-1)
+                {
+                    if (other[i-1][j] == 'c')
+                    {
+                        other[i-1][j] = '-';
+                    }
+                    if (other[i][j-1] == 'c')
+                    {
+                        other[i][j-1] = '-';
+                    }
+                    if (other[i-1][j-1] == 'c')
+                    {
+                        other[i-1][j-1] = '-';
+                    }
+                }
+                // second element from any corner along edges
+                else if (i==0 && j==1 || i==0 && j==other.length-2 
+                        || i==other.length-1 && j==1 || i==other.length-1 && j==other.length-2
+                        || j==0 && i==other.length-2 || j==other.length-2 && i==other.length-2)
+                {
+                    continue; //top left
+                }
+                // top row, not corners
+                else if (i == 0)
+                {
+                    //city generation
+                    if (other[i+1][j] == 'c')
+                    {
+                        other[i+1][j] = '-';
+                    }
+                    if (other[i][j+1] == 'c')
+                    {
+                        other[i][j+1] = '-';
+                    }
+                    if (other[i][j-1] == 'c')
+                    {
+                        other[i][j-1] = '-';
+                    }
+                    if (other[i+1][j-1] == 'c')
+                    {
+                        other[i+1][j-1] = '-';
+                    }
+                    if (other[i+1][j+1] == 'c')
+                    {
+                        other[i+1][j+1] = '-';
+                    }
+                    //
+                    if (other[i][j+2] == 'c')
+                    {
+                        other[i][j+2] = '-';
+                    }
+                    if (other[i][j-2] == 'c')
+                    {
+                        other[i][j-2] = '-';
+                    }
+                }
+                // bottom row, not corners
+                else if (i == other.length-1)
+                {
+                    //city generation
+                    if (other[i-1][j] == 'c')
+                    {
+                        other[i-1][j] = '-';
+                    }
+                    if (other[i][j+1] == 'c')
+                    {
+                        other[i][j+1] = '-';
+                    }
+                    if (other[i][j-1] == 'c')
+                    {
+                        other[i][j-1] = '-';
+                    }
+                    if (other[i-1][j-1] == 'c')
+                    {
+                        other[i-1][j-1] = '-';
+                    }
+                    if (other[i-1][j+1] == 'c')
+                    {
+                        other[i-1][j+1] = '-';
+                    }
+                    //
+                    if (other[i][j+2] == 'c')
+                    {
+                        other[i][j+2] = '-';
+                    }
+                    if (other[i][j-2] == 'c')
+                    {
+                        other[i][j-2] = '-';
+                    }
+                }
+                // left column, not corners
+                else if (j == 0)
+                {
+                    //city generation
+                    if (other[i-1][j] == 'c')
+                    {
+                        other[i-1][j] = '-';
+                    }
+                    if (other[i][j+1] == 'c')
+                    {
+                        other[i][j+1] = '-';
+                    }
+                    if (other[i+1][j] == 'c')
+                    {
+                        other[i+1][j] = '-';
+                    }
+                    if (other[i+1][j+1] == 'c')
+                    {
+                        other[i+1][j+1] = '-';
+                    }
+                    if (other[i-1][j+1] == 'c')
+                    {
+                        other[i-1][j+1] = '-';
+                    }
+                    //
+                    if (other[i-2][j] == 'c')
+                    {
+                        other[i-2][j] = '-';
+                    }
+                    if (other[i+2][j] == 'c')
+                    {
+                        other[i+2][j] = '-';
+                    }
+                }
+                // right column, not corners
+                else if (j == other[0].length-1)
+                {
+                    // city generation
+                    
+                    if (other[i-1][j] == 'c')
+                    {
+                        other[i-1][j] = '-';
+                    }
+                    if (other[i][j-1] == 'c')
+                    {
+                        other[i][j-1] = '-';
+                    }
+                    if(other[i+1][j] == 'c')
+                    {
+                        other[i+1][j] = '-';
+                    }
+                    if(other[i+1][j-1] == 'c')
+                    {
+                        other[i+1][j-1] = '-';
+                    }
+                    if (other[i-1][j-1] == 'c')
+                    {
+                        other[i-1][j-1] = '-';
+                    }
+                    //
+                    if (other[i-2][j] == 'c')
+                    {
+                        other[i-2][j] = '-';
+                    }
+                    if (other[i+2][j] == 'c')
+                    {
+                        other[i+2][j] = '-';
+                    }
+                }
+            }
+        }
+        
+        for(int i = 1; i < other.length; i+=3)
+        {
+            for(int j = 1; j < other.length; j+=3)
+            {
+                if (other[i+1][j-1] == 'c')
+                {
+                    other[i+1][j-1] = '-';
+                }
+                if (other[i+1][j] == 'c')
+                {
+                    other[i+1][j] = '-';
+                }
+                if (other[i+1][j+1] == 'c')
+                {
+                    other[i+1][j+1] = '-';
+                }
+                if (other[i][j+1] == 'c')
+                {
+                    other[i][j+1] = '-';
+                }
+                if (other[i-1][j+1] == 'c')
+                {
+                    other[i-1][j+1] = '-';
+                }
+                if (other[i-1][j] == 'c')
+                {
+                    other[i-1][j] = '-';
+                }
+                if (other[i-1][j-1] == 'c')
+                {
+                    other[i-1][j-1] = '-';
+                }
+                if (other[i][j-1] == 'c')
+                {
+                    other[i][j-1] = '-';
+                }
+                /*
+                if (other[i+2][j-2] == 'c')
+                {
+                    other[i+1][j-1] = '-';
+                }
+                if (other[i+2][j-1] == 'c')
+                {
+                    other[i+1][j-1] = '-';
+                }
+                if (other[i+2][j] == 'c')
+                {
+                    other[i+1][j] = '-';
+                }
+                if (other[i+2][j+1] == 'c')
+                {
+                    other[i+1][j+1] = '-';
+                }
+                if (other[i+2][j+2] == 'c')
+                {
+                    other[i+1][j+2] = '-';
+                }
+                if (other[i+1][j+2] == 'c')
+                {
+                    other[i+1][j+2] = '-';
+                }
+                if (other[i][j+2] == 'c')
+                {
+                    other[i][j+2] = '-';
+                }
+                if (other[i-1][j+2] == 'c')
+                {
+                    other[i-1][j+2] = '-';
+                }
+                if (other[i-2][j+2] == 'c')
+                {
+                    other[i-2][j+2] = '-';
+                }
+                if (other[i-2][j-1] == 'c')
+                {
+                    other[i-2][j-1] = '-';
+                }
+                if (other[i-2][j] == 'c')
+                {
+                    other[i-2][j] = '-';
+                }
+                if (other[i-2][j-1] == 'c')
+                {
+                    other[i-2][j-1] = '-';
+                }
+                if (other[i-2][j-2] == 'c')
+                {
+                    other[i-2][j-2] = '-';
+                }
+                if (other[i-1][j-2] == 'c')
+                {
+                    other[i-1][j-2] = '-';
+                }
+                if (other[i][j-2] == 'c')
+                {
+                    other[i][j-2] = '-';
+                }*/
+            }
+        }
+    }
+    
     /**
      * Make a map with land and water
      */
@@ -138,23 +468,18 @@ public class MapGenerator {
                 }
             }
         }
-
+        //shallow water conditions
         for (int i = 0; i < map.length; i++) 
         {
             for (int j = 0; j < map[0].length;j++) 
             {
-                //shallow water conditions
-                
                 // if land or mountain
                 if (map[i][j] == '-' || map[i][j] == 'A')
                 {
-                    if(i!=0 && j!=0 && i!=map.length && j!=map.length)
-                    {
-                        if (Math.random() < 0.25)
+                    if (Math.random() < 0.1)
                         {
                             map[i][j] = 'c';
                         }
-                    }                    
                     // top left corner
                     if (i==0 && j==0)
                     {
@@ -243,29 +568,7 @@ public class MapGenerator {
                         {
                             map[i+1][j+1] = '~';
                         }
-                        //city generation
-                        
-                        if (map[i+1][j] == 'c')
-                        {
-                            map[i+1][j] = '-';
                         }
-                        if (map[i][j+1] == 'c')
-                        {
-                            map[i][j+1] = '-';
-                        }
-                        if (map[i][j-1] == 'c')
-                        {
-                            map[i][j-1] = '-';
-                        }
-                        if (map[i+1][j-1] == 'c')
-                        {
-                            map[i+1][j-1] = '-';
-                        }
-                        if (map[i+1][j+1] == 'c')
-                        {
-                            map[i+1][j+1] = '-';
-                        } 
-                    }
                     // bottom row, not corners
                     else if (i == map.length-1)
                     {
@@ -289,28 +592,6 @@ public class MapGenerator {
                         {
                             map[i-1][j+1] = '~';
                         }
-                        //city generation
-                        
-                        if (map[i-1][j] == 'c')
-                        {
-                            map[i-1][j] = '-';
-                        }
-                        if (map[i][j+1] == 'c')
-                        {
-                            map[i][j+1] = '-';
-                        }
-                        if (map[i][j-1] == 'c')
-                        {
-                            map[i][j-1] = '-';
-                        }
-                        if (map[i-1][j-1] == 'c')
-                        {
-                            map[i-1][j-1] = '-';
-                        }
-                        if (map[i-1][j+1] == 'c')
-                        {
-                            map[i-1][j+1] = '-';
-                        } 
                     }
                     // left column, not corners
                     else if (j == 0)
@@ -335,28 +616,6 @@ public class MapGenerator {
                         {
                             map[i-1][j+1] = '~';
                         }
-                        //city generation
-                        
-                        if (map[i-1][j] == 'c')
-                        {
-                            map[i-1][j] = '-';
-                        }
-                        if (map[i][j+1] == 'c')
-                        {
-                            map[i][j+1] = '-';
-                        }
-                        if (map[i+1][j] == 'c')
-                        {
-                            map[i+1][j] = '-';
-                        }
-                        if (map[i+1][j+1] == 'c')
-                        {
-                            map[i+1][j+1] = '-';
-                        }
-                        if (map[i-1][j+1] == 'c')
-                        {
-                            map[i-1][j+1] = '-';
-                        }
                     }
                     // right column, not corners
                     else if (j == map[0].length-1)
@@ -380,28 +639,7 @@ public class MapGenerator {
                         if (map[i-1][j-1] == '=')
                         {
                             map[i-1][j-1] = '~';
-                        }
-                        // city generation
-                        if (map[i-1][j] == 'c')
-                        {
-                            map[i-1][j] = '-';
-                        }
-                        if (map[i][j-1] == 'c')
-                        {
-                            map[i][j-1] = '-';
-                        }
-                        if(map[i+1][j] == 'c')
-                        {
-                            map[i+1][j] = '-';
-                        }
-                        if(map[i+1][j-1] == 'c')
-                        {
-                            map[i+1][j-1] = '-';
-                        }
-                        if (map[i-1][j-1] == 'c')
-                        {
-                            map[i-1][j-1] = '-';
-                        }
+                        }                        
                     }
                     // literally any other tile
                     else
@@ -438,45 +676,11 @@ public class MapGenerator {
                         {
                             map[i+1][j+1] = '~';
                         }
-                        // city gen
-                        
-                        if (map[i-1][j-1] == 'c')
-                        {
-                            map[i-1][j-1] = '-';
-                        }
-                        if (map[i-1][j] == 'c')
-                        {
-                            map[i-1][j] = '-';
-                        }
-                        if (map[i-1][j+1] == 'c')
-                        {
-                            map[i-1][j+1] = '-';
-                        }
-                        if (map[i][j-1] == 'c')
-                        {
-                            map[i][j-1] = '-';
-                        }
-                        if (map[i][j+1] == 'c')
-                        {
-                            map[i][j+1] = '-';
-                        }
-                        if (map[i+1][j-1] == 'c')
-                        {
-                            map[i+1][j-1] = '-';
-                        }
-                        if (map[i+1][j] == 'c')
-                        {
-                            map[i+1][j] = '-';
-                        }
-                        if (map[i+1][j+1] == 'c')
-                        {
-                            map[i+1][j+1] = '-';
-                        } 
                     }
                 }
             }
         }
-        
+        addCities(map, map.length);
         //populate with grass and forrests
         for(int i = 0;i < map.length;i++) 
         {
