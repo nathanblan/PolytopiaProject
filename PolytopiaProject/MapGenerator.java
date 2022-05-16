@@ -45,7 +45,8 @@ public class MapGenerator {
     private static void generate(int xl, int yl, int xh, int yh) {
         int xm = (xl + xh) / 2;
         int ym = (yl + yh) / 2;
-        if ((xl == xm) && (yl == ym)) return;
+        if ((xl == xm) && (yl == ym))
+            return;
 
         grid_[xm][yl] = 0.5f * (grid_[xl][yl] + grid_[xh][yl]);
         grid_[xm][yh] = 0.5f * (grid_[xl][yh] + grid_[xh][yh]);
@@ -469,6 +470,7 @@ public class MapGenerator {
                 }
             }
         }
+        
         //shallow water conditions
         for (int i = 0; i < map.length; i++) 
         {
@@ -476,11 +478,7 @@ public class MapGenerator {
             {
                 // if land or mountain
                 if (map[i][j] == '-' || map[i][j] == 'A')
-                {/*
-                    if (Math.random() < 0.1)
-                        {
-                            map[i][j] = 'c';
-                        }*/
+                {
                     // top left corner
                     if (i==0 && j==0)
                     {
