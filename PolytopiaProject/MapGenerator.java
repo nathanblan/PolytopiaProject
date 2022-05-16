@@ -7,6 +7,7 @@
  */
 
 import java.util.Random;
+import java.util.ArrayList;
 
 public class MapGenerator {
     /** Source of entropy */
@@ -479,214 +480,41 @@ public class MapGenerator {
                 // if land or mountain
                 if (map[i][j] == '-' || map[i][j] == 'A')
                 {
-                    // top left corner
-                    if (i==0 && j==0)
+                    ArrayList<Integer> x = new ArrayList<Integer>();
+                    ArrayList<Integer> y = new ArrayList<Integer>();
+                    
+                    x.add(i);
+                    if (i != 0)
+                        x.add(i-1);
+                    if (i != map.length-1)
+                        x.add(i+1);
+                    
+                    y.add(j);
+                    if (j != 0)
+                        y.add(j-1);
+                    if (j != map[0].length-1)
+                        y.add(j+1);
+                        
+                    for (int a : x)
                     {
-                        if (map[i+1][j] == '=')
+                        for (int b : y)
                         {
-                            map[i+1][j] = '~';
-                        }
-                        if (map[i][j+1] == '=')
-                        {
-                            map[i][j+1] = '~';
-                        }
-                        if (map[i+1][j+1] == '=')
-                        {
-                            map[i+1][j+1] = '~';
-                        }
-                    }
-                    // bottom left corner
-                    else if(i==map.length-1 && j==0)
-                    {
-                        if (map[i-1][j] == '=')
-                        {
-                            map[i-1][j] = '~';
-                        }
-                        if (map[i][j+1] == '=')
-                        {
-                            map[i][j+1] = '~';
-                        }
-                        if (map[i-1][j+1] == '=')
-                        {
-                            map[i-1][j+1] = '~';
-                        }
-                    }
-                    // top right corner
-                    else if (i == 0 && j == map[0].length-1)
-                    {
-                        if (map[i+1][j] == '=')
-                        {
-                            map[i+1][j] = '~';
-                        }
-                        if (map[i][j-1] == '=')
-                        {
-                            map[i][j-1] = '~';
-                        }
-                        if (map[i+1][j-1] == '=')
-                        {
-                            map[i+1][j-1] = '~';
-                        }
-                    }
-                    // bottom right corner
-                    else if (i == map.length-1 && j == map[0].length-1)
-                    {
-                        if (map[i-1][j] == '=')
-                        {
-                            map[i-1][j] = '~';
-                        }
-                        if (map[i][j-1] == '=')
-                        {
-                            map[i][j-1] = '~';
-                        }
-                        if (map[i-1][j-1] == '=')
-                        {
-                            map[i-1][j-1] = '~';
-                        }
-                    }
-                    // top row, not corners
-                    else if (i == 0)
-                    {
-                        // shallow water
-                        if (map[i+1][j] == '=')
-                        {
-                            map[i+1][j] = '~';
-                        }
-                        if (map[i][j+1] == '=')
-                        {
-                            map[i][j+1] = '~';
-                        }
-                        if (map[i][j-1] == '=')
-                        {
-                            map[i][j-1] = '~';
-                        }
-                        if (map[i+1][j-1] == '=')
-                        {
-                            map[i+1][j-1] = '~';
-                        }
-                        if (map[i+1][j+1] == '=')
-                        {
-                            map[i+1][j+1] = '~';
-                        }
-                        }
-                    // bottom row, not corners
-                    else if (i == map.length-1)
-                    {
-                        if (map[i-1][j] == '=')
-                        {
-                            map[i-1][j] = '~';
-                        }
-                        if (map[i][j+1] == '=')
-                        {
-                            map[i][j+1] = '~';
-                        }
-                        if (map[i][j-1] == '=')
-                        {
-                            map[i][j-1] = '~';
-                        }
-                        if (map[i-1][j-1] == '=')
-                        {
-                            map[i-1][j-1] = '~';
-                        }
-                        if (map[i-1][j+1] == '=')
-                        {
-                            map[i-1][j+1] = '~';
-                        }
-                    }
-                    // left column, not corners
-                    else if (j == 0)
-                    {
-                        if (map[i-1][j] == '=')
-                        {
-                            map[i-1][j] = '~';
-                        }
-                        if (map[i][j+1] == '=')
-                        {
-                            map[i][j+1] = '~';
-                        }
-                        if (map[i+1][j] == '=')
-                        {
-                            map[i+1][j] = '~';
-                        }
-                        if (map[i+1][j+1] == '=')
-                        {
-                            map[i+1][j+1] = '~';
-                        }
-                        if (map[i-1][j+1] == '=')
-                        {
-                            map[i-1][j+1] = '~';
-                        }
-                    }
-                    // right column, not corners
-                    else if (j == map[0].length-1)
-                    {
-                        if (map[i-1][j] == '=')
-                        {
-                            map[i-1][j] = '~';
-                        }
-                        if (map[i][j-1] == '=')
-                        {
-                            map[i][j-1] = '~';
-                        }
-                        if(map[i+1][j] == '=')
-                        {
-                            map[i+1][j] = '~';
-                        }
-                        if(map[i+1][j-1] == '=')
-                        {
-                            map[i+1][j-1] = '~';
-                        }
-                        if (map[i-1][j-1] == '=')
-                        {
-                            map[i-1][j-1] = '~';
-                        }                        
-                    }
-                    // literally any other tile
-                    else
-                    {
-                        if (map[i-1][j-1] == '=')
-                        {
-                            map[i-1][j-1] = '~';
-                        }
-                        if (map[i-1][j] == '=')
-                        {
-                            map[i-1][j] = '~';
-                        }
-                        if (map[i-1][j+1] == '=')
-                        {
-                            map[i-1][j+1] = '~';
-                        }
-                        if (map[i][j-1] == '=')
-                        {
-                            map[i][j-1] = '~';
-                        }
-                        if (map[i][j+1] == '=')
-                        {
-                            map[i][j+1] = '~';
-                        }
-                        if (map[i+1][j-1] == '=')
-                        {
-                            map[i+1][j-1] = '~';
-                        }
-                        if (map[i+1][j] == '=')
-                        {
-                            map[i+1][j] = '~';
-                        }
-                        if (map[i+1][j+1] == '=')
-                        {
-                            map[i+1][j+1] = '~';
+                            if ((a != i || b != j) && map[a][b] == '=')
+                                map[a][b] = '~';
                         }
                     }
                 }
             }
         }
+        
         addCities(map, map.length);
         int cityCount = 0;
+        
         //populate with grass and forrests
         for(int i = 0;i < map.length;i++) 
         {
             for(int j = 0;j < map[0].length;j++) 
             {
-                
                 if(map[i][j] == '-')
                 {
                     double foliageVal = (Math.random());
@@ -699,16 +527,19 @@ public class MapGenerator {
                         map[i][j] = ','; // grass
                     }
                 }
+                
                 if(map[i][j] == 'c')
                 {
                     cityCount++;
                 }
             }
         }
-        if (cityCount <=4)
+        
+        if (cityCount <= 4)
         {
             addCities(map, map.length);
         }
+        
         return map;
     }
 }
