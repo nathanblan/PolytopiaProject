@@ -108,9 +108,9 @@ public class MapGenerator {
 
     public static void addCities(char[][] other, int size)
     {
-        for(int i = 0; i< other.length; i++)
+        for(int i = 0; i < other.length; i++)
         {
-            for(int j = 0; j< other.length; j++)
+            for(int j = 0; j < other.length-1; j++)
             {
                 if (other[i][j] == '-' || other[i][j] == 'A')
                 {
@@ -123,7 +123,7 @@ public class MapGenerator {
         }
         for(int i = 0; i< other.length; i++)
         {
-            for(int j = 0; j< other.length; j+=3)
+            for(int j = 0; j< other.length; j+=2)
             {
                 if (i==0 && j==0)
                 {
@@ -187,14 +187,14 @@ public class MapGenerator {
                     {
                         other[i-1][j-1] = '-';
                     }
-                }
+                }/*
                 // second element from any corner along edges
                 else if (i==0 && j==1 || i==0 && j==other.length-2 
                         || i==other.length-1 && j==1 || i==other.length-1 && j==other.length-2
                         || j==0 && i==other.length-2 || j==other.length-2 && i==other.length-2)
                 {
                     continue; //top left
-                }
+                }*/
                 // top row, not corners
                 else if (i == 0)
                 {
@@ -335,9 +335,9 @@ public class MapGenerator {
             }
         }
         
-        for(int i = 1; i < other.length; i+=3)
+        for(int i = 1; i < other.length; i+=2)
         {
-            for(int j = 1; j < other.length; j+=3)
+            for(int j = 1; j < other.length; j+=2)
             {
                 if (other[i+1][j-1] == 'c')
                 {
@@ -475,11 +475,11 @@ public class MapGenerator {
             {
                 // if land or mountain
                 if (map[i][j] == '-' || map[i][j] == 'A')
-                {
+                {/*
                     if (Math.random() < 0.1)
                         {
                             map[i][j] = 'c';
-                        }
+                        }*/
                     // top left corner
                     if (i==0 && j==0)
                     {
