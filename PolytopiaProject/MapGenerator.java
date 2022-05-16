@@ -71,6 +71,7 @@ public class MapGenerator {
         char[][] map = new char[size][size];
         int waterCounter = 0;
         int landCounter = 0;
+        int cityCounter =0;
         
         for(int i = 0;i < map.length;i++) 
         {
@@ -102,7 +103,7 @@ public class MapGenerator {
         // if too much land
         else if (landCounter/total > 0.75)
             return getBasicTerrain(shift-0.1, size);
-        
+            
         return map;
     }
 
@@ -218,7 +219,7 @@ public class MapGenerator {
                     if (other[i+1][j+1] == 'c')
                     {
                         other[i+1][j+1] = '-';
-                    }
+                    }/*
                     //
                     if (other[i][j+2] == 'c')
                     {
@@ -227,7 +228,7 @@ public class MapGenerator {
                     if (other[i][j-2] == 'c')
                     {
                         other[i][j-2] = '-';
-                    }
+                    }*/
                 }
                 // bottom row, not corners
                 else if (i == other.length-1)
@@ -252,7 +253,7 @@ public class MapGenerator {
                     if (other[i-1][j+1] == 'c')
                     {
                         other[i-1][j+1] = '-';
-                    }
+                    }/*
                     //
                     if (other[i][j+2] == 'c')
                     {
@@ -261,7 +262,7 @@ public class MapGenerator {
                     if (other[i][j-2] == 'c')
                     {
                         other[i][j-2] = '-';
-                    }
+                    }*/
                 }
                 // left column, not corners
                 else if (j == 0)
@@ -286,7 +287,7 @@ public class MapGenerator {
                     if (other[i-1][j+1] == 'c')
                     {
                         other[i-1][j+1] = '-';
-                    }
+                    }/*
                     //
                     if (other[i-2][j] == 'c')
                     {
@@ -295,7 +296,7 @@ public class MapGenerator {
                     if (other[i+2][j] == 'c')
                     {
                         other[i+2][j] = '-';
-                    }
+                    }*/
                 }
                 // right column, not corners
                 else if (j == other[0].length-1)
@@ -321,7 +322,7 @@ public class MapGenerator {
                     if (other[i-1][j-1] == 'c')
                     {
                         other[i-1][j-1] = '-';
-                    }
+                    }/*
                     //
                     if (other[i-2][j] == 'c')
                     {
@@ -330,14 +331,14 @@ public class MapGenerator {
                     if (other[i+2][j] == 'c')
                     {
                         other[i+2][j] = '-';
-                    }
+                    }*/
                 }
             }
         }
         
-        for(int i = 1; i < other.length; i+=2)
+        for(int i = 1; i < other.length-1; i+=2)
         {
-            for(int j = 1; j < other.length; j+=2)
+            for(int j = 1; j < other.length-1; j+=2)
             {
                 if (other[i+1][j-1] == 'c')
                 {
@@ -681,11 +682,13 @@ public class MapGenerator {
             }
         }
         addCities(map, map.length);
+        int cityCount = 0;
         //populate with grass and forrests
         for(int i = 0;i < map.length;i++) 
         {
             for(int j = 0;j < map[0].length;j++) 
             {
+                
                 if(map[i][j] == '-')
                 {
                     double foliageVal = (Math.random());
@@ -698,9 +701,16 @@ public class MapGenerator {
                         map[i][j] = ','; // grass
                     }
                 }
+                if(map[i][j] == 'c')
+                {
+                    cityCount++;
+                }
             }
         }
-    
+        if (cityCount <=4)
+        {
+            addCities(map, map.length);
+        }
         return map;
     }
 }
