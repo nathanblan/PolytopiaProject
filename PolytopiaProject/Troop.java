@@ -105,6 +105,11 @@ public class Troop
         return (int)(num+0.5);
     }
     
+    public void claimCity(Player player)
+    {
+        
+    }
+    
     public void drawTroop(GraphicsContext gc, int x, int y)
     {
         if(shipLevel == 0) //non aquatic version of troop
