@@ -117,324 +117,63 @@ public class MapGenerator {
             {
                 if (other[i][j] == '-' || other[i][j] == 'A')
                 {
-                    if (Math.random() < 0.2)
+                    if (Math.random() < 0.25)
                     {
                         other[i][j] = 'c';
                     }
                 }
             }
         }
-        for(int i = 0; i< other.length; i++)
-        {
-            for(int j = 0; j< other.length; j+=2)
-            {
-                if (i==0 && j==0)
-                {
-                    if (other[i+1][j] == 'c')
-                    {
-                        other[i+1][j] = '-';
-                    }
-                    if (other[i][j+1] == 'c')
-                    {
-                        other[i][j+1] = '-';
-                    }
-                    if (other[i+1][j+1] == 'c')
-                    {
-                        other[i+1][j+1] = '-';
-                    }
-                }
-                // bottom left corner
-                else if(i==other.length-1 && j==0)
-                {
-                    if (other[i-1][j] == 'c')
-                    {
-                        other[i-1][j] = '-';
-                    }
-                    if (other[i][j+1] == 'c')
-                    {
-                        other[i][j+1] = '-';
-                    }
-                    if (other[i-1][j+1] == 'c')
-                    {
-                        other[i-1][j+1] = '-';
-                    }
-                }
-                // top right corner
-                else if (i == 0 && j == other[0].length-1)
-                {
-                    if (other[i+1][j] == 'c')
-                    {
-                        other[i+1][j] = '-';
-                    }
-                    if (other[i][j-1] == 'c')
-                    {
-                        other[i][j-1] = '-';
-                    }
-                    if (other[i+1][j-1] == 'c')
-                    {
-                        other[i+1][j-1] = '-';
-                    }
-                }
-                // bottom right corner
-                else if (i == other.length-1 && j == other[0].length-1)
-                {
-                    if (other[i-1][j] == 'c')
-                    {
-                        other[i-1][j] = '-';
-                    }
-                    if (other[i][j-1] == 'c')
-                    {
-                        other[i][j-1] = '-';
-                    }
-                    if (other[i-1][j-1] == 'c')
-                    {
-                        other[i-1][j-1] = '-';
-                    }
-                }/*
-                // second element from any corner along edges
-                else if (i==0 && j==1 || i==0 && j==other.length-2 
-                        || i==other.length-1 && j==1 || i==other.length-1 && j==other.length-2
-                        || j==0 && i==other.length-2 || j==other.length-2 && i==other.length-2)
-                {
-                    continue; //top left
-                }*/
-                // top row, not corners
-                else if (i == 0)
-                {
-                    //city generation
-                    if (other[i+1][j] == 'c')
-                    {
-                        other[i+1][j] = '-';
-                    }
-                    if (other[i][j+1] == 'c')
-                    {
-                        other[i][j+1] = '-';
-                    }
-                    if (other[i][j-1] == 'c')
-                    {
-                        other[i][j-1] = '-';
-                    }
-                    if (other[i+1][j-1] == 'c')
-                    {
-                        other[i+1][j-1] = '-';
-                    }
-                    if (other[i+1][j+1] == 'c')
-                    {
-                        other[i+1][j+1] = '-';
-                    }/*
-                    //
-                    if (other[i][j+2] == 'c')
-                    {
-                        other[i][j+2] = '-';
-                    }
-                    if (other[i][j-2] == 'c')
-                    {
-                        other[i][j-2] = '-';
-                    }*/
-                }
-                // bottom row, not corners
-                else if (i == other.length-1)
-                {
-                    //city generation
-                    if (other[i-1][j] == 'c')
-                    {
-                        other[i-1][j] = '-';
-                    }
-                    if (other[i][j+1] == 'c')
-                    {
-                        other[i][j+1] = '-';
-                    }
-                    if (other[i][j-1] == 'c')
-                    {
-                        other[i][j-1] = '-';
-                    }
-                    if (other[i-1][j-1] == 'c')
-                    {
-                        other[i-1][j-1] = '-';
-                    }
-                    if (other[i-1][j+1] == 'c')
-                    {
-                        other[i-1][j+1] = '-';
-                    }/*
-                    //
-                    if (other[i][j+2] == 'c')
-                    {
-                        other[i][j+2] = '-';
-                    }
-                    if (other[i][j-2] == 'c')
-                    {
-                        other[i][j-2] = '-';
-                    }*/
-                }
-                // left column, not corners
-                else if (j == 0)
-                {
-                    //city generation
-                    if (other[i-1][j] == 'c')
-                    {
-                        other[i-1][j] = '-';
-                    }
-                    if (other[i][j+1] == 'c')
-                    {
-                        other[i][j+1] = '-';
-                    }
-                    if (other[i+1][j] == 'c')
-                    {
-                        other[i+1][j] = '-';
-                    }
-                    if (other[i+1][j+1] == 'c')
-                    {
-                        other[i+1][j+1] = '-';
-                    }
-                    if (other[i-1][j+1] == 'c')
-                    {
-                        other[i-1][j+1] = '-';
-                    }/*
-                    //
-                    if (other[i-2][j] == 'c')
-                    {
-                        other[i-2][j] = '-';
-                    }
-                    if (other[i+2][j] == 'c')
-                    {
-                        other[i+2][j] = '-';
-                    }*/
-                }
-                // right column, not corners
-                else if (j == other[0].length-1)
-                {
-                    // city generation
-                    
-                    if (other[i-1][j] == 'c')
-                    {
-                        other[i-1][j] = '-';
-                    }
-                    if (other[i][j-1] == 'c')
-                    {
-                        other[i][j-1] = '-';
-                    }
-                    if(other[i+1][j] == 'c')
-                    {
-                        other[i+1][j] = '-';
-                    }
-                    if(other[i+1][j-1] == 'c')
-                    {
-                        other[i+1][j-1] = '-';
-                    }
-                    if (other[i-1][j-1] == 'c')
-                    {
-                        other[i-1][j-1] = '-';
-                    }/*
-                    //
-                    if (other[i-2][j] == 'c')
-                    {
-                        other[i-2][j] = '-';
-                    }
-                    if (other[i+2][j] == 'c')
-                    {
-                        other[i+2][j] = '-';
-                    }*/
-                }
-            }
-        }
         
-        for(int i = 1; i < other.length-1; i+=2)
+        for (int i = 0; i < other.length; i++) 
         {
-            for(int j = 1; j < other.length-1; j+=2)
+            for (int j = 0; j < other[0].length;j++) 
             {
-                if (other[i+1][j-1] == 'c')
+                // 
+                if (other[i][j] == 'c')
                 {
-                    other[i+1][j-1] = '-';
+                    ArrayList<Integer> x = new ArrayList<Integer>();
+                    ArrayList<Integer> y = new ArrayList<Integer>();
+                    
+                    x.add(i);
+                    if (i != 0)
+                    {
+                        x.add(i-1);
+                        if (i != 1)
+                            x.add(i-2);
+                    }
+                    
+                    if (i != other.length-1)
+                    {
+                        x.add(i+1);
+                        if (i != other.length-2)
+                            x.add(i+2);
+                    }
+                                        
+                    y.add(j);
+                    if (j != 0)
+                    {
+                        y.add(j-1);
+                        if (j != 1)
+                            y.add(j-2);
+                    }
+                    
+                    if (j != other[0].length-1)
+                    {
+                        y.add(j+1);
+                        if (j != other[0].length-2)
+                            y.add(j+2);
+                    }
+                                            
+                    for (int a : x)
+                    {
+                        for (int b : y)
+                        {
+                            if ((a != i || b != j) && other[a][b] == 'c')
+                                other[a][b] = '-';
+                        }
+                    }
                 }
-                if (other[i+1][j] == 'c')
-                {
-                    other[i+1][j] = '-';
-                }
-                if (other[i+1][j+1] == 'c')
-                {
-                    other[i+1][j+1] = '-';
-                }
-                if (other[i][j+1] == 'c')
-                {
-                    other[i][j+1] = '-';
-                }
-                if (other[i-1][j+1] == 'c')
-                {
-                    other[i-1][j+1] = '-';
-                }
-                if (other[i-1][j] == 'c')
-                {
-                    other[i-1][j] = '-';
-                }
-                if (other[i-1][j-1] == 'c')
-                {
-                    other[i-1][j-1] = '-';
-                }
-                if (other[i][j-1] == 'c')
-                {
-                    other[i][j-1] = '-';
-                }
-                /*
-                if (other[i+2][j-2] == 'c')
-                {
-                    other[i+1][j-1] = '-';
-                }
-                if (other[i+2][j-1] == 'c')
-                {
-                    other[i+1][j-1] = '-';
-                }
-                if (other[i+2][j] == 'c')
-                {
-                    other[i+1][j] = '-';
-                }
-                if (other[i+2][j+1] == 'c')
-                {
-                    other[i+1][j+1] = '-';
-                }
-                if (other[i+2][j+2] == 'c')
-                {
-                    other[i+1][j+2] = '-';
-                }
-                if (other[i+1][j+2] == 'c')
-                {
-                    other[i+1][j+2] = '-';
-                }
-                if (other[i][j+2] == 'c')
-                {
-                    other[i][j+2] = '-';
-                }
-                if (other[i-1][j+2] == 'c')
-                {
-                    other[i-1][j+2] = '-';
-                }
-                if (other[i-2][j+2] == 'c')
-                {
-                    other[i-2][j+2] = '-';
-                }
-                if (other[i-2][j-1] == 'c')
-                {
-                    other[i-2][j-1] = '-';
-                }
-                if (other[i-2][j] == 'c')
-                {
-                    other[i-2][j] = '-';
-                }
-                if (other[i-2][j-1] == 'c')
-                {
-                    other[i-2][j-1] = '-';
-                }
-                if (other[i-2][j-2] == 'c')
-                {
-                    other[i-2][j-2] = '-';
-                }
-                if (other[i-1][j-2] == 'c')
-                {
-                    other[i-1][j-2] = '-';
-                }
-                if (other[i][j-2] == 'c')
-                {
-                    other[i][j-2] = '-';
-                }*/
             }
         }
     }
