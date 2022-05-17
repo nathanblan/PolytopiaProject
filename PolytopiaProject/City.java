@@ -88,7 +88,8 @@ public class City extends Tile
     {
         if (player == null)
             gc.drawImage(new Image("images\\village.jpg"), x*TILE_SIZE, y*TILE_SIZE, TILE_SIZE, TILE_SIZE);
-        
+        else
+            gc.drawImage(new Image("images\\city.jpg"), x*TILE_SIZE, y*TILE_SIZE, TILE_SIZE, TILE_SIZE);
     }
     
     public String getInfo()
