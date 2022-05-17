@@ -46,15 +46,22 @@ public class MapGeneratorVisualisor extends Application {
         
         players = new Player[NUM_PLAYERS];
         curPlayer = 0;
+        
+        Canvas transition = new Canvas(sceneWidth+200, sceneHeight);
 
-        takeUserInput(canvas, map);
 
         root.getChildren().add(canvas);
+        root.getChildren().add(transition);
         stage.setScene(new Scene(root));
         stage.show();
+        
+        
+        transition.toFront();
+        takeUserInput(canvas, map, transition);
+        
     }
 
-    private void takeUserInput(Canvas canvas, Tile[][] map)
+    private void takeUserInput(Canvas canvas, Tile[][] map, Canvas transition)
     {
         canvas.addEventHandler(MouseEvent.MOUSE_CLICKED, new EventHandler<MouseEvent>()
         {
@@ -125,6 +132,8 @@ public class MapGeneratorVisualisor extends Application {
                         {
                             gc.drawImage(actions.get(i).getButton(), sceneWidth+20, 80+i*200, 160, 160);
                         }
+                        
+                        gc.drawImage(new Image("images\\X_button.png"), sceneWidth+120, sceneHeight-80, 60, 60);
                     }
                     // if selected a troop
                     else if (curLayer == 1)
@@ -178,8 +187,27 @@ public class MapGeneratorVisualisor extends Application {
                             curButton = actions.get(index);
                             
                             drawConfirmScreen(gc);
+                            
+                            gc.setTextAlign(TextAlignment.CENTER);
+                            gc.setFont(new Font(35));
+                            gc.setFill(Color.LIGHTGREY);
                             gc.fillText(t.getInfo(), sceneWidth+100, 50);
+                            
                             curButton.displayInfo(gc, sceneWidth);
+                        }
+                        else
+                        {
+                            index = getConfirmButton(x, y);
+                            if (index == 1)
+                            {
+                                // exit side panel
+                                map[curSelectedX][curSelectedY].drawTile(gc, curSelectedX, curSelectedY);
+                                fillSide(gc);
+                        
+                                curLayer = 0;
+                                curSelectedX = -1;
+                                curSelectedY = -1;
+                            }
                         }
                     }
                     // troop actions
@@ -190,9 +218,34 @@ public class MapGeneratorVisualisor extends Application {
                     // regular actions
                     else if (curLayer == 0)
                     {
+                        int temp = getConfirmButton(x, y);
                         
+                        // end turn
+                        if (temp == 1)
+                        {
+                            curPlayer++;
+                            curPlayer %= NUM_PLAYERS;
+                            
+                            transition.toFront();
+                            gc = transition.getGraphicsContext2D();
+                            
+                            gc.drawImage(new Image("images\\starbackground.jfif"), 0, 0, 1000, 800);
+                            gc.setTextAlign(TextAlignment.CENTER);
+                            gc.setFont(new Font(35));
+                            gc.setFill(Color.LIGHTGREY);
+                            gc.fillText("Player "+(curPlayer+1)+" Turn", sceneWidth/2+100, 100);
+                        }
                     }
                 }
+            }
+        });
+        
+        transition.addEventHandler(MouseEvent.MOUSE_CLICKED, new EventHandler<MouseEvent>()
+        {
+            @Override
+            public void handle(MouseEvent e)
+            {
+                canvas.toFront();
             }
         });
     }
@@ -206,11 +259,11 @@ public class MapGeneratorVisualisor extends Application {
     {
         if (x < sceneWidth+20 || x > sceneWidth+180)
             return -1;
-        if (y < sceneHeight+80)
+        if (y < sceneHeight-80)
             return -1;
         
         x -= sceneWidth+20;
-        y -= sceneHeight+50;
+        y -= sceneHeight-50;
         
         int output = x/100;
         
