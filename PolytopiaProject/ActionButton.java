@@ -22,6 +22,7 @@ public class ActionButton
     public static final ActionButton pickGold = new ActionButton("gold");
     public static final ActionButton buildMine = new ActionButton("mine");
     public static final ActionButton buildHut = new ActionButton("lumberhut");
+    public static final ActionButton claimCity = new ActionButton("claimcity");
     
     /**
      * Constructor for objects of class ActionButton
