@@ -111,6 +111,7 @@ public class MapGenerator {
 
     public static void addCities(char[][] other, int size)
     {
+        int[] coordinates = new int[2];
         for(int i = 0; i < other.length; i++)
         {
             for(int j = 0; j < other.length-1; j++)
@@ -170,7 +171,9 @@ public class MapGenerator {
                         for (int b : y)
                         {
                             if ((a != i || b != j) && other[a][b] == 'c')
+                            {
                                 other[a][b] = '-';
+                            }
                         }
                     }
                 }

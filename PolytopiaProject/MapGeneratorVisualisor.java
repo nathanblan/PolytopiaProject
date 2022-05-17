@@ -45,6 +45,7 @@ public class MapGeneratorVisualisor extends Application {
         drawTileMap(gc, 0, 0, 16, 16);
         
         players = new Player[NUM_PLAYERS];
+        
         curPlayer = 0;
         
         Canvas transition = new Canvas(sceneWidth+200, sceneHeight);
@@ -61,6 +62,11 @@ public class MapGeneratorVisualisor extends Application {
         
     }
 
+    private void setStartingCity()
+    {
+        
+    }
+    
     private void takeUserInput(Canvas canvas, Tile[][] map, Canvas transition)
     {
         canvas.addEventHandler(MouseEvent.MOUSE_CLICKED, new EventHandler<MouseEvent>()
