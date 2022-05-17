@@ -1,13 +1,13 @@
-
+import javafx.scene.canvas.*;
+import javafx.scene.paint.Color;
+import javafx.scene.image.Image;
 /**
  * Main class for Troops
- *
- * @author (your name)
- * @version (a version number or a date)
+ * 
  */
 public class Troop
 {
-    // instance variables - replace the example below with your own
+    // instance variables
     private int health;
     private int maxHealth;
     
@@ -103,5 +103,26 @@ public class Troop
     private int round (double num)
     {
         return (int)(num+0.5);
+    }
+    
+    public void drawTroop(GraphicsContext gc, int x, int y)
+    {
+        if(shipLevel == 0) //non aquatic version of troop
+        {
+            gc.drawImage(new Image("images\\grass.jpg"), x*Tile.TILE_SIZE, y*Tile.TILE_SIZE, Tile.TILE_SIZE, Tile.TILE_SIZE);
+        }
+        else if(shipLevel == 1) //draw sailboat
+        {
+            gc.drawImage(new Image("images\\grass.jpg"), x*Tile.TILE_SIZE, y*Tile.TILE_SIZE, Tile.TILE_SIZE, Tile.TILE_SIZE);
+        }
+        else if(shipLevel == 2) //draw cruiser
+        {
+            gc.drawImage(new Image("images\\grass.jpg"), x*Tile.TILE_SIZE, y*Tile.TILE_SIZE, Tile.TILE_SIZE, Tile.TILE_SIZE);
+        }
+        else //draw battleship
+        {
+            gc.drawImage(new Image("images\\grass.jpg"), x*Tile.TILE_SIZE, y*Tile.TILE_SIZE, Tile.TILE_SIZE, Tile.TILE_SIZE);
+        }
+        
     }
 }
