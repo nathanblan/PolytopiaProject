@@ -1,9 +1,11 @@
 #BlueJ class context
 comment0.target=Troop
-comment0.text=\r\n\ Main\ class\ for\ Troops\r\n\r\n\ @author\ (your\ name)\r\n\ @version\ (a\ version\ number\ or\ a\ date)\r\n
+comment0.text=\r\n\ Main\ class\ for\ Troops\r\n\ \r\n
 comment1.params=h\ a\ d
 comment1.target=Troop(int,\ double,\ double)
 comment1.text=\r\n\ Constructor\ for\ objects\ of\ class\ Troop\r\n
+comment10.params=gc\ x\ y
+comment10.target=void\ drawTile(javafx.scene.canvas.GraphicsContext,\ int,\ int)
 comment2.params=h
 comment2.target=void\ heal(int)
 comment3.params=other\ distance
@@ -21,4 +23,4 @@ comment8.params=
 comment8.target=void\ destroyShip()
 comment9.params=num
 comment9.target=int\ round(double)
-numComments=10
+numComments=11
