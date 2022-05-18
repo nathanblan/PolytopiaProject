@@ -14,8 +14,8 @@ import javafx.scene.image.Image;
 /**
  * Use to visualize the map made by MapGenerator.
  */
-public class MapGeneratorVisualisor extends Application {
-
+public class MapGeneratorVisualisor extends Application
+{
     private double sceneWidth = 800;
     private double sceneHeight = 800;
     private static final int SIZE = 16;
@@ -36,20 +36,23 @@ public class MapGeneratorVisualisor extends Application {
     private final int NUM_PLAYERS = 2;
 
     @Override
-    public void start(Stage stage) {
+    public void start(Stage stage)
+    {
         stage.setTitle("Polytopia");
         Group root = new Group();
+        
         Canvas canvas = new Canvas(sceneWidth+200, sceneHeight);
         GraphicsContext gc = canvas.getGraphicsContext2D();
 
-        drawTileMap(gc, 0, 0, 16, 16);
+        DisplayUtility.drawTileMap(gc, map);
         
         players = new Player[NUM_PLAYERS];
         
         curPlayer = 0;
         
         Canvas transition = new Canvas(sceneWidth+200, sceneHeight);
-
+        gc = transition.getGraphicsContext2D();
+        gc.drawImage(new Image("images\\startscreen.png"), 0, 0, sceneWidth+200, sceneHeight);
 
         root.getChildren().add(canvas);
         root.getChildren().add(transition);
@@ -88,7 +91,7 @@ public class MapGeneratorVisualisor extends Application {
                     if (curSelectedX != -1 && curSelectedY != -1)
                     {
                         map[curSelectedX][curSelectedY].drawTile(gc, curSelectedX, curSelectedY);
-                        fillSide(gc);
+                        DisplayUtility.fillSide(gc);
                     }
 
                     // selected same tile
@@ -99,6 +102,7 @@ public class MapGeneratorVisualisor extends Application {
                         
                         if (curLayer == 0)
                         {
+                            DisplayUtility.drawRegularScreen(gc);
                             curSelectedX = -1;
                             curSelectedY = -1;
                         }
@@ -118,20 +122,16 @@ public class MapGeneratorVisualisor extends Application {
                     if (curLayer == 2)
                     {
                         Tile t = map[x][y];
-                        String type = t.getInfo();
                         ArrayList<ActionButton> actions = getActionButtons(t);
 
                         // display tile type
-                        gc.setTextAlign(TextAlignment.CENTER);
-                        gc.setFont(new Font(35));
-                        gc.setFill(Color.LIGHTGREY);
-                        gc.fillText(type, sceneWidth+100, 50);
+                        DisplayUtility.showType(gc, t);
                         
                         // show selected tile
                         if (actions.size() == 0)
-                            showSelectedTile(gc, Color.GAINSBORO, x, y);
+                            DisplayUtility.showSelectedTile(gc, Color.GAINSBORO, x, y);
                         else
-                            showSelectedTile(gc, Color.LIGHTBLUE, x, y);
+                            DisplayUtility.showSelectedTile(gc, Color.LIGHTBLUE, x, y);
                         
                         // draw action buttons
                         for (int i = 0; i < actions.size(); i++)
@@ -139,7 +139,7 @@ public class MapGeneratorVisualisor extends Application {
                             gc.drawImage(actions.get(i).getButton(), sceneWidth+20, 80+i*200, 160, 160);
                         }
                         
-                        gc.drawImage(new Image("images\\X_button.png"), sceneWidth+120, sceneHeight-80, 60, 60);
+                        gc.drawImage(DisplayUtility.X_BTN, sceneWidth+120, sceneHeight-80, 60, 60);
                     }
                     // if selected a troop
                     else if (curLayer == 1)
@@ -156,7 +156,7 @@ public class MapGeneratorVisualisor extends Application {
                     // confirmation screen
                     if (isConfirmScreen)
                     {
-                        int temp = getConfirmButton(x, y);
+                        int temp = CalcUtility.getConfirmButton(x, y);
                         if (temp == 1)
                         {
                             // do action
@@ -165,7 +165,7 @@ public class MapGeneratorVisualisor extends Application {
                             
                             // update tile graphics + clear side panel
                             t.drawTile(gc, curSelectedX, curSelectedY);
-                            fillSide(gc);
+                            DisplayUtility.drawRegularScreen(gc);
                             
                             // clear variables
                             curSelectedX = -1;
@@ -175,8 +175,14 @@ public class MapGeneratorVisualisor extends Application {
                         }
                         else if (temp == 0)
                         {
+                            map[curSelectedX][curSelectedY].drawTile(gc, curSelectedX, curSelectedY);
+                            DisplayUtility.drawRegularScreen(gc);
+                            
+                            // clear variables
+                            curSelectedX = -1;
+                            curSelectedY = -1;
+                            curLayer = 0;
                             isConfirmScreen = false;
-                            fillSide(gc);
                         }
                     }
                     // tile actions
@@ -184,7 +190,7 @@ public class MapGeneratorVisualisor extends Application {
                     {
                         Tile t = map[curSelectedX][curSelectedY];
                         ArrayList<ActionButton> actions = getActionButtons(t);
-                        int index = getButtonIndex(x, y);
+                        int index = CalcUtility.getButtonIndex(x, y);
                         
                         // clicked on of the buttons
                         if (index < actions.size() && index != -1)
@@ -192,23 +198,19 @@ public class MapGeneratorVisualisor extends Application {
                             isConfirmScreen = true;
                             curButton = actions.get(index);
                             
-                            drawConfirmScreen(gc);
-                            
-                            gc.setTextAlign(TextAlignment.CENTER);
-                            gc.setFont(new Font(35));
-                            gc.setFill(Color.LIGHTGREY);
-                            gc.fillText(t.getInfo(), sceneWidth+100, 50);
+                            DisplayUtility.drawConfirmScreen(gc);
+                            DisplayUtility.showType(gc, t);
                             
                             curButton.displayInfo(gc, sceneWidth);
                         }
                         else
                         {
-                            index = getConfirmButton(x, y);
+                            index = CalcUtility.getConfirmButton(x, y);
                             if (index == 1)
                             {
                                 // exit side panel
                                 map[curSelectedX][curSelectedY].drawTile(gc, curSelectedX, curSelectedY);
-                                fillSide(gc);
+                                DisplayUtility.drawRegularScreen(gc);
                         
                                 curLayer = 0;
                                 curSelectedX = -1;
@@ -224,7 +226,7 @@ public class MapGeneratorVisualisor extends Application {
                     // regular actions
                     else if (curLayer == 0)
                     {
-                        int temp = getConfirmButton(x, y);
+                        int temp = CalcUtility.getConfirmButton(x, y);
                         
                         // end turn
                         if (temp == 1)
@@ -237,9 +239,11 @@ public class MapGeneratorVisualisor extends Application {
                             
                             gc.drawImage(new Image("images\\starbackground.jfif"), 0, 0, 1000, 800);
                             gc.setTextAlign(TextAlignment.CENTER);
-                            gc.setFont(new Font(35));
+                            gc.setFont(new Font(100));
                             gc.setFill(Color.LIGHTGREY);
-                            gc.fillText("Player "+(curPlayer+1)+" Turn", sceneWidth/2+100, 100);
+                            gc.fillText("Player "+(curPlayer+1)+" Turn", sceneWidth/2+100, 400);
+                            gc.setFont(new Font(35));
+                            gc.fillText("click screen to continue", sceneWidth/2+100, 480);
                         }
                     }
                 }
@@ -256,72 +260,11 @@ public class MapGeneratorVisualisor extends Application {
         });
     }
     
-    /**
-     * Returns -1 if neither confirm button pressed
-     * Returns 1 if confirm button pressed
-     * Returns 0 if cancel button pressed
-     */
-    private int getConfirmButton(int x, int y)
-    {
-        if (x < sceneWidth+20 || x > sceneWidth+180)
-            return -1;
-        if (y < sceneHeight-80)
-            return -1;
-        
-        x -= sceneWidth+20;
-        y -= sceneHeight-50;
-        
-        int output = x/100;
-        
-        x %= 100;
-        x -= 30;
-        
-        if (x*x + y*y < 30*30)
-            return output;
-        
-        return -1;
-    }
-    
-    private void drawConfirmScreen(GraphicsContext gc)
-    {
-        fillSide(gc);
-        gc.drawImage(new Image("images\\X_button.png"), sceneWidth+20, sceneHeight-80, 60, 60);
-        gc.drawImage(new Image("images\\check_button.png"), sceneWidth+120, sceneHeight-80, 60, 60);
-    }
-    
-    /**
-     * Returns the index of the button clicked, -1 if not clicking a button
-     */
-    private int getButtonIndex(int x, int y)
-    {
-        if (x < sceneWidth)
-            return -1;
-            
-        x -= sceneWidth+100;
-        y -= 80;
-        
-        int index = y/200;
-        
-        y %= 200;
-        y -= 80;
-        
-        if (x*x + y*y > 80*80)
-            return -1;
-        
-        return index;
-    }
-    
-    private void showSelectedTile(GraphicsContext gc, Color color, int x, int y)
-    {
-        gc.setFill(Color.web(color.toString(), 0.75));
-        gc.fillRect(x*Tile.TILE_SIZE, y*Tile.TILE_SIZE, Tile.TILE_SIZE, 5);
-        gc.fillRect(x*Tile.TILE_SIZE, y*Tile.TILE_SIZE+5, 5, Tile.TILE_SIZE-5);
-        gc.fillRect(x*Tile.TILE_SIZE+5, y*Tile.TILE_SIZE+Tile.TILE_SIZE-5, Tile.TILE_SIZE-5, 5);
-        gc.fillRect(x*Tile.TILE_SIZE+Tile.TILE_SIZE-5, y*Tile.TILE_SIZE+5, 5, Tile.TILE_SIZE-5);
-    }
-    
     private ArrayList<ActionButton> getActionButtons(Tile t)
     {
+        if (t.getPlayer() != players[curPlayer])
+            return new ArrayList<ActionButton>();
+        
         ArrayList<ActionButton> actions = new ArrayList<ActionButton>();
         String type = t.getInfo();
         if (type.equals("mountain"))
@@ -386,23 +329,5 @@ public class MapGeneratorVisualisor extends Application {
         }
 
         return map;
-    }
-
-    private void drawTileMap(GraphicsContext gc, int startX, int startY, int width, int height)
-    {
-        for (int r = startX; r < width; r++)
-        {
-            for (int c = startY; c < height; c++)
-            {
-                map[r][c].drawTile(gc, r-startX, c-startY);
-            }
-        }
-
-        fillSide(gc);
-    }
-    
-    private void fillSide(GraphicsContext gc)
-    {
-        gc.drawImage(new Image("images\\starbackground.png"), sceneWidth, 0, 200, sceneHeight);
     }
 }

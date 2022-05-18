@@ -24,6 +24,7 @@ public class DisplayUtility
     
     public static final Image X_BTN = new Image("images\\X_button.png");
     public static final Image CHECK_BTN = new Image("images\\check_button.png");
+    public static final Image END_TURN_BTN = new Image("images\\endturn_button.png");
     
     public static void drawTileMap(GraphicsContext gc, Tile[][] map)
     {
@@ -36,7 +37,7 @@ public class DisplayUtility
             }
         }
 
-        fillSide(gc);
+        drawRegularScreen(gc);
     }
     
     public static void fillSide(GraphicsContext gc)
@@ -49,6 +50,13 @@ public class DisplayUtility
         fillSide(gc);
         gc.drawImage(X_BTN, w+20, h-80, 60, 60);
         gc.drawImage(CHECK_BTN, w+120, h-80, 60, 60);
+    }
+    
+    public static void drawRegularScreen(GraphicsContext gc)
+    {
+        fillSide(gc);
+        //gc.drawImage(X_BTN, w+20, h-80, 60, 60);
+        gc.drawImage(END_TURN_BTN, w+120, h-80, 60, 60);
     }
     
     public static void showSelectedTile(GraphicsContext gc, Color color, int x, int y)
