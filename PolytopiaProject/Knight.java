@@ -10,9 +10,9 @@ public class Knight extends Troop
     /**
      * Constructor for objects of class Knight
      */
-    public Knight()
+    public Knight(Player p)
     {
-        super(10, 3.5, 1);
+        super(p, 10, 3.5, 1);
         movement = 3;
         range = 1;
     }

@@ -10,9 +10,9 @@ public class Archer extends Troop
     /**
      * Constructor for objects of class Archer
      */
-    public Archer()
+    public Archer(Player p)
     {
-        super(10, 2, 1);
+        super(p, 10, 2, 1);
         movement = 1;
         range = 2;
     }

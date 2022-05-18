@@ -1,10 +1,12 @@
 #BlueJ class context
 comment0.target=CalcUtility
 comment0.text=\r\n\ Holds\ helper\ methods\r\n\r\n\ @author\ (your\ name)\r\n\ @version\ (a\ version\ number\ or\ a\ date)\r\n
-comment1.params=x\ y
-comment1.target=int\ getButtonIndex(int,\ int)
-comment1.text=\r\n\ Returns\ the\ index\ of\ the\ button\ clicked,\ -1\ if\ not\ clicking\ a\ button\r\n
+comment1.params=map\ x\ y
+comment1.target=getMovableTiles(Tile[][],\ int,\ int)
 comment2.params=x\ y
-comment2.target=int\ getConfirmButton(int,\ int)
-comment2.text=\r\n\ Returns\ -1\ if\ neither\ confirm\ button\ pressed\r\n\ Returns\ 1\ if\ confirm\ button\ pressed\r\n\ Returns\ 0\ if\ cancel\ button\ pressed\r\n
-numComments=3
+comment2.target=int\ getButtonIndex(int,\ int)
+comment2.text=\r\n\ Returns\ the\ index\ of\ the\ button\ clicked,\ -1\ if\ not\ clicking\ a\ button\r\n
+comment3.params=x\ y
+comment3.target=int\ getConfirmButton(int,\ int)
+comment3.text=\r\n\ Returns\ -1\ if\ neither\ confirm\ button\ pressed\r\n\ Returns\ 1\ if\ confirm\ button\ pressed\r\n\ Returns\ 0\ if\ cancel\ button\ pressed\r\n
+numComments=4

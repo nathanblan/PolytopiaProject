@@ -14,6 +14,8 @@ public class Troop
     private double attack;
     private double defense;
     
+    private Player player;
+    
     // if 0, not a ship
     // if 1, sailboat
     // if 2, cruiser
@@ -27,12 +29,19 @@ public class Troop
     /**
      * Constructor for objects of class Troop
      */
-    public Troop(int h, double a, double d)
+    public Troop(Player p, int h, double a, double d)
     {
+        player = p;
+        
         maxHealth = h;
         health = maxHealth;
         attack = a;
         defense = d;
+    }
+    
+    public Player getPlayer()
+    {
+        return player;
     }
     
     public void heal(int h)
@@ -95,6 +104,11 @@ public class Troop
         }
     }
     
+    public int getShipLevel()
+    {
+        return shipLevel;
+    }
+    
     public void destroyShip() // when you turn a waterborne troop back into a land troop
     {
         shipLevel = 0;
@@ -114,7 +128,7 @@ public class Troop
     {
         if(shipLevel == 0) //non aquatic version of troop
         {
-            gc.drawImage(new Image("images\\grass.jpg"), x*Tile.TILE_SIZE, y*Tile.TILE_SIZE, Tile.TILE_SIZE, Tile.TILE_SIZE);
+            gc.drawImage(new Image("images\\claimcity_button.png"), x*Tile.TILE_SIZE, y*Tile.TILE_SIZE, Tile.TILE_SIZE, Tile.TILE_SIZE);
         }
         else if(shipLevel == 1) //draw sailboat
         {

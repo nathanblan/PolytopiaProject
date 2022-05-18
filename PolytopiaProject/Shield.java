@@ -10,9 +10,9 @@ public class Shield extends Troop
     /**
      * Constructor for objects of class Shield
      */
-    public Shield()
+    public Shield(Player p)
     {
-        super(10, 1, 3);
+        super(p, 10, 1, 3);
         movement = 1;
         range = 1;
     }

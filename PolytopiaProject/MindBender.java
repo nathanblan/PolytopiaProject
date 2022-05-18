@@ -10,9 +10,9 @@ public class MindBender extends Troop
     /**
      * Constructor for objects of class MindBender
      */
-    public MindBender()
+    public MindBender(Player p)
     {
-        super(10, 0, 1);
+        super(p, 10, 0, 1);
         movement = 1;
         range = 1;
     }

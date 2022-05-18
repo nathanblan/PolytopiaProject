@@ -68,11 +68,62 @@ public class DisplayUtility
         gc.fillRect(x*Tile.TILE_SIZE+Tile.TILE_SIZE-5, y*Tile.TILE_SIZE+5, 5, Tile.TILE_SIZE-5);
     }
     
+    public static void clearMovableTiles(GraphicsContext gc, Tile[][] map, int x, int y)
+    {
+        ArrayList<int[]> movable = CalcUtility.getMovableTiles(map, x, y);
+        for (int[] coord : movable)
+        {
+            clearTile(gc, coord[0], coord[1]);
+        }
+    }
+    
+    public static void clearTile(GraphicsContext gc, int x, int y)
+    {
+        gc.clearRect(x*Tile.TILE_SIZE, y*Tile.TILE_SIZE, Tile.TILE_SIZE, Tile.TILE_SIZE);
+    }
+    
+    public static void showMovableTiles(GraphicsContext gc, Tile[][] map, int x, int y)
+    {
+        ArrayList<int[]> movable = CalcUtility.getMovableTiles(map, x, y);
+        for (int[] coord : movable)
+        {
+            showMovableTile(gc, Color.LIGHTBLUE, coord[0], coord[1]);
+        }
+    }
+    
+    private static void showMovableTile(GraphicsContext gc, Color c, int x, int y)
+    {
+        x *= Tile.TILE_SIZE;
+        y *= Tile.TILE_SIZE;
+        
+        gc.setFill(Color.web(c.toString(), 0.75));
+        gc.setStroke(Color.web(c.toString(), 0.75));
+        gc.setLineWidth(8);
+        
+        gc.strokeOval(x+8, y+8, 34, 34);
+        gc.setStroke(Color.web(Color.WHITE.toString(), 0.75));
+        gc.strokeOval(x+16, y+16, 18, 18);
+        gc.fillOval(x+20, y+20, 10, 10);
+    }
+    
     public static void showType(GraphicsContext gc, Tile t)
     {
         gc.setTextAlign(TextAlignment.CENTER);
         gc.setFont(new Font(35));
         gc.setFill(Color.LIGHTGREY);
         gc.fillText(t.getInfo(), w+100, 50);
+    }
+    
+    public static void drawTroops(Troop[][] map, GraphicsContext gc)
+    {
+        for (int x = 0; x < map.length; x++)
+        {
+            for (int y = 0; y < map[0].length; y++)
+            {
+                Troop t = map[x][y];
+                if (t != null)
+                    t.drawTroop(gc, x, y);
+            }
+        }
     }
 }

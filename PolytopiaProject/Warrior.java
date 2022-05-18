@@ -10,9 +10,9 @@ public class Warrior extends Troop
     /**
      * Constructor for objects of class Warrior
      */
-    public Warrior()
+    public Warrior(Player p)
     {
-        super(10, 2, 2);
+        super(p, 10, 2, 2);
         movement = 1;
         range = 1;
     }

@@ -10,9 +10,9 @@ public class Rider extends Troop
     /**
      * Constructor for objects of class Rider
      */
-    public Rider()
+    public Rider(Player p)
     {
-        super(10, 2, 1);
+        super(p, 10, 2, 1);
         movement = 2;
         range = 1;
     }

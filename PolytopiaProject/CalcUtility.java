@@ -1,3 +1,4 @@
+import java.util.ArrayList;
 
 /**
  * Holds helper methods
@@ -9,6 +10,94 @@ public class CalcUtility
 {
     private static final int w = 800;
     private static final int h = 800;
+    
+    public static ArrayList<int[]> getMovableTiles(Tile[][] map, int x, int y)
+    {
+        ArrayList<Integer> Xs = new ArrayList<Integer>();
+        ArrayList<Integer> Ys = new ArrayList<Integer>();
+        
+        Troop t = Player.troopMap[x][y];
+        int r = t.getMovement();
+        int size = map.length;
+        
+        Xs.add(x);
+        if (x != 0)
+        {
+            Xs.add(x-1);
+            if (x != 1 && r > 1)
+            {
+                Xs.add(x-2);
+                if (x != 2 && r > 2)
+                    Xs.add(x-3);
+            }
+        }
+        if (x != size-1)
+        {
+            Xs.add(x+1);
+            if (x != size-2 && r > 1)
+            {
+                Xs.add(x+2);
+                if (x != size-3 && r > 2)
+                    Xs.add(x+3);
+            }
+        }
+                            
+        Ys.add(y);
+        if (y != 0)
+        {
+            Ys.add(y-1);
+            if (y != 1 && r > 1)
+            {
+                Ys.add(y-2);
+                if (y != 2 && r > 2)
+                    Ys.add(y-3);
+            }
+        }
+        if (y != size-1)
+        {
+            Ys.add(y+1);
+            if (y != size-2 && r > 1)
+            {
+                Ys.add(y+2);
+                if (y != size-3 && r > 2)
+                    Ys.add(y+3);
+            }
+        }
+        
+        Player p = t.getPlayer();
+        ArrayList<int[]> output = new ArrayList<int[]>();
+        
+        for (int a : Xs)
+        {
+            for (int b : Ys)
+            {
+                if ((a != x || b != y) && Player.troopMap[a][b] == null)
+                {
+                    // check terrain
+                    String type = map[a][b].getInfo();
+                    if (type.equals("mountain"))
+                    {
+                        if (p.getTree().getClimbing())
+                            output.add(new int[] {a, b});
+                    }
+                    else if (type.equals("water"))
+                    {
+                        if ((((Water)map[a][b]).hasPort() && t.getShipLevel() == 0) || t.getShipLevel() > 0)
+                            output.add(new int[] {a, b});
+                    }
+                    else if (type.equals("deep water"))
+                    {
+                        if (t.getShipLevel() > 1)
+                            output.add(new int[] {a, b});
+                    }
+                    else
+                        output.add(new int[] {a, b});
+                }
+            }
+        }
+        
+        return output;
+    }
     
     /**
      * Returns the index of the button clicked, -1 if not clicking a button

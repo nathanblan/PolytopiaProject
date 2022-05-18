@@ -11,4 +11,6 @@ comment4.params=
 comment4.target=int\ getStars()
 comment5.params=num
 comment5.target=void\ decStars(int)
-numComments=6
+comment6.params=
+comment6.target=TechTree\ getTree()
+numComments=7

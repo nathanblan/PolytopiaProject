@@ -41,27 +41,36 @@ public class MapGeneratorVisualisor extends Application
         stage.setTitle("Polytopia");
         Group root = new Group();
         
-        Canvas canvas = new Canvas(sceneWidth+200, sceneHeight);
-        GraphicsContext gc = canvas.getGraphicsContext2D();
+        Canvas mapLayer = new Canvas(sceneWidth+200, sceneHeight);
+        GraphicsContext gc = mapLayer.getGraphicsContext2D();
 
         DisplayUtility.drawTileMap(gc, map);
         
         players = new Player[NUM_PLAYERS];
-        
         curPlayer = 0;
+        for (int i = 0; i < NUM_PLAYERS; i++)
+        {
+            players[i] = new Player();
+        }
+        
+        //Player.troopMap[3][3] = new Rider(players[0]);
         
         Canvas transition = new Canvas(sceneWidth+200, sceneHeight);
         gc = transition.getGraphicsContext2D();
         gc.drawImage(new Image("images\\startscreen.png"), 0, 0, sceneWidth+200, sceneHeight);
+        
+        Canvas troopLayer = new Canvas(sceneWidth+200, sceneHeight);
+        DisplayUtility.drawTroops(Player.troopMap, troopLayer.getGraphicsContext2D());
 
-        root.getChildren().add(canvas);
+        root.getChildren().add(mapLayer);
         root.getChildren().add(transition);
+        root.getChildren().add(troopLayer);
         stage.setScene(new Scene(root));
         stage.show();
         
-        
+        troopLayer.toFront();
         transition.toFront();
-        takeUserInput(canvas, map, transition);
+        takeUserInput(map, mapLayer, troopLayer, transition);
         
     }
 
@@ -70,9 +79,9 @@ public class MapGeneratorVisualisor extends Application
         
     }
     
-    private void takeUserInput(Canvas canvas, Tile[][] map, Canvas transition)
+    private void takeUserInput(Tile[][] map, Canvas mapLayer, Canvas troopLayer, Canvas transition)
     {
-        canvas.addEventHandler(MouseEvent.MOUSE_CLICKED, new EventHandler<MouseEvent>()
+        troopLayer.addEventHandler(MouseEvent.MOUSE_CLICKED, new EventHandler<MouseEvent>()
         {
             @Override
             public void handle(MouseEvent e)
@@ -80,7 +89,7 @@ public class MapGeneratorVisualisor extends Application
                 int x = (int)(e.getX()/Tile.TILE_SIZE);
                 int y = (int)(e.getY()/Tile.TILE_SIZE);
                 
-                GraphicsContext gc = canvas.getGraphicsContext2D();
+                GraphicsContext gc = mapLayer.getGraphicsContext2D();
                 
                 // clicked in the map
                 if (x < SIZE && y < SIZE)
@@ -93,6 +102,9 @@ public class MapGeneratorVisualisor extends Application
                         map[curSelectedX][curSelectedY].drawTile(gc, curSelectedX, curSelectedY);
                         DisplayUtility.fillSide(gc);
                     }
+                    
+                    if (curLayer == 1)
+                        DisplayUtility.clearMovableTiles(troopLayer.getGraphicsContext2D(), map, curSelectedX, curSelectedY);
 
                     // selected same tile
                     if (x == curSelectedX && y == curSelectedY)
@@ -109,13 +121,45 @@ public class MapGeneratorVisualisor extends Application
                     }
                     else
                     {
-                        curSelectedX = x;
-                        curSelectedY = y;
+                        // check if selected troop movement
+                        if (curLayer == 1)
+                        {
+                            ArrayList<int[]> movable = CalcUtility.getMovableTiles(map, curSelectedX, curSelectedY);
+                            
+                            for (int[] coords : movable)
+                            {
+                                if (coords[0] == x && coords[1] == y)
+                                {
+                                    gc = troopLayer.getGraphicsContext2D();
+                                    Troop t = Player.troopMap[curSelectedX][curSelectedY];
+                                    
+                                    DisplayUtility.clearTile(gc, curSelectedX, curSelectedY);
+                                    t.drawTroop(gc, x, y);
+                                    
+                                    Player.troopMap[curSelectedX][curSelectedY] = null;
+                                    Player.troopMap[x][y] = t;
+                                    
+                                    curSelectedX = -1;
+                                    curSelectedY = -1;
+                                    x = -1;
+                                    y = -1;
+                                    curLayer = 0;
+                                    
+                                    DisplayUtility.drawRegularScreen(gc);
+                                }
+                            }
+                        }
                         
-                        if (Player.troopMap[x][y] != null)
-                            curLayer = 1;
-                        else
-                            curLayer = 2;
+                        if (x != -1 && y != -1)
+                        {
+                            curSelectedX = x;
+                            curSelectedY = y;
+                            
+                            if (Player.troopMap[x][y] != null)
+                                curLayer = 1;
+                            else
+                                curLayer = 2;
+                        }
                     }
 
                     // if selected a tile
@@ -144,7 +188,17 @@ public class MapGeneratorVisualisor extends Application
                     // if selected a troop
                     else if (curLayer == 1)
                     {
-                        
+                        Troop t = Player.troopMap[x][y];
+                        if (t.getPlayer() == players[curPlayer])
+                        {
+                            // show movable locations
+                            gc = troopLayer.getGraphicsContext2D();
+                            DisplayUtility.showMovableTiles(gc, map, x, y);
+                            
+                            // get actions
+                            
+                            
+                        }
                     }
                 }
                 // clicked on side panel
@@ -255,7 +309,8 @@ public class MapGeneratorVisualisor extends Application
             @Override
             public void handle(MouseEvent e)
             {
-                canvas.toFront();
+                mapLayer.toFront();
+                troopLayer.toFront();
             }
         });
     }

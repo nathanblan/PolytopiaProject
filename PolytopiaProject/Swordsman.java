@@ -10,9 +10,9 @@ public class Swordsman extends Troop
     /**
      * Constructor for objects of class Swordsman
      */
-    public Swordsman()
+    public Swordsman(Player p)
     {
-        super(15, 3, 3);
+        super(p, 15, 3, 3);
         movement = 1;
         range = 1;
     }

@@ -42,4 +42,9 @@ public class Player
     {
         stars -= num;
     }
+    
+    public TechTree getTree()
+    {
+        return tree;
+    }
 }
