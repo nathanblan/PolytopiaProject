@@ -11,7 +11,7 @@ public class CalcUtility
     private static final int w = 800;
     private static final int h = 800;
     
-    public static ArrayList<int[]> getMovableTiles(Tile[][] map, int x, int y)
+    /*public static ArrayList<int[]> getMovableTiles(Tile[][] map, int x, int y)
     {
         ArrayList<Integer> Xs = new ArrayList<Integer>();
         ArrayList<Integer> Ys = new ArrayList<Integer>();
@@ -97,7 +97,65 @@ public class CalcUtility
         }
         
         return output;
+    }*/
+    public static ArrayList<Coord> getMovableTiles(Tile[][] map, int x, int y)
+    {
+        Troop t = Player.troopMap[x][y];
+        int r = t.getMovement();
+        Player p = t.getPlayer();
+        int size = map.length;
+        ArrayList<Coord> check = new Coord(x,y).getSurounding();
+        
+        ArrayList<Coord> output = new ArrayList<Coord>();
+        
+        while (check.size() > 0)
+        {
+            Coord c = check.remove(0);
+            
+            if (Player.troopMap[c.x][c.y] == null && c.distance <= r)
+            {
+                boolean movable = false;
+                // check terrain
+                String type = map[c.x][c.y].getInfo();
+                if (type.equals("mountain"))
+                {
+                    if (p.getTree().getClimbing())
+                        movable = true;
+                }
+                else if (type.equals("water"))
+                {
+                    if ((((Water)map[c.x][c.y]).hasPort() && t.getShipLevel() == 0) || t.getShipLevel() > 0)
+                        movable = true;
+                }
+                else if (type.equals("deep water"))
+                {
+                    if (t.getShipLevel() > 1)
+                        movable = true;
+                }
+                else
+                    movable = true;
+                    
+                if (movable)
+                {
+                    // check if dup
+                    boolean dup = false;
+                    for (Coord o : output)
+                    {
+                        if (o.equals(c))
+                            dup = true;
+                    }
+                    if (!dup)
+                    {
+                        output.add(c);
+                        c.addSurounding(check);
+                    }
+                }
+            }
+        }
+        
+        return output;
     }
+    
     
     /**
      * Returns the index of the button clicked, -1 if not clicking a button
