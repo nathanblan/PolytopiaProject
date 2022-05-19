@@ -57,13 +57,27 @@ public class TechTree
     public void showTechTree(GraphicsContext gc, double width, double height)
     {
         gc.drawImage(new Image("images\\starbackground.jfif"), 0, 0, 1000, 800);
-        gc.drawImage(new Image("techtree_images\\tech tree.png"), 450, 350, 100, 100);
+        gc.drawImage(new Image("techtree_images\\tech tree.png"), 450-100, 350, 100, 100);
         
-        gc.drawImage(new Image("techtree_images\\organization_U.png"), 575, 320, 100, 100);
-        gc.drawImage(button(hasClimbing, "climbing"), 530, 455, 100, 100);
-        gc.drawImage(button(hasFishing, "fishing"), 370, 455, 100, 100);
-        gc.drawImage(button(hasHunting, "hunting"), 325, 320, 100, 100);
-        gc.drawImage(button(hasRiding, "riding"), 450, 225, 100, 100);
+        gc.drawImage(new Image("techtree_images\\organization_U.png"), 575-100, 320, 100, 100);
+        gc.drawImage(button(hasClimbing, "climbing"), 530-100, 455, 100, 100);
+        gc.drawImage(button(hasFishing, "fishing"), 370-100, 455, 100, 100);
+        gc.drawImage(button(hasHunting, "hunting"), 325-100, 320, 100, 100);
+        gc.drawImage(button(hasRiding, "riding"), 450-100, 225, 100, 100);
+        
+        gc.drawImage(button(hasForestry, "forestry"), 225-100, 225, 100, 100);
+        gc.drawImage(button(hasArchery, "archery"), 100, 350, 100, 100);
+        
+        gc.drawImage(button(hasFarming, "farming"), 675-100, 225, 100, 100);
+        gc.drawImage(button(hasShields, "shields"), 700-100, 350, 100, 100);
+        
+        gc.drawImage(button(hasCityBuilding, "citybuilding"), 550-100, 130, 100, 100);
+        gc.drawImage(button(hasMountainDestroyer, "mtndestroyer"), 425-100, 75, 100, 100);
+        
+        gc.drawImage(button(hasSailing, "sailing"), 250-100, 510, 100, 100);
+        gc.drawImage(button(hasNavigation, "navigation"), 350-100, 600, 100, 100);
+        
+        gc.drawImage(button(hasMining, "mining"), 500, 575, 100, 100);
     }
     
     public Image button(boolean unlocked, String type)

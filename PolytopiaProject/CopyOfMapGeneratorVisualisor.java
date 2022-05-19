@@ -45,14 +45,8 @@ public class CopyOfMapGeneratorVisualisor extends Application
         GraphicsContext gc = mapLayer.getGraphicsContext2D();
 
         
-        players = new Player[NUM_PLAYERS];
-        curPlayer = 0;
-        for (int i = 0; i < NUM_PLAYERS; i++)
-        {
-            players[i] = new Player();
-        }
         
-        Player.troopMap[3][3] = new Knight(players[0]);
+        
         
         Canvas techtree = new Canvas(sceneWidth+200, sceneHeight);
         gc = techtree.getGraphicsContext2D();
