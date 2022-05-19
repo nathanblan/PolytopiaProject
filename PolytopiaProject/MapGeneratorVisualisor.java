@@ -76,7 +76,39 @@ public class MapGeneratorVisualisor extends Application
 
     private void setStartingCity()
     {
+        int firstX = 0;
+        int firstY = 0;
+        int secondX = 0;
+        int secondY = 0;
         
+        for(int i = 0; i<map.length; i++)
+        {
+            for(int j =0; j<map.length; j++)
+            {
+                if (map[i][j].getInfo().equals("village"))
+                {
+                    firstX = i;
+                    firstY = j;
+                    i=map.length;
+                    j=map.length;
+                }
+            }
+        }
+        for(int i = map.length; i>0; i--)
+        {
+            for(int j = map.length; j>0; j--)
+            {
+                if (map[i][j].getInfo().equals("village"))
+                {
+                    secondX = i;
+                    secondY = j;
+                    i=0;
+                    j=0;
+                }
+            }
+        }
+        map[firstX][firstY] = new City(players[0]);
+        map[secondX][secondY] = new City(players[1]);
     }
     
     private void takeUserInput(Tile[][] map, Canvas mapLayer, Canvas troopLayer, Canvas transition)
