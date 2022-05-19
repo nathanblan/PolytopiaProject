@@ -34,6 +34,9 @@ public class MapGeneratorVisualisor extends Application
     private Player[] players;
     private int curPlayer;
     private final int NUM_PLAYERS = 2;
+    
+    public int p1turn = 0;
+    public int p2turn = 0;
 
     @Override
     public void start(Stage stage)
@@ -44,16 +47,15 @@ public class MapGeneratorVisualisor extends Application
         Canvas mapLayer = new Canvas(sceneWidth+200, sceneHeight);
         GraphicsContext gc = mapLayer.getGraphicsContext2D();
 
-        DisplayUtility.drawTileMap(gc, map);
-        
         players = new Player[NUM_PLAYERS];
         curPlayer = 0;
         for (int i = 0; i < NUM_PLAYERS; i++)
         {
-            players[i] = new Player();
+            players[i] = new Player(i);
         }
-        
-        Player.troopMap[3][3] = new Knight(players[0]);
+        setStartingCity();
+        DisplayUtility.drawTileMap(gc, map);
+        //Player.troopMap[3][3] = new Knight(players[0]);
         
         Canvas transition = new Canvas(sceneWidth+200, sceneHeight);
         gc = transition.getGraphicsContext2D();
@@ -94,21 +96,23 @@ public class MapGeneratorVisualisor extends Application
                 }
             }
         }
-        for(int i = map.length; i>0; i--)
+        for(int i = map.length-1; i>0; i--)
         {
-            for(int j = map.length; j>0; j--)
+            for(int j = map.length-1; j>0; j--)
             {
-                if (map[i][j].getInfo().equals("village"))
+                if (map[j][i].getInfo().equals("village"))
                 {
-                    secondX = i;
-                    secondY = j;
+                    secondX = j;
+                    secondY = i;
                     i=0;
                     j=0;
                 }
             }
         }
         map[firstX][firstY] = new City(players[0]);
+        Player.troopMap[firstX][firstY] = new Knight(players[0]);
         map[secondX][secondY] = new City(players[1]);
+        Player.troopMap[secondX][secondY] = new Knight(players[1]);
     }
     
     private void takeUserInput(Tile[][] map, Canvas mapLayer, Canvas troopLayer, Canvas transition)
@@ -171,6 +175,8 @@ public class MapGeneratorVisualisor extends Application
                                     
                                     Player.troopMap[curSelectedX][curSelectedY] = null;
                                     Player.troopMap[x][y] = t;
+                                    
+                                    Player.troopMap[x][y].move();
                                     
                                     curSelectedX = -1;
                                     curSelectedY = -1;
@@ -319,6 +325,7 @@ public class MapGeneratorVisualisor extends Application
                         // end turn
                         if (temp == 1)
                         {
+                            players[curPlayer].endTurn(); // adds one to turn count of the current player
                             curPlayer++;
                             curPlayer %= NUM_PLAYERS;
                             
