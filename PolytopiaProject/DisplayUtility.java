@@ -75,12 +75,12 @@ public class DisplayUtility
         {
             clearTile(gc, c.x, c.y);
         }
-        ArrayList<Coord> attackable = CalcUtility.getMovableTiles(map, x, y);
+        /*ArrayList<Coord> attackable = CalcUtility.getMovableTiles(map, x, y);
         for (Coord c : attackable)
         {
             clearTile(gc, c.x, c.y);
             Player.troopMap[c.x][c.y].drawTroop(gc, c.x, c.y);
-        }
+        }*/
     }
     
     public static void clearTile(GraphicsContext gc, int x, int y)
@@ -96,10 +96,10 @@ public class DisplayUtility
         {
             showMovableTile(gc, Color.LIGHTBLUE, c.x, c.y);
         }
-        for (Coord c : attackable)
+        /*for (Coord c : attackable)
         {
             showMovableTile(gc, Color.RED, c.x, c.y);
-        }
+        }*/
     }
     
     private static void showMovableTile(GraphicsContext gc, Color c, int x, int y)
@@ -117,7 +117,20 @@ public class DisplayUtility
         gc.fillOval(x+20, y+20, 10, 10);
     }
     
+    public static void showXBtn(GraphicsContext gc)
+    {
+        gc.drawImage(DisplayUtility.X_BTN, w+120, h-80, 60, 60);
+    }
+    
     public static void showType(GraphicsContext gc, Tile t)
+    {
+        gc.setTextAlign(TextAlignment.CENTER);
+        gc.setFont(new Font(35));
+        gc.setFill(Color.LIGHTGREY);
+        gc.fillText(t.getInfo(), w+100, 50);
+    }
+    
+    public static void showType(GraphicsContext gc, Troop t)
     {
         gc.setTextAlign(TextAlignment.CENTER);
         gc.setFont(new Font(35));

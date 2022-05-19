@@ -16,4 +16,9 @@ public class Catapult extends Troop
         movement = 1;
         range = 3;
     }
+    
+    public String getInfo()
+    {
+        return "catapult";
+    }
 }

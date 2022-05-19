@@ -16,4 +16,9 @@ public class Swordsman extends Troop
         movement = 1;
         range = 1;
     }
+    
+    public String getInfo()
+    {
+        return "swordsman";
+    }
 }

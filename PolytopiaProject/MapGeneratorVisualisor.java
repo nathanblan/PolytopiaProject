@@ -32,11 +32,9 @@ public class MapGeneratorVisualisor extends Application
     private ActionButton curButton;
     
     private Player[] players;
-    private int curPlayer;
+    private int curPlayer = 0;
     private final int NUM_PLAYERS = 2;
-    
-    public int p1turn = 0;
-    public int p2turn = 0;
+    private int curTurn = 0;
 
     @Override
     public void start(Stage stage)
@@ -48,14 +46,12 @@ public class MapGeneratorVisualisor extends Application
         GraphicsContext gc = mapLayer.getGraphicsContext2D();
 
         players = new Player[NUM_PLAYERS];
-        curPlayer = 0;
         for (int i = 0; i < NUM_PLAYERS; i++)
         {
             players[i] = new Player(i);
         }
         setStartingCity();
         DisplayUtility.drawTileMap(gc, map);
-        //Player.troopMap[3][3] = new Knight(players[0]);
         
         Canvas transition = new Canvas(sceneWidth+200, sceneHeight);
         gc = transition.getGraphicsContext2D();
@@ -73,7 +69,6 @@ public class MapGeneratorVisualisor extends Application
         troopLayer.toFront();
         transition.toFront();
         takeUserInput(map, mapLayer, troopLayer, transition);
-        
     }
 
     private void setStartingCity()
@@ -110,9 +105,9 @@ public class MapGeneratorVisualisor extends Application
             }
         }
         map[firstX][firstY] = new City(players[0]);
-        Player.troopMap[firstX][firstY] = new Knight(players[0]);
+        Player.troopMap[firstX][firstY] = new Warrior(players[0]);
         map[secondX][secondY] = new City(players[1]);
-        Player.troopMap[secondX][secondY] = new Knight(players[1]);
+        Player.troopMap[secondX][secondY] = new Warrior(players[1]);
     }
     
     private void takeUserInput(Tile[][] map, Canvas mapLayer, Canvas troopLayer, Canvas transition)
@@ -158,7 +153,7 @@ public class MapGeneratorVisualisor extends Application
                     else
                     {
                         // check if selected troop movement
-                        if (curLayer == 1)
+                        if (curLayer == 1 && Player.troopMap[curSelectedX][curSelectedY].getLastTurn() < curTurn)
                         {
                             System.out.println("selected troop "+x+","+y);
                             ArrayList<Coord> movable = CalcUtility.getMovableTiles(map, curSelectedX, curSelectedY);
@@ -176,7 +171,7 @@ public class MapGeneratorVisualisor extends Application
                                     Player.troopMap[curSelectedX][curSelectedY] = null;
                                     Player.troopMap[x][y] = t;
                                     
-                                    Player.troopMap[x][y].move();
+                                    t.updateLastTurn(curTurn);
                                     
                                     curSelectedX = -1;
                                     curSelectedY = -1;
@@ -223,21 +218,27 @@ public class MapGeneratorVisualisor extends Application
                             gc.drawImage(actions.get(i).getButton(), sceneWidth+20, 80+i*200, 160, 160);
                         }
                         
-                        gc.drawImage(DisplayUtility.X_BTN, sceneWidth+120, sceneHeight-80, 60, 60);
+                        DisplayUtility.showXBtn(gc);
                     }
                     // if selected a troop
                     else if (curLayer == 1)
                     {
                         Troop t = Player.troopMap[x][y];
+                        DisplayUtility.fillSide(gc);
+                        DisplayUtility.showType(gc, t);
+                        DisplayUtility.showXBtn(gc);
+                        
                         if (t.getPlayer() == players[curPlayer])
                         {
-                            // show movable locations
-                            gc = troopLayer.getGraphicsContext2D();
-                            DisplayUtility.showMovableTiles(gc, map, x, y);
-                            
                             // get actions
                             
                             
+                            // show movable locations
+                            if (t.getLastTurn() < curTurn)
+                            {
+                                gc = troopLayer.getGraphicsContext2D();
+                                DisplayUtility.showMovableTiles(gc, map, x, y);
+                            }
                         }
                     }
                 }
@@ -315,7 +316,17 @@ public class MapGeneratorVisualisor extends Application
                     // troop actions
                     else if (curLayer == 1)
                     {
-                        
+                        int index = CalcUtility.getConfirmButton(x, y);
+                        if (index == 1)
+                        {
+                            // exit side panel
+                            map[curSelectedX][curSelectedY].drawTile(gc, curSelectedX, curSelectedY);
+                            DisplayUtility.drawRegularScreen(gc);
+                    
+                            curLayer = 0;
+                            curSelectedX = -1;
+                            curSelectedY = -1;
+                        }
                     }
                     // regular actions
                     else if (curLayer == 0)
@@ -325,9 +336,9 @@ public class MapGeneratorVisualisor extends Application
                         // end turn
                         if (temp == 1)
                         {
-                            players[curPlayer].endTurn(); // adds one to turn count of the current player
                             curPlayer++;
                             curPlayer %= NUM_PLAYERS;
+                            curTurn++;
                             
                             transition.toFront();
                             gc = transition.getGraphicsContext2D();

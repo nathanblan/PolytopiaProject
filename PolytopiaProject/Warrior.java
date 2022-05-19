@@ -5,6 +5,10 @@
  * @author (your name)
  * @version (a version number or a date)
  */
+
+import javafx.scene.canvas.*;
+import javafx.scene.image.Image;
+
 public class Warrior extends Troop
 {
     /**
@@ -15,5 +19,15 @@ public class Warrior extends Troop
         super(p, 10, 2, 2);
         movement = 1;
         range = 1;
+    }
+    
+    public String getInfo()
+    {
+        return "warrior";
+    }
+    
+    public void drawTroop(GraphicsContext gc, int x, int y)
+    {
+        gc.drawImage(new Image("troops\\warrior.png"), x*Tile.TILE_SIZE, y*Tile.TILE_SIZE, Tile.TILE_SIZE, Tile.TILE_SIZE);
     }
 }

@@ -16,4 +16,9 @@ public class MindBender extends Troop
         movement = 1;
         range = 1;
     }
+    
+    public String getInfo()
+    {
+        return "mind bender";
+    }
 }
