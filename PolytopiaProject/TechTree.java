@@ -1,4 +1,15 @@
-
+import javafx.application.Application;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
+import javafx.scene.Group;
+import javafx.scene.Scene;
+import javafx.scene.paint.*;
+import javafx.stage.Stage;
+import javafx.scene.canvas.*;
+import javafx.scene.input.*;
+import javafx.scene.text.*;
+import java.util.ArrayList;
+import javafx.scene.image.Image;
 /**
  * Write a description of class TechTree here.
  *
@@ -41,6 +52,30 @@ public class TechTree
         hasRiding = false;
         hasCityBuilding = false;
         hasMountainDestroyer = false;
+    }
+    
+    public void showTechTree(GraphicsContext gc, double width, double height)
+    {
+        gc.drawImage(new Image("images\\starbackground.jfif"), 0, 0, 1000, 800);
+        gc.drawImage(new Image("techtree_images\\tech tree.png"), 450, 350, 100, 100);
+        
+        gc.drawImage(new Image("techtree_images\\organization_U.png"), 575, 320, 100, 100);
+        gc.drawImage(button(hasClimbing, "climbing"), 530, 455, 100, 100);
+        gc.drawImage(button(hasFishing, "fishing"), 370, 455, 100, 100);
+        gc.drawImage(button(hasHunting, "hunting"), 325, 320, 100, 100);
+        gc.drawImage(button(hasRiding, "riding"), 450, 225, 100, 100);
+    }
+    
+    public Image button(boolean unlocked, String type)
+    {
+        if(unlocked)
+        {
+            return new Image("techtree_images\\"+type+"_U.png");
+        }
+        else
+        {
+            return new Image("techtree_images\\"+type+"_L.png");
+        }
     }
     
     //All the gets!
