@@ -13,7 +13,7 @@ public class Troop
     
     private double attack;
     private double defense;
-    
+    private int lastTurn = 0;
     private Player player;
     
     // if 0, not a ship
@@ -42,6 +42,11 @@ public class Troop
     public Player getPlayer()
     {
         return player;
+    }
+    
+    public void move()
+    {
+        lastTurn = player.getTurn();
     }
     
     public void heal(int h)
