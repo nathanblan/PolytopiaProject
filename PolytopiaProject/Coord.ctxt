@@ -1,0 +1,15 @@
+#BlueJ class context
+comment0.target=Coord
+comment0.text=\r\n\ Write\ a\ description\ of\ class\ Coords\ here.\r\n\r\n\ @author\ (your\ name)\r\n\ @version\ (a\ version\ number\ or\ a\ date)\r\n
+comment1.params=x\ y
+comment1.target=Coord(int,\ int)
+comment1.text=\r\n\ Constructor\ for\ objects\ of\ class\ Coords\r\n
+comment2.params=x\ y\ last
+comment2.target=Coord(int,\ int,\ Coord)
+comment3.params=list
+comment3.target=void\ addSurounding(java.util.ArrayList)
+comment4.params=
+comment4.target=java.util.ArrayList\ getSurounding()
+comment5.params=other
+comment5.target=boolean\ equals(Coord)
+numComments=6

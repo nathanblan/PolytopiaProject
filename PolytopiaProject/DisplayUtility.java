@@ -70,10 +70,10 @@ public class DisplayUtility
     
     public static void clearMovableTiles(GraphicsContext gc, Tile[][] map, int x, int y)
     {
-        ArrayList<int[]> movable = CalcUtility.getMovableTiles(map, x, y);
-        for (int[] coord : movable)
+        ArrayList<Coord> movable = CalcUtility.getMovableTiles(map, x, y);
+        for (Coord c : movable)
         {
-            clearTile(gc, coord[0], coord[1]);
+            clearTile(gc, c.x, c.y);
         }
     }
     
@@ -84,10 +84,10 @@ public class DisplayUtility
     
     public static void showMovableTiles(GraphicsContext gc, Tile[][] map, int x, int y)
     {
-        ArrayList<int[]> movable = CalcUtility.getMovableTiles(map, x, y);
-        for (int[] coord : movable)
+        ArrayList<Coord> movable = CalcUtility.getMovableTiles(map, x, y);
+        for (Coord c : movable)
         {
-            showMovableTile(gc, Color.LIGHTBLUE, coord[0], coord[1]);
+            showMovableTile(gc, Color.LIGHTBLUE, c.x, c.y);
         }
     }
     

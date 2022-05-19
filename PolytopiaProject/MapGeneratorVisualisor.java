@@ -53,7 +53,7 @@ public class MapGeneratorVisualisor extends Application
             players[i] = new Player();
         }
         
-        //Player.troopMap[3][3] = new Rider(players[0]);
+        Player.troopMap[3][3] = new Knight(players[0]);
         
         Canvas transition = new Canvas(sceneWidth+200, sceneHeight);
         gc = transition.getGraphicsContext2D();
@@ -76,7 +76,39 @@ public class MapGeneratorVisualisor extends Application
 
     private void setStartingCity()
     {
+        int firstX = 0;
+        int firstY = 0;
+        int secondX = 0;
+        int secondY = 0;
         
+        for(int i = 0; i<map.length; i++)
+        {
+            for(int j =0; j<map.length; j++)
+            {
+                if (map[i][j].getInfo().equals("village"))
+                {
+                    firstX = i;
+                    firstY = j;
+                    i=map.length;
+                    j=map.length;
+                }
+            }
+        }
+        for(int i = map.length; i>0; i--)
+        {
+            for(int j = map.length; j>0; j--)
+            {
+                if (map[i][j].getInfo().equals("village"))
+                {
+                    secondX = i;
+                    secondY = j;
+                    i=0;
+                    j=0;
+                }
+            }
+        }
+        map[firstX][firstY] = new City(players[0]);
+        map[secondX][secondY] = new City(players[1]);
     }
     
     private void takeUserInput(Tile[][] map, Canvas mapLayer, Canvas troopLayer, Canvas transition)
@@ -124,11 +156,12 @@ public class MapGeneratorVisualisor extends Application
                         // check if selected troop movement
                         if (curLayer == 1)
                         {
-                            ArrayList<int[]> movable = CalcUtility.getMovableTiles(map, curSelectedX, curSelectedY);
+                            System.out.println("selected troop "+x+","+y);
+                            ArrayList<Coord> movable = CalcUtility.getMovableTiles(map, curSelectedX, curSelectedY);
                             
-                            for (int[] coords : movable)
+                            for (Coord c : movable)
                             {
-                                if (coords[0] == x && coords[1] == y)
+                                if (c.x == x && c.y == y)
                                 {
                                     gc = troopLayer.getGraphicsContext2D();
                                     Troop t = Player.troopMap[curSelectedX][curSelectedY];
@@ -145,7 +178,7 @@ public class MapGeneratorVisualisor extends Application
                                     y = -1;
                                     curLayer = 0;
                                     
-                                    DisplayUtility.drawRegularScreen(gc);
+                                    DisplayUtility.drawRegularScreen(mapLayer.getGraphicsContext2D());
                                 }
                             }
                         }
@@ -165,6 +198,7 @@ public class MapGeneratorVisualisor extends Application
                     // if selected a tile
                     if (curLayer == 2)
                     {
+                        System.out.println("selected tile "+x+","+y);
                         Tile t = map[x][y];
                         ArrayList<ActionButton> actions = getActionButtons(t);
 
