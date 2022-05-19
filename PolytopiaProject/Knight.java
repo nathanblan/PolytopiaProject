@@ -16,4 +16,9 @@ public class Knight extends Troop
         movement = 3;
         range = 1;
     }
+    
+    public String getInfo()
+    {
+        return "knight";
+    }
 }

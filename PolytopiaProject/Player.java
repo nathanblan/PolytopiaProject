@@ -42,16 +42,6 @@ public class Player
         }
     }
     
-    public void endTurn()
-    {
-        turn++;
-    }
-    
-    public int  getTurn()
-    {
-        return turn;
-    }
-    
     public int getStars()
     {
         return stars;

@@ -11,9 +11,11 @@ public class Troop
     private int health;
     private int maxHealth;
     
+    private final double baseAttack;
+    private final double baseDefense;
     private double attack;
     private double defense;
-    private int lastTurn = 0;
+    private int lastTurn;
     private Player player;
     
     // if 0, not a ship
@@ -37,6 +39,10 @@ public class Troop
         health = maxHealth;
         attack = a;
         defense = d;
+        baseAttack = a;
+        baseDefense = d;
+        
+        lastTurn = -1;
     }
     
     public Player getPlayer()
@@ -44,16 +50,26 @@ public class Troop
         return player;
     }
     
-    public void move()
-    {
-        lastTurn = player.getTurn();
-    }
-    
     public void heal(int h)
     {
         health += h;
         if (health > maxHealth)
             health = maxHealth;
+    }
+    
+    public boolean canHeal()
+    {
+        return health < maxHealth;
+    }
+    
+    public void updateLastTurn(int turn)
+    {
+        lastTurn = turn;
+    }
+    
+    public int getLastTurn()
+    {
+        return lastTurn;
     }
     
     /**
@@ -94,16 +110,16 @@ public class Troop
     public void upgradeShip() // upgrading ships
     {
         shipLevel++;
-        if(shipLevel == 1)
+        if (shipLevel == 1)
         {
             waterMovement = true;
             movement = 1;
         }
-        if(shipLevel == 2)
+        if (shipLevel == 2)
         {
             movement = 3;
         }
-        if(shipLevel == 3)
+        if (shipLevel == 3)
         {
             attack = 10;
         }
@@ -118,6 +134,8 @@ public class Troop
     {
         shipLevel = 0;
         waterMovement = false;
+        attack = baseAttack;
+        defense = baseDefense;
     }
     private int round (double num)
     {
@@ -131,22 +149,27 @@ public class Troop
     
     public void drawTroop(GraphicsContext gc, int x, int y)
     {
-        if(shipLevel == 0) //non aquatic version of troop
+        /*if(shipLevel == 0) //non aquatic version of troop
         {
             gc.drawImage(new Image("images\\claimcity_button.png"), x*Tile.TILE_SIZE, y*Tile.TILE_SIZE, Tile.TILE_SIZE, Tile.TILE_SIZE);
         }
-        else if(shipLevel == 1) //draw sailboat
+        else */if(shipLevel == 1) //draw sailboat
         {
-            gc.drawImage(new Image("images\\grass.jpg"), x*Tile.TILE_SIZE, y*Tile.TILE_SIZE, Tile.TILE_SIZE, Tile.TILE_SIZE);
+            gc.drawImage(new Image("troops\\boat.jpg"), x*Tile.TILE_SIZE, y*Tile.TILE_SIZE, Tile.TILE_SIZE, Tile.TILE_SIZE);
         }
         else if(shipLevel == 2) //draw cruiser
         {
-            gc.drawImage(new Image("images\\grass.jpg"), x*Tile.TILE_SIZE, y*Tile.TILE_SIZE, Tile.TILE_SIZE, Tile.TILE_SIZE);
+            gc.drawImage(new Image("troops\\sailboat.jpg"), x*Tile.TILE_SIZE, y*Tile.TILE_SIZE, Tile.TILE_SIZE, Tile.TILE_SIZE);
         }
         else //draw battleship
         {
-            gc.drawImage(new Image("images\\grass.jpg"), x*Tile.TILE_SIZE, y*Tile.TILE_SIZE, Tile.TILE_SIZE, Tile.TILE_SIZE);
+            gc.drawImage(new Image("troops\\battleship.jpg"), x*Tile.TILE_SIZE, y*Tile.TILE_SIZE, Tile.TILE_SIZE, Tile.TILE_SIZE);
         }
         
+    }
+    
+    public String getInfo()
+    {
+        return "basic";
     }
 }
