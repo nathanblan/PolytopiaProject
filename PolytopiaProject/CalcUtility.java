@@ -11,13 +11,15 @@ public class CalcUtility
     private static final int w = 800;
     private static final int h = 800;
     
-    /*public static ArrayList<int[]> getMovableTiles(Tile[][] map, int x, int y)
+    
+    
+    public static ArrayList<Coord> getAttackableTiles(Tile[][] map, int x, int y)
     {
         ArrayList<Integer> Xs = new ArrayList<Integer>();
         ArrayList<Integer> Ys = new ArrayList<Integer>();
         
         Troop t = Player.troopMap[x][y];
-        int r = t.getMovement();
+        int r = t.getRange();
         int size = map.length;
         
         Xs.add(x);
@@ -65,39 +67,23 @@ public class CalcUtility
         }
         
         Player p = t.getPlayer();
-        ArrayList<int[]> output = new ArrayList<int[]>();
+        ArrayList<Coord> output = new ArrayList<Coord>();
         
         for (int a : Xs)
         {
             for (int b : Ys)
             {
-                if ((a != x || b != y) && Player.troopMap[a][b] == null)
+                Troop other = Player.troopMap[a][b];
+                if ((a != x || b != y) && other != null && other.getPlayer() != p)
                 {
-                    // check terrain
-                    String type = map[a][b].getInfo();
-                    if (type.equals("mountain"))
-                    {
-                        if (p.getTree().getClimbing())
-                            output.add(new int[] {a, b});
-                    }
-                    else if (type.equals("water"))
-                    {
-                        if ((((Water)map[a][b]).hasPort() && t.getShipLevel() == 0) || t.getShipLevel() > 0)
-                            output.add(new int[] {a, b});
-                    }
-                    else if (type.equals("deep water"))
-                    {
-                        if (t.getShipLevel() > 1)
-                            output.add(new int[] {a, b});
-                    }
-                    else
-                        output.add(new int[] {a, b});
+                    output.add(new Coord(a, b));
                 }
             }
         }
         
         return output;
-    }*/
+    }
+    
     public static ArrayList<Coord> getMovableTiles(Tile[][] map, int x, int y)
     {
         Troop t = Player.troopMap[x][y];

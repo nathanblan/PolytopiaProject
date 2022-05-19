@@ -75,6 +75,12 @@ public class DisplayUtility
         {
             clearTile(gc, c.x, c.y);
         }
+        ArrayList<Coord> attackable = CalcUtility.getMovableTiles(map, x, y);
+        for (Coord c : attackable)
+        {
+            clearTile(gc, c.x, c.y);
+            Player.troopMap[c.x][c.y].drawTroop(gc, c.x, c.y);
+        }
     }
     
     public static void clearTile(GraphicsContext gc, int x, int y)
@@ -85,9 +91,14 @@ public class DisplayUtility
     public static void showMovableTiles(GraphicsContext gc, Tile[][] map, int x, int y)
     {
         ArrayList<Coord> movable = CalcUtility.getMovableTiles(map, x, y);
+        ArrayList<Coord> attackable = CalcUtility.getAttackableTiles(map, x, y);
         for (Coord c : movable)
         {
             showMovableTile(gc, Color.LIGHTBLUE, c.x, c.y);
+        }
+        for (Coord c : attackable)
+        {
+            showMovableTile(gc, Color.RED, c.x, c.y);
         }
     }
     

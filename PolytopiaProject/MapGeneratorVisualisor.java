@@ -54,6 +54,7 @@ public class MapGeneratorVisualisor extends Application
         }
         
         Player.troopMap[3][3] = new Knight(players[0]);
+        Player.troopMap[2][3] = new Knight(players[1]);
         
         Canvas transition = new Canvas(sceneWidth+200, sceneHeight);
         gc = transition.getGraphicsContext2D();
@@ -94,16 +95,16 @@ public class MapGeneratorVisualisor extends Application
                 }
             }
         }
-        for(int i = map.length; i>0; i--)
+        for(int i = map.length-1; i>=0; i--)
         {
-            for(int j = map.length; j>0; j--)
+            for(int j = map.length-1; j>=0; j--)
             {
                 if (map[i][j].getInfo().equals("village"))
                 {
                     secondX = i;
                     secondY = j;
-                    i=0;
-                    j=0;
+                    i=-1;
+                    j=-1;
                 }
             }
         }
@@ -154,7 +155,7 @@ public class MapGeneratorVisualisor extends Application
                     else
                     {
                         // check if selected troop movement
-                        if (curLayer == 1)
+                        if (curLayer == 1 && Player.troopMap[curSelectedX][curSelectedY].getPlayer() == players[curPlayer])
                         {
                             System.out.println("selected troop "+x+","+y);
                             ArrayList<Coord> movable = CalcUtility.getMovableTiles(map, curSelectedX, curSelectedY);
