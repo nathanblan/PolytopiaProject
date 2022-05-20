@@ -24,6 +24,13 @@ public class ActionButton
     public static final ActionButton buildHut = new ActionButton("lumberhut");
     public static final ActionButton claimCity = new ActionButton("claimcity");
     
+    public static final ActionButton techFarming = new ActionButton("farming");
+    public static final ActionButton techShields = new ActionButton("shields");
+    public static final ActionButton techClimbing = new ActionButton("climbing");
+    public static final ActionButton techMining = new ActionButton("mining");
+    public static final ActionButton techFishing = new ActionButton("fishing");
+    public static final ActionButton techSailing = new ActionButton("sailing");
+    
     /**
      * Constructor for objects of class ActionButton
      */
