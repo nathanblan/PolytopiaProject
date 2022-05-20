@@ -56,7 +56,7 @@ public class TechTree
     
     public void showTechTree(GraphicsContext gc, double width, double height)
     {
-        gc.drawImage(new Image("images\\starbackground.jfif"), 0, 0, 1000, 800);
+        gc.drawImage(new Image("images\\techtreebackground.png"), 0, 0, 1000, 800);
         gc.drawImage(new Image("techtree_images\\tech tree.png"), 450-100, 350, 100, 100);
         
         gc.drawImage(new Image("techtree_images\\organization_U.png"), 575-100, 320, 100, 100);
