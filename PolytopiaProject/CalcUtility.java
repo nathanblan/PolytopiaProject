@@ -11,16 +11,33 @@ public class CalcUtility
     private static final int w = 800;
     private static final int h = 800;
     
+    public static int getDistance (int x1, int y1, int x2, int y2)
+    {
+        return max(abs(x1-x2), abs(y1-y2));
+    }
     
+    private static int abs(int num)
+    {
+        if (num > 0)
+            return num;
+        return num*-1;
+    }
     
-    public static ArrayList<Coord> getAttackableTiles(Tile[][] map, int x, int y)
+    private static int max (int a, int b)
+    {
+        if (a > b)
+            return a;
+        return b;
+    }
+    
+    public static ArrayList<Coord> getAttackableTiles(int x, int y)
     {
         ArrayList<Integer> Xs = new ArrayList<Integer>();
         ArrayList<Integer> Ys = new ArrayList<Integer>();
         
         Troop t = Player.troopMap[x][y];
         int r = t.getRange();
-        int size = map.length;
+        int size = Player.troopMap.length;
         
         Xs.add(x);
         if (x != 0)

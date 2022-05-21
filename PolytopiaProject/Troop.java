@@ -15,7 +15,10 @@ public class Troop
     private final double baseDefense;
     private double attack;
     private double defense;
-    private int lastTurn;
+    
+    private int lastMoveTurn;
+    private int lastAttackTurn;
+    
     private Player player;
     
     // if 0, not a ship
@@ -27,6 +30,8 @@ public class Troop
     protected int range;
     protected int movement;
     protected boolean waterMovement = false;
+    
+    protected boolean canDash;
     
     /**
      * Constructor for objects of class Troop
@@ -42,7 +47,8 @@ public class Troop
         baseAttack = a;
         baseDefense = d;
         
-        lastTurn = -1;
+        lastMoveTurn = -1;
+        lastAttackTurn = -1;
     }
     
     public Player getPlayer()
@@ -57,19 +63,41 @@ public class Troop
             health = maxHealth;
     }
     
+    public int getHealth()
+    {
+        return health;
+    }
+    
     public boolean canHeal()
     {
         return health < maxHealth;
     }
     
-    public void updateLastTurn(int turn)
+    public boolean canDash()
     {
-        lastTurn = turn;
+        if (shipLevel > 0)
+            return false;
+        return canDash;
     }
     
-    public int getLastTurn()
+    public void updateLastMoveTurn(int turn)
     {
-        return lastTurn;
+        lastMoveTurn = turn;
+    }
+    
+    public int getLastMoveTurn()
+    {
+        return lastMoveTurn;
+    }
+    
+    public void updateLastAttackTurn(int turn)
+    {
+        lastAttackTurn = turn;
+    }
+    
+    public int getLastAttackTurn()
+    {
+        return lastAttackTurn;
     }
     
     /**
@@ -82,6 +110,8 @@ public class Troop
         double totalDamage = attackForce + defenseForce;
         int attackResult = round((attackForce / totalDamage) * attack * 4.5);
         int defenseResult = round((defenseForce / totalDamage) * other.defense * 4.5);
+        
+        System.out.println(attackForce+" "+defenseForce+" "+attackResult+" "+defenseResult);
         
         other.health -= attackResult;
         if (other.health <= 0)

@@ -75,12 +75,13 @@ public class DisplayUtility
         {
             clearTile(gc, c.x, c.y);
         }
-        /*ArrayList<Coord> attackable = CalcUtility.getMovableTiles(map, x, y);
+        ArrayList<Coord> attackable = CalcUtility.getAttackableTiles(x, y);
         for (Coord c : attackable)
         {
             clearTile(gc, c.x, c.y);
             Player.troopMap[c.x][c.y].drawTroop(gc, c.x, c.y);
-        }*/
+        }
+        clearTile(gc, x, y);
     }
     
     public static void clearTile(GraphicsContext gc, int x, int y)
@@ -88,18 +89,31 @@ public class DisplayUtility
         gc.clearRect(x*Tile.TILE_SIZE, y*Tile.TILE_SIZE, Tile.TILE_SIZE, Tile.TILE_SIZE);
     }
     
+    public static void showSelectedTroop(GraphicsContext gc, int x, int y)
+    {
+        x *= Tile.TILE_SIZE;
+        y *= Tile.TILE_SIZE;
+        gc.setStroke(Color.web(Color.GAINSBORO.toString(), 0.75));
+        gc.setLineWidth(5);
+        gc.strokeOval(x+10, y+10, 30, 30);
+    }
+    
     public static void showMovableTiles(GraphicsContext gc, Tile[][] map, int x, int y)
     {
         ArrayList<Coord> movable = CalcUtility.getMovableTiles(map, x, y);
-        ArrayList<Coord> attackable = CalcUtility.getAttackableTiles(map, x, y);
         for (Coord c : movable)
         {
             showMovableTile(gc, Color.LIGHTBLUE, c.x, c.y);
         }
-        /*for (Coord c : attackable)
+    }
+    
+    public static void showAttackableTiles(GraphicsContext gc, int x, int y)
+    {
+        ArrayList<Coord> attackable = CalcUtility.getAttackableTiles(x, y);
+        for (Coord c : attackable)
         {
             showMovableTile(gc, Color.RED, c.x, c.y);
-        }*/
+        }
     }
     
     private static void showMovableTile(GraphicsContext gc, Color c, int x, int y)
@@ -136,6 +150,8 @@ public class DisplayUtility
         gc.setFont(new Font(35));
         gc.setFill(Color.LIGHTGREY);
         gc.fillText(t.getInfo(), w+100, 50);
+        gc.setFont(new Font(20));
+        gc.fillText(t.getHealth()+" health", w+100, 75);
     }
     
     public static void drawTroops(Troop[][] map, GraphicsContext gc)

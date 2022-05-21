@@ -19,6 +19,8 @@ public class Archer extends Troop
         super(p, 10, 2, 1);
         movement = 1;
         range = 2;
+        
+        canDash = true;
     }
     
     public String getInfo()

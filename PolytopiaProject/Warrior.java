@@ -19,6 +19,8 @@ public class Warrior extends Troop
         super(p, 10, 2, 2);
         movement = 1;
         range = 1;
+        
+        canDash = true;
     }
     
     public String getInfo()

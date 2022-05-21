@@ -15,6 +15,8 @@ public class Knight extends Troop
         super(p, 10, 3.5, 1);
         movement = 3;
         range = 1;
+        
+        canDash = true;
     }
     
     public String getInfo()

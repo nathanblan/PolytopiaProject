@@ -19,6 +19,8 @@ public class Rider extends Troop
         super(p, 10, 2, 1);
         movement = 2;
         range = 1;
+        
+        canDash = true;
     }
     
     public String getInfo()
