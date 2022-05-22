@@ -40,6 +40,7 @@ public class Player
         {
             stars += c.getLevel();
         }
+        stars++;
     }
     
     public int getStars()
@@ -55,5 +56,28 @@ public class Player
     public TechTree getTree()
     {
         return tree;
+    }
+    
+    public void addCity(City c)
+    {
+        for (City o : cities)
+        {
+            if (o == c)
+                return;
+        }
+        
+        cities.add(c);
+    }
+    
+    public void removeCity(City c)
+    {
+        for (int i = 0; i < cities.size(); i++)
+        {
+            if (cities.get(i) == c)
+            {
+                cities.remove(i);
+                return;
+            }
+        }
     }
 }

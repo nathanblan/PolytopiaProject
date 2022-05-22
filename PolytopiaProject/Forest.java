@@ -29,6 +29,7 @@ public class Forest extends Tile
         hasAnimal = false;
         
         city.incPopulation(1);
+        getPlayer().decStars(2);
         
         return 1;
     }
@@ -41,6 +42,7 @@ public class Forest extends Tile
         hasAnimal = false;
         
         city.incPopulation(1);
+        city.getPlayer().decStars(2);
         
         return 1;
     }
@@ -48,7 +50,7 @@ public class Forest extends Tile
     public void drawTile(GraphicsContext gc, int x, int y)
     {
         if (hasLumberHut)
-            hasLumberHut = true; // placeholder
+            gc.drawImage(new Image("images\\lumber_hut.jpg"), x*TILE_SIZE, y*TILE_SIZE, TILE_SIZE, TILE_SIZE);
         else if (hasAnimal)
             gc.drawImage(new Image("images\\forest_animal.jpg"), x*TILE_SIZE, y*TILE_SIZE, TILE_SIZE, TILE_SIZE);
         else
@@ -62,11 +64,11 @@ public class Forest extends Tile
     
     public boolean canHunt()
     {
-        return hasAnimal;
+        return hasAnimal && getPlayer().getStars() >= 2;
     }
     
     public boolean canBuildHut()
     {
-        return !hasLumberHut;
+        return !hasLumberHut && getPlayer().getStars() >= 2;
     }
 }

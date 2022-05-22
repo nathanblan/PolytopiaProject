@@ -135,7 +135,7 @@ public class Display extends Application
                     // clear side panel and selected tile
                     if (curSelectedX != -1 && curSelectedY != -1)
                     {
-                        DisplayUtility.fillSide(mapGC);
+                        DisplayUtility.fillSide(mapGC, players[curPlayer].getStars());
                         if (curLayer == 1)
                         {
                             DisplayUtility.clearMovableTiles(troopGC, map, curSelectedX, curSelectedY);
@@ -156,7 +156,7 @@ public class Display extends Application
                         
                         if (curLayer == 0)
                         {
-                            DisplayUtility.drawRegularScreen(mapGC);
+                            DisplayUtility.drawRegularScreen(mapGC, players[curPlayer].getStars());
                             curSelectedX = -1;
                             curSelectedY = -1;
                         }
@@ -192,13 +192,13 @@ public class Display extends Application
                                             curSelectedX = -1;
                                             curSelectedY = -1;
                                             curLayer = 0;
-                                            DisplayUtility.drawRegularScreen(mapGC);
+                                            DisplayUtility.drawRegularScreen(mapGC, players[curPlayer].getStars());
                                         }
                                         else
                                         {
                                             curSelectedX = x;
                                             curSelectedY = y;
-                                            DisplayUtility.fillSide(mapGC);
+                                            DisplayUtility.fillSide(mapGC, players[curPlayer].getStars());
                                             DisplayUtility.showType(mapGC, t);
                                             DisplayUtility.showAttackableTiles(troopGC, x, y);
                                         }
@@ -242,13 +242,13 @@ public class Display extends Application
                                                 curSelectedX = -1;
                                                 curSelectedY = -1;
                                                 curLayer = 0;
-                                                DisplayUtility.drawRegularScreen(mapGC);
+                                                DisplayUtility.drawRegularScreen(mapGC, players[curPlayer].getStars());
                                             }
                                             else
                                             {
                                                 curSelectedX = x;
                                                 curSelectedY = y;
-                                                DisplayUtility.fillSide(mapGC);
+                                                DisplayUtility.fillSide(mapGC, players[curPlayer].getStars());
                                                 DisplayUtility.showType(mapGC, t);
                                                 DisplayUtility.showAttackableTiles(troopGC, x, y);
                                                 DisplayUtility.showSelectedTroop(troopGC, x, y);
@@ -259,7 +259,7 @@ public class Display extends Application
                                             curSelectedX = -1;
                                             curSelectedY = -1;
                                             curLayer = 0;
-                                            DisplayUtility.drawRegularScreen(mapGC);
+                                            DisplayUtility.drawRegularScreen(mapGC, players[curPlayer].getStars());
                                         }
                                         
                                         x = -1;
@@ -290,7 +290,7 @@ public class Display extends Application
                         else if (curLayer == 1)
                         {
                             Troop t = Player.troopMap[x][y];
-                            DisplayUtility.fillSide(mapGC);
+                            DisplayUtility.fillSide(mapGC, players[curPlayer].getStars());
                             DisplayUtility.showType(mapGC, t);
                             DisplayUtility.showXBtn(mapGC);
                             
@@ -336,7 +336,7 @@ public class Display extends Application
                             
                             // update tile graphics + clear side panel
                             t.drawTile(mapGC, curSelectedX, curSelectedY);
-                            DisplayUtility.drawRegularScreen(mapGC);
+                            DisplayUtility.drawRegularScreen(mapGC, players[curPlayer].getStars());
                             
                             // clear variables
                             curSelectedX = -1;
@@ -347,7 +347,7 @@ public class Display extends Application
                         else if (temp == 0)
                         {
                             map[curSelectedX][curSelectedY].drawTile(mapGC, curSelectedX, curSelectedY);
-                            DisplayUtility.drawRegularScreen(mapGC);
+                            DisplayUtility.drawRegularScreen(mapGC, players[curPlayer].getStars());
                             
                             // clear variables
                             curSelectedX = -1;
@@ -363,7 +363,7 @@ public class Display extends Application
                         {
                             // exit side panel
                             map[curSelectedX][curSelectedY].drawTile(mapGC, curSelectedX, curSelectedY);
-                            DisplayUtility.drawRegularScreen(mapGC);
+                            DisplayUtility.drawRegularScreen(mapGC, players[curPlayer].getStars());
                     
                             curLayer = 0;
                             curSelectedX = -1;
@@ -379,7 +379,7 @@ public class Display extends Application
                                 isConfirmScreen = true;
                                 curButton = actions.get(index);
                                 
-                                DisplayUtility.drawConfirmScreen(mapGC);
+                                DisplayUtility.drawConfirmScreen(mapGC, players[curPlayer].getStars());
                                 DisplayUtility.showType(mapGC, t);
                                 
                                 curButton.displayInfo(mapGC, sceneWidth);
@@ -392,7 +392,7 @@ public class Display extends Application
                         if (CalcUtility.getConfirmButton(x, y) == 1)
                         {
                             // exit side panel
-                            DisplayUtility.drawRegularScreen(mapGC);
+                            DisplayUtility.drawRegularScreen(mapGC, players[curPlayer].getStars());
                             
                             DisplayUtility.clearMovableTiles(troopGC, map, curSelectedX, curSelectedY);
                             DisplayUtility.clearTile(troopGC, curSelectedX, curSelectedY);
@@ -417,7 +417,7 @@ public class Display extends Application
                                 t.updateLastMoveTurn(curTurn);
                                 t.updateLastAttackTurn(curTurn);
                                 
-                                DisplayUtility.drawRegularScreen(mapGC);
+                                DisplayUtility.drawRegularScreen(mapGC, players[curPlayer].getStars());
                                 DisplayUtility.clearTile(troopGC, curSelectedX, curSelectedY);
                                 DisplayUtility.clearMovableTiles(troopGC, map, curSelectedX, curSelectedY);
                                 t.drawTroop(troopGC, curSelectedX, curSelectedY);
@@ -448,6 +448,7 @@ public class Display extends Application
             public void handle(MouseEvent e)
             {
                 transition.toBack();
+                DisplayUtility.drawRegularScreen(mapLayer.getGraphicsContext2D(), players[curPlayer].getStars());
             }
         });
         
@@ -465,6 +466,7 @@ public class Display extends Application
                 if (btn != null)
                 {
                     t.showTechTree(gc);
+                    DisplayUtility.showStars(gc, players[curPlayer].getStars());
                     
                     curButton = btn;
                     btn.displayInfo(gc, sceneWidth);
@@ -481,12 +483,14 @@ public class Display extends Application
                     {
                         curButton.doAction(players[curPlayer]);
                         t.showTechTree(gc);
+                        DisplayUtility.showStars(gc, players[curPlayer].getStars());
                         DisplayUtility.showXBtn(gc);
                         isConfirmScreen = false;
                     }
                     else if (temp == 0)
                     {
                         t.showTechTree(gc);
+                        DisplayUtility.showStars(gc, players[curPlayer].getStars());
                         DisplayUtility.showXBtn(gc);
                         isConfirmScreen = false;
                     }
@@ -494,7 +498,10 @@ public class Display extends Application
                 else
                 {
                     if (CalcUtility.getConfirmButton(x, y) == 1)
+                    {
                         treeLayer.toBack();
+                        DisplayUtility.drawRegularScreen(mapLayer.getGraphicsContext2D(), players[curPlayer].getStars());
+                    }
                 }
             }
         });
@@ -507,7 +514,7 @@ public class Display extends Application
         ArrayList<ActionButton> actions = getActionButtons(t);
 
         // display tile type
-        DisplayUtility.fillSide(mapGC);
+        DisplayUtility.fillSide(mapGC, players[curPlayer].getStars());
         DisplayUtility.showType(mapGC, t);
         
         // show selected tile
@@ -527,6 +534,7 @@ public class Display extends Application
     
     private void endTurn(Canvas transition)
     {
+        players[curPlayer].startTurn();
         curPlayer++;
         curPlayer %= NUM_PLAYERS;
         curTurn++;
@@ -549,6 +557,7 @@ public class Display extends Application
         GraphicsContext gc = treeLayer.getGraphicsContext2D();
         TechTree t = players[curPlayer].getTree();
         t.showTechTree(gc);
+        DisplayUtility.showStars(gc, players[curPlayer].getStars());
         DisplayUtility.showXBtn(gc);
     }
     
@@ -570,7 +579,7 @@ public class Display extends Application
     {
         if (t.getPlayer() != players[curPlayer])
             return new ArrayList<ActionButton>();
-        
+            
         ArrayList<ActionButton> actions = new ArrayList<ActionButton>();
         TechTree tree = players[curPlayer].getTree();
         String type = t.getInfo();

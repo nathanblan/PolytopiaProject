@@ -37,24 +37,35 @@ public class DisplayUtility
             }
         }
 
-        drawRegularScreen(gc);
+        drawRegularScreen(gc, 5);
     }
     
-    public static void fillSide(GraphicsContext gc)
+    public static void fillSide(GraphicsContext gc, int stars)
     {
         gc.drawImage(new Image("images\\starbackground.png"), w, 0, 200, h);
+        showStars(gc, stars);
     }
     
-    public static void drawConfirmScreen(GraphicsContext gc)
+    public static void showStars(GraphicsContext gc, int stars)
     {
-        fillSide(gc);
+        gc.drawImage(new Image("images\\star.png"), w+110, 5, 20, 20);
+        
+        gc.setFill(Color.LIGHTGREY);
+        gc.setFont(new Font(20));
+        gc.setTextAlign(TextAlignment.CENTER);
+        gc.fillText(String.valueOf(stars), w+90, 22.5);
+    }
+    
+    public static void drawConfirmScreen(GraphicsContext gc, int stars)
+    {
+        fillSide(gc, stars);
         gc.drawImage(X_BTN, w+20, h-80, 60, 60);
         gc.drawImage(CHECK_BTN, w+120, h-80, 60, 60);
     }
     
-    public static void drawRegularScreen(GraphicsContext gc)
+    public static void drawRegularScreen(GraphicsContext gc, int stars)
     {
-        fillSide(gc);
+        fillSide(gc, stars);
         gc.drawImage(new Image("techtree_images\\tech tree.png"), w+20, h-80, 60, 60);
         gc.drawImage(END_TURN_BTN, w+120, h-80, 60, 60);
     }
@@ -138,12 +149,10 @@ public class DisplayUtility
     
     public static void showType(GraphicsContext gc, Tile t)
     {
-        fillSide(gc);
         gc.setTextAlign(TextAlignment.CENTER);
         gc.setFont(new Font(35));
         gc.setFill(Color.LIGHTGREY);
-        gc.fillText(t.getInfo(), w+100, 50);
-        showXBtn(gc);
+        gc.fillText(t.getInfo(), w+100, 60);
     }
     
     public static void showType(GraphicsContext gc, Troop t)
@@ -151,9 +160,9 @@ public class DisplayUtility
         gc.setTextAlign(TextAlignment.CENTER);
         gc.setFont(new Font(35));
         gc.setFill(Color.LIGHTGREY);
-        gc.fillText(t.getInfo(), w+100, 50);
+        gc.fillText(t.getInfo(), w+100, 60);
         gc.setFont(new Font(20));
-        gc.fillText(t.getHealth()+" health", w+100, 75);
+        gc.fillText(t.getHealth()+" health", w+100, 85);
     }
     
     public static void drawTroops(Troop[][] map, GraphicsContext gc)

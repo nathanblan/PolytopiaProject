@@ -29,6 +29,7 @@ public class Grass extends Tile
         isFarm = true;
         
         city.incPopulation(2);
+        getPlayer().decStars(5);
         
         return 1;
     }
@@ -45,6 +46,6 @@ public class Grass extends Tile
     
     public boolean canBuildFarm()
     {
-        return !isFarm;
+        return !isFarm && getPlayer().getStars() >= 5;
     }
 }

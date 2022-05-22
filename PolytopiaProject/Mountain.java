@@ -33,6 +33,7 @@ public class Mountain extends Tile
         hasMine = true; 
         
         city.incPopulation(2);
+        getPlayer().decStars(5);
         
         return 1;
     }
@@ -65,7 +66,7 @@ public class Mountain extends Tile
     
     public boolean canBuildMine()
     {
-        return !hasMine;
+        return !hasMine && getPlayer().getStars() >= 5;
     }
     
     public boolean canGrabGold()

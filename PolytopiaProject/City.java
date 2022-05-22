@@ -26,14 +26,6 @@ public class City extends Tile
         population = 0;
     }
     
-    public City(Player player)
-    {
-        this.player = player;
-        level = 1;
-        levelInc = 2;
-        population = 0;
-    }
-    
     public void setPlayer (Player newPlayer, Tile[][] map, int x, int y)
     {
         if (player == null)
@@ -63,6 +55,10 @@ public class City extends Tile
                 }
             }
         }
+        else
+            player.removeCity(this);
+        
+        newPlayer.addCity(this);
         
         player = newPlayer;
     }

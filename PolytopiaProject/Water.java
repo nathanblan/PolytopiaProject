@@ -34,6 +34,7 @@ public class Water extends Tile
         hasFish = false;
         
         city.incPopulation(2);
+        getPlayer().decStars(5);
         
         return 1;
     }
@@ -49,6 +50,7 @@ public class Water extends Tile
         hasFish = false;
         
         city.incPopulation(1);
+        getPlayer().decStars(2);
         
         return 1;
     }
@@ -70,12 +72,12 @@ public class Water extends Tile
     
     public boolean canFish()
     {
-        return hasFish;
+        return hasFish && getPlayer().getStars() >= 2;
     }
     
     public boolean canBuildPort()
     {
-        return !hasPort;
+        return !hasPort && getPlayer().getStars() >= 5;
     }
     
     public boolean hasPort()

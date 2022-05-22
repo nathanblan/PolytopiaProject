@@ -31,6 +31,7 @@ public class Field extends Tile
         hasFruit = false;
         
         city.incPopulation(1);
+        getPlayer().decStars(2);
         
         return 1;
     }
@@ -50,6 +51,6 @@ public class Field extends Tile
     
     public boolean canHarvestFruit()
     {
-        return hasFruit;
+        return hasFruit && getPlayer().getStars() >= 2;
     }
 }
