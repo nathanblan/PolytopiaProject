@@ -138,10 +138,12 @@ public class DisplayUtility
     
     public static void showType(GraphicsContext gc, Tile t)
     {
+        fillSide(gc);
         gc.setTextAlign(TextAlignment.CENTER);
         gc.setFont(new Font(35));
         gc.setFill(Color.LIGHTGREY);
         gc.fillText(t.getInfo(), w+100, 50);
+        showXBtn(gc);
     }
     
     public static void showType(GraphicsContext gc, Troop t)

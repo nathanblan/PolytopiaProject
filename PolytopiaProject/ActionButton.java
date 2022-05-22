@@ -26,13 +26,20 @@ public class ActionButton
     public static final ActionButton claimCity = new ActionButton("claimcity");
     public static final ActionButton heal = new ActionButton("heal");
     
+    public static final ActionButton techOrganization = new ActionButton("organization");
     public static final ActionButton techFarming = new ActionButton("farming");
     public static final ActionButton techShields = new ActionButton("shields");
     public static final ActionButton techClimbing = new ActionButton("climbing");
     public static final ActionButton techMining = new ActionButton("mining");
     public static final ActionButton techFishing = new ActionButton("fishing");
     public static final ActionButton techSailing = new ActionButton("sailing");
+    public static final ActionButton techNavigation = new ActionButton("navigation");
     public static final ActionButton techHunting = new ActionButton("hunting");
+    public static final ActionButton techRiding = new ActionButton("riding");
+    public static final ActionButton techForestry = new ActionButton("forestry");
+    public static final ActionButton techArchery = new ActionButton("archery");
+    public static final ActionButton techCityBuilding = new ActionButton("city building");
+    public static final ActionButton techMountainDestroyer = new ActionButton("destroy mountain");
     
     /**
      * Constructor for objects of class ActionButton
@@ -54,32 +61,35 @@ public class ActionButton
             info = "Builds a mine on the mountain. Costs 5 stars, gains 2 population.";
         else if (type.equals("lumberhut"))
             info = "Builds a lumberhut in the forest. Costs 2 stars, gains 1 population.";
+        
+        else if (type.equals("organization"))
+            info = "Enables organization.";
         else if (type.equals("farming"))
-            info = "Allows the construction of farms.";
+            info = "Enables the construction of farms.";
         else if (type.equals("shields"))
-            info = "Allows the training of shield troops.";
+            info = "Enables the training of shield troops.";
         else if (type.equals("climbing"))
-            info = "Allows troops to move onto mountain tiles. Can now pick up gold from mountains.";
+            info = "Enables troops to move onto mountain tiles. Enables picking up gold from mountains.";
         else if (type.equals("mining"))
-            info = "Allows the construction of mines on mountains.";
+            info = "Enables the construction of mines on mountains.";
         else if (type.equals("fishing"))
-            info = "Allows the player to fish.";
+            info = "Enables fishing.";
         else if (type.equals("sailing"))
-            info = "Allows the player to build ports and sail in shallow water.";
+            info = "Enables the constructions of ports and movement in shallow water.";
         else if (type.equals("navigation"))
-            info = "Allows the player to sail in deep water. Cruisers can be upgraded into battleships.";
+            info = "Enables movement in deep water. Cruisers can be upgraded into battleships.";
         else if (type.equals("forestry"))
-            info = "Allows the player to build lumberhuts in forests.";
+            info = "Enables the construction of lumberhuts in forests.";
         else if (type.equals("hunting"))
-            info = "Allows the player to hunt animals in forests.";
+            info = "Enables hunting.";
         else if (type.equals("riding"))
-            info = "Allows the player to train rider troops.";
+            info = "Enables the training of rider troops.";
         else if (type.equals("archery"))
-            info = "Allows the player to train archer troops.";
+            info = "Enables the training of archer troops.";
         else if (type.equals("city building"))
-            info = "Allows the player to build cities.";
+            info = "Enables city building.";
         else if (type.equals("destroy mountain"))
-            info = "Allows the player to destroy mountains";
+            info = "Enables the destruction of mountains";
     }
     
     public Image getButton()
@@ -175,5 +185,72 @@ public class ActionButton
             t.unlockCityBuilding(p);
         else if (type.equals("destroy mountain"))
             t.unlockMountainDestroyer(p);
+    }
+    
+    public boolean canDoAction(Player p)
+    {
+        TechTree t = p.getTree();
+        if (type.equals("organization"))
+            return false;
+        if (type.equals("farming") && p.getStars() >= 10)
+            return !t.getFarming();
+        if (type.equals("shields") && p.getStars() >= 10)
+            return !t.getShields();
+        if (type.equals("climbing") && p.getStars() >= 5)
+            return !t.getClimbing();
+        if (type.equals("mining") && p.getStars() >= 10)
+        {
+            if (t.getClimbing())
+                return !t.getMining();
+            return false;
+        }
+        if (type.equals("fishing") && p.getStars() >= 5)
+            return !t.getFishing();
+        if (type.equals("sailing") && p.getStars() >= 10)
+        {
+            if (t.getFishing())
+                return !t.getSailing();
+            return false;
+        }
+        if (type.equals("navigation") && p.getStars() >= 20)
+        {
+            if (t.getSailing())
+                return !t.getNavigation();
+            return false;
+        }
+        if (type.equals("forestry") && p.getStars() >= 10)
+        {
+            if (t.getHunting())
+                return !t.getForestry();
+            return false;
+        }
+        if (type.equals("hunting") && p.getStars() >= 5)
+            return !t.getHunting();
+        if (type.equals("riding") && p.getStars() >= 5)
+            return !t.getRiding();
+        if (type.equals("archery") && p.getStars() >= 10)
+        {
+            if (t.getHunting())
+                return !t.getArchery();
+            return false;
+        }
+        if (type.equals("city building") && p.getStars() >= 10)
+        {
+            if (t.getRiding())
+                return !t.getCityBuilding();
+            return false;
+        }
+        if (type.equals("destroy mountain") && p.getStars() >= 20)
+        {
+            if (t.getCityBuilding())
+                return !t.getMountainDestroyer();
+            return false;
+        }
+        return false;
+    }
+    
+    public String toString()
+    {
+        return type+": "+info;
     }
 }

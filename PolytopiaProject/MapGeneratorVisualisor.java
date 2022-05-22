@@ -86,10 +86,10 @@ public class MapGeneratorVisualisor extends Application
         {
             for(int j =0; j<map.length; j++)
             {
-                if (map[i][j].getInfo().equals("village"))
+                if (map[j][i].getInfo().equals("village"))
                 {
-                    firstX = i;
-                    firstY = j;
+                    firstX = j;
+                    firstY = i;
                     i=map.length;
                     j=map.length;
                 }
@@ -392,8 +392,11 @@ public class MapGeneratorVisualisor extends Application
                         if (CalcUtility.getConfirmButton(x, y) == 1)
                         {
                             // exit side panel
-                            map[curSelectedX][curSelectedY].drawTile(mapGC, curSelectedX, curSelectedY);
                             DisplayUtility.drawRegularScreen(mapGC);
+                            
+                            DisplayUtility.clearMovableTiles(troopGC, map, curSelectedX, curSelectedY);
+                            DisplayUtility.clearTile(troopGC, curSelectedX, curSelectedY);
+                            Player.troopMap[curSelectedX][curSelectedY].drawTroop(troopGC, curSelectedX, curSelectedY);
                     
                             curLayer = 0;
                             curSelectedX = -1;
@@ -459,17 +462,34 @@ public class MapGeneratorVisualisor extends Application
                 TechTree t = players[curPlayer].getTree();
                 GraphicsContext gc = treeLayer.getGraphicsContext2D();
                 
-                if (isConfirmScreen)
+                ActionButton btn = t.getActionButton(x, y);
+                if (btn != null)
+                {
+                    t.showTechTree(gc);
+                    
+                    curButton = btn;
+                    btn.displayInfo(gc, sceneWidth);
+                    if (btn.canDoAction(players[curPlayer]))
+                        gc.drawImage(DisplayUtility.CHECK_BTN, sceneWidth+120, sceneHeight-80, 60, 60);
+                    gc.drawImage(DisplayUtility.X_BTN, sceneWidth+20, sceneHeight-80, 60, 60);
+                    
+                    isConfirmScreen = true;
+                }
+                else if (isConfirmScreen)
                 {
                     int temp = CalcUtility.getConfirmButton(x, y);
-                    if (temp == 1)
+                    if (temp == 1 && curButton.canDoAction(players[curPlayer]))
                     {
-                        
+                        curButton.doAction(players[curPlayer]);
+                        t.showTechTree(gc);
+                        DisplayUtility.showXBtn(gc);
+                        isConfirmScreen = false;
                     }
                     else if (temp == 0)
                     {
                         t.showTechTree(gc);
-                        curButton = null;
+                        DisplayUtility.showXBtn(gc);
+                        isConfirmScreen = false;
                     }
                 }
                 else
@@ -491,6 +511,7 @@ public class MapGeneratorVisualisor extends Application
         ArrayList<ActionButton> actions = getActionButtons(t);
 
         // display tile type
+        DisplayUtility.fillSide(mapGC);
         DisplayUtility.showType(mapGC, t);
         
         // show selected tile

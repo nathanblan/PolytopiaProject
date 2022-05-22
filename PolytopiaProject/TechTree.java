@@ -58,25 +58,25 @@ public class TechTree
     public void showTechTree(GraphicsContext gc)
     {
         gc.drawImage(new Image("images\\techtreebackground.png"), 0, 0, 1000, 800);
-        gc.drawImage(new Image("techtree_images\\tech tree.png"), 450-100, 350, 100, 100);
+        gc.drawImage(new Image("techtree_images\\tech tree.png"), 350, 350, 100, 100);
         
-        gc.drawImage(new Image("techtree_images\\organization_U.png"), 575-100, 320, 100, 100);
-        gc.drawImage(button(hasClimbing, "climbing"), 530-100, 455, 100, 100);
-        gc.drawImage(button(hasFishing, "fishing"), 370-100, 455, 100, 100);
-        gc.drawImage(button(hasHunting, "hunting"), 325-100, 320, 100, 100);
-        gc.drawImage(button(hasRiding, "riding"), 450-100, 225, 100, 100);
+        gc.drawImage(new Image("techtree_images\\organization_U.png"), 475, 320, 100, 100);
+        gc.drawImage(button(hasClimbing, "climbing"), 430, 455, 100, 100);
+        gc.drawImage(button(hasFishing, "fishing"), 270, 455, 100, 100);
+        gc.drawImage(button(hasHunting, "hunting"), 225, 320, 100, 100);
+        gc.drawImage(button(hasRiding, "riding"), 350, 225, 100, 100);
         
-        gc.drawImage(button(hasForestry, "forestry"), 225-100, 225, 100, 100);
+        gc.drawImage(button(hasForestry, "forestry"), 125, 225, 100, 100);
         gc.drawImage(button(hasArchery, "archery"), 100, 350, 100, 100);
         
-        gc.drawImage(button(hasFarming, "farming"), 675-100, 225, 100, 100);
-        gc.drawImage(button(hasShields, "shields"), 700-100, 350, 100, 100);
+        gc.drawImage(button(hasFarming, "farming"), 575, 225, 100, 100);
+        gc.drawImage(button(hasShields, "shields"), 600, 350, 100, 100);
         
-        gc.drawImage(button(hasCityBuilding, "citybuilding"), 550-100, 130, 100, 100);
-        gc.drawImage(button(hasMountainDestroyer, "mtndestroyer"), 425-100, 75, 100, 100);
+        gc.drawImage(button(hasCityBuilding, "citybuilding"), 450, 130, 100, 100);
+        gc.drawImage(button(hasMountainDestroyer, "mtndestroyer"), 325, 75, 100, 100);
         
-        gc.drawImage(button(hasSailing, "sailing"), 250-100, 510, 100, 100);
-        gc.drawImage(button(hasNavigation, "navigation"), 350-100, 600, 100, 100);
+        gc.drawImage(button(hasSailing, "sailing"), 150, 510, 100, 100);
+        gc.drawImage(button(hasNavigation, "navigation"), 250, 600, 100, 100);
         
         gc.drawImage(button(hasMining, "mining"), 500, 575, 100, 100);
     }
@@ -148,6 +148,11 @@ public class TechTree
     public boolean getCityBuilding()
     {
         return hasCityBuilding;
+    }
+    
+    public boolean getMountainDestroyer()
+    {
+        return hasMountainDestroyer;
     }
     
     //Unlocking!!! Lvl 1 = 5 Stars, Lvl 2 = 10 Stars, Lvl 3 = 20 Stars
@@ -270,5 +275,47 @@ public class TechTree
             hasMountainDestroyer = true;
             person.decStars(20);
         }
+    }
+    
+    public ActionButton getActionButton(double x, double y)
+    {
+        x -= 50;
+        y -= 50;
+        
+        if (square(x-475) + square(y-320) < square(50))
+            return ActionButton.techOrganization;
+        if (square(x-430) + square(y-455) < square(50))
+            return ActionButton.techClimbing;
+        if (square(x-270) + square(y-455) < square(50))
+            return ActionButton.techFishing;
+        if (square(x-225) + square(y-320) < square(50))
+            return ActionButton.techHunting;
+        if (square(x-350) + square(y-225) < square(50))
+            return ActionButton.techRiding;
+        if (square(x-125) + square(y-225) < square(50))
+            return ActionButton.techForestry;
+        if (square(x-100) + square(y-350) < square(50))
+            return ActionButton.techArchery;
+        if (square(x-575) + square(y-225) < square(50))
+            return ActionButton.techFarming;
+        if (square(x-600) + square(y-350) < square(50))
+            return ActionButton.techShields;
+        if (square(x-450) + square(y-130) < square(50))
+            return ActionButton.techCityBuilding;
+        if (square(x-325) + square(y-75) < square(50))
+            return ActionButton.techMountainDestroyer;
+        if (square(x-150) + square(y-510) < square(50))
+            return ActionButton.techSailing;
+        if (square(x-250) + square(y-600) < square(50))
+            return ActionButton.techNavigation;
+        if (square(x-500) + square(y-575) < square(50))
+            return ActionButton.techMining;
+        
+        return null;
+    }
+    
+    private double square(double num)
+    {
+        return num*num;
     }
 }
