@@ -36,31 +36,34 @@ public class City extends Tile
     
     public void setPlayer (Player newPlayer, int x, int y)
     {
-        player = newPlayer;
-
-        ArrayList<Integer> xValues = new ArrayList<Integer>();
-        ArrayList<Integer> yValues = new ArrayList<Integer>();
-        
-        xValues.add(x);
-        if (x != 0)
-            xValues.add(x-1);
-        if (x != MapGeneratorVisualisor.map.length-1)
-            xValues.add(x+1);
-        
-        yValues.add(y);
-        if (y != 0)
-            yValues.add(y-1);
-        if (y != MapGeneratorVisualisor.map[0].length-1)
-            yValues.add(y+1);
-            
-        for (int a : xValues)
+        if (player == null)
         {
-            for (int b : yValues)
+            ArrayList<Integer> xValues = new ArrayList<Integer>();
+            ArrayList<Integer> yValues = new ArrayList<Integer>();
+            
+            xValues.add(x);
+            if (x != 0)
+                xValues.add(x-1);
+            if (x != MapGeneratorVisualisor.map.length-1)
+                xValues.add(x+1);
+            
+            yValues.add(y);
+            if (y != 0)
+                yValues.add(y-1);
+            if (y != MapGeneratorVisualisor.map[0].length-1)
+                yValues.add(y+1);
+                
+            for (int a : xValues)
             {
-                if (MapGeneratorVisualisor.map[a][b].getCity() == null)
-                    MapGeneratorVisualisor.map[a][b].setCity(this);
+                for (int b : yValues)
+                {
+                    if (MapGeneratorVisualisor.map[a][b].getCity() == null)
+                        MapGeneratorVisualisor.map[a][b].setCity(this);
+                }
             }
         }
+        
+        player = newPlayer;
     }
     
     public Player getPlayer()

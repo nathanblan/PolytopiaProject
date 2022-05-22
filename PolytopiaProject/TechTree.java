@@ -10,6 +10,7 @@ import javafx.scene.input.*;
 import javafx.scene.text.*;
 import java.util.ArrayList;
 import javafx.scene.image.Image;
+
 /**
  * Write a description of class TechTree here.
  *
@@ -54,7 +55,7 @@ public class TechTree
         hasMountainDestroyer = false;
     }
     
-    public void showTechTree(GraphicsContext gc, double width, double height)
+    public void showTechTree(GraphicsContext gc)
     {
         gc.drawImage(new Image("images\\techtreebackground.png"), 0, 0, 1000, 800);
         gc.drawImage(new Image("techtree_images\\tech tree.png"), 450-100, 350, 100, 100);
@@ -83,13 +84,9 @@ public class TechTree
     public Image button(boolean unlocked, String type)
     {
         if(unlocked)
-        {
             return new Image("techtree_images\\"+type+"_U.png");
-        }
         else
-        {
             return new Image("techtree_images\\"+type+"_L.png");
-        }
     }
     
     //All the gets!
@@ -161,8 +158,8 @@ public class TechTree
         if(person.getStars() >= 5)
         {
             hasClimbing = true;
+            person.decStars(5);
         }
-        person.decStars(5);
     }
     
     public void unlockFishing(Player person)
@@ -170,8 +167,8 @@ public class TechTree
         if(person.getStars() >= 5)
         {
             hasFishing = true;
+            person.decStars(5);
         }
-        person.decStars(5);
     }
     
     public void unlockHunting(Player person)
@@ -179,8 +176,8 @@ public class TechTree
         if(person.getStars() >= 5)
         {
             hasHunting = true;
+            person.decStars(5);
         }
-        person.decStars(5);
     }
     
     public void unlockRiding(Player person)
@@ -188,8 +185,8 @@ public class TechTree
         if(person.getStars() >= 5)
         {
             hasRiding = true;
+            person.decStars(5);
         }
-        person.decStars(5);
     }
     
     //Lvl 2s
@@ -198,8 +195,8 @@ public class TechTree
         if(person.getStars() >= 10)
         {
             hasFarming = true;
+            person.decStars(10);
         }
-        person.decStars(10);
     }
     
     public void unlockShields(Player person)
@@ -207,8 +204,8 @@ public class TechTree
         if(person.getStars() >= 10)
         {
             hasShields = true;
+            person.decStars(10);
         }
-        person.decStars(10);
     }
     
     public void unlockSailing(Player person)
@@ -216,8 +213,8 @@ public class TechTree
         if(person.getStars() >= 10 && hasFishing)
         {
             hasSailing = true;
+            person.decStars(10);
         }
-        person.decStars(10);
     }
     
     public void unlockMining(Player person)
@@ -225,8 +222,8 @@ public class TechTree
         if(person.getStars() >= 10 && hasClimbing)
         {
             hasMining = true;
+            person.decStars(10);
         }
-        person.decStars(10);
     }
     
     public void unlockArchery(Player person)
@@ -234,8 +231,8 @@ public class TechTree
         if(person.getStars() >= 10 && hasHunting)
         {
             hasArchery = true;
+            person.decStars(10);
         }
-        person.decStars(10);
     }
     
     public void unlockForestry(Player person)
@@ -243,8 +240,8 @@ public class TechTree
         if(person.getStars() >= 10 && hasHunting)
         {
             hasForestry = true;
+            person.decStars(10);
         }
-        person.decStars(10);
     }
     
     public void unlockCityBuilding(Player person)
@@ -252,8 +249,8 @@ public class TechTree
         if(person.getStars() >= 10 && hasRiding)
         {
             hasCityBuilding = true;
+            person.decStars(10);
         }
-        person.decStars(10);
     }
     
     //Lvl 3
@@ -262,8 +259,8 @@ public class TechTree
         if(person.getStars() >= 20 && hasSailing)
         {
             hasNavigation = true;
+            person.decStars(20);
         }
-        person.decStars(20);
     }
     
     public void unlockMountainDestroyer(Player person)
@@ -271,7 +268,7 @@ public class TechTree
         if(person.getStars() >= 20 && hasCityBuilding)
         {
             hasMountainDestroyer = true;
+            person.decStars(20);
         }
-        person.decStars(20);
     }
 }

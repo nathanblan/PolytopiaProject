@@ -55,7 +55,7 @@ public class DisplayUtility
     public static void drawRegularScreen(GraphicsContext gc)
     {
         fillSide(gc);
-        //gc.drawImage(X_BTN, w+20, h-80, 60, 60);
+        gc.drawImage(new Image("techtree_images\\tech tree.png"), w+20, h-80, 60, 60);
         gc.drawImage(END_TURN_BTN, w+120, h-80, 60, 60);
     }
     

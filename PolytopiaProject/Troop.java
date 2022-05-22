@@ -111,8 +111,6 @@ public class Troop
         int attackResult = round((attackForce / totalDamage) * attack * 4.5);
         int defenseResult = round((defenseForce / totalDamage) * other.defense * 4.5);
         
-        System.out.println(attackForce+" "+defenseForce+" "+attackResult+" "+defenseResult);
-        
         other.health -= attackResult;
         if (other.health <= 0)
             return true;

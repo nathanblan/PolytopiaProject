@@ -187,7 +187,7 @@ public class CalcUtility
      * Returns 1 if confirm button pressed
      * Returns 0 if cancel button pressed
      */
-    public static int getConfirmButton(int x, int y)
+    public static int getConfirmButton(double x, double y)
     {
         if (x < w+20 || x > w+180)
             return -1;
@@ -197,7 +197,7 @@ public class CalcUtility
         x -= w+20;
         y -= h-50;
         
-        int output = x/100;
+        int output = (int)(x/100);
         
         x %= 100;
         x -= 30;

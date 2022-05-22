@@ -51,7 +51,7 @@ public class CopyOfMapGeneratorVisualisor extends Application
         Canvas techtree = new Canvas(sceneWidth+200, sceneHeight);
         gc = techtree.getGraphicsContext2D();
         TechTree myTree = new TechTree();
-        myTree.showTechTree(gc, sceneWidth+200, sceneHeight);
+        myTree.showTechTree(gc);
         root.getChildren().add(mapLayer);
         root.getChildren().add(techtree);
         

@@ -59,16 +59,20 @@ public class MapGeneratorVisualisor extends Application
         
         Canvas troopLayer = new Canvas(sceneWidth+200, sceneHeight);
         DisplayUtility.drawTroops(Player.troopMap, troopLayer.getGraphicsContext2D());
+        
+        Canvas treeLayer = new Canvas(sceneWidth+200, sceneHeight);
 
         root.getChildren().add(mapLayer);
         root.getChildren().add(transition);
         root.getChildren().add(troopLayer);
+        root.getChildren().add(treeLayer);
         stage.setScene(new Scene(root));
         stage.show();
         
+        mapLayer.toFront();
         troopLayer.toFront();
         transition.toFront();
-        takeUserInput(mapLayer, troopLayer, transition);
+        takeUserInput(mapLayer, troopLayer, treeLayer, transition);
     }
 
     private void setStartingCity()
@@ -104,13 +108,13 @@ public class MapGeneratorVisualisor extends Application
                 }
             }
         }
-        map[firstX][firstY] = new City(players[0]);
+        ((City)map[firstX][firstY]).setPlayer(players[0], firstX, firstY);
         Player.troopMap[firstX][firstY] = new Warrior(players[0]);
-        map[secondX][secondY] = new City(players[1]);
+        ((City)map[secondX][secondY]).setPlayer(players[1], secondX, secondY);
         Player.troopMap[secondX][secondY] = new Warrior(players[1]);
     }
     
-    private void takeUserInput(Canvas mapLayer, Canvas troopLayer, Canvas transition)
+    private void takeUserInput(Canvas mapLayer, Canvas troopLayer, Canvas treeLayer, Canvas transition)
     {
         troopLayer.addEventHandler(MouseEvent.MOUSE_CLICKED, new EventHandler<MouseEvent>()
         {
@@ -220,6 +224,7 @@ public class MapGeneratorVisualisor extends Application
                                         
                                         if (!temp || t.getRange() > 1)
                                             t.updateLastAttackTurn(curTurn);
+                                        t.updateLastMoveTurn(curTurn);
                                         
                                         if (temp && t.getRange() == 1)
                                         {
@@ -279,29 +284,8 @@ public class MapGeneratorVisualisor extends Application
 
                     if (x != -1 && y != -1)
                     {
-                        // if selected a tile
                         if (curLayer == 2)
-                        {
-                            Tile t = map[x][y];
-                            ArrayList<ActionButton> actions = getActionButtons(t);
-    
-                            // display tile type
-                            DisplayUtility.showType(mapGC, t);
-                            
-                            // show selected tile
-                            if (actions.size() == 0)
-                                DisplayUtility.showSelectedTile(mapGC, Color.GAINSBORO, x, y);
-                            else
-                                DisplayUtility.showSelectedTile(mapGC, Color.LIGHTBLUE, x, y);
-                            
-                            // draw action buttons
-                            for (int i = 0; i < actions.size(); i++)
-                            {
-                                mapGC.drawImage(actions.get(i).getButton(), sceneWidth+20, 80+i*200, 160, 160);
-                            }
-                            
-                            DisplayUtility.showXBtn(mapGC);
-                        }
+                            selectedTile(mapLayer, x, y);
                         // if selected a troop
                         else if (curLayer == 1)
                         {
@@ -314,13 +298,17 @@ public class MapGeneratorVisualisor extends Application
                             
                             if (t.getPlayer() == players[curPlayer])
                             {
-                                // get actions
-                                
-                                
                                 // show movable locations
                                 if (t.getLastMoveTurn() < curTurn)
                                 {
                                     DisplayUtility.showMovableTiles(troopGC, map, x, y);
+                                    
+                                    // show actions
+                                    ArrayList<ActionButton> actions = getActionButtons(t, x, y);
+                                    for (int i = 0; i < actions.size(); i++)
+                                    {
+                                        mapGC.drawImage(actions.get(i).getButton(), sceneWidth+20, 80+i*200, 160, 160);
+                                    }
                                 }
                                 if (t.getLastAttackTurn() < curTurn)
                                 {
@@ -371,41 +359,7 @@ public class MapGeneratorVisualisor extends Application
                     // tile actions
                     else if (curLayer == 2)
                     {
-                        Tile t = map[curSelectedX][curSelectedY];
-                        ArrayList<ActionButton> actions = getActionButtons(t);
-                        int index = CalcUtility.getButtonIndex(x, y);
-                        
-                        // clicked on of the buttons
-                        if (index < actions.size() && index != -1)
-                        {
-                            isConfirmScreen = true;
-                            curButton = actions.get(index);
-                            
-                            DisplayUtility.drawConfirmScreen(mapGC);
-                            DisplayUtility.showType(mapGC, t);
-                            
-                            curButton.displayInfo(mapGC, sceneWidth);
-                        }
-                        else
-                        {
-                            index = CalcUtility.getConfirmButton(x, y);
-                            if (index == 1)
-                            {
-                                // exit side panel
-                                map[curSelectedX][curSelectedY].drawTile(mapGC, curSelectedX, curSelectedY);
-                                DisplayUtility.drawRegularScreen(mapGC);
-                        
-                                curLayer = 0;
-                                curSelectedX = -1;
-                                curSelectedY = -1;
-                            }
-                        }
-                    }
-                    // troop actions
-                    else if (curLayer == 1)
-                    {
-                        int index = CalcUtility.getConfirmButton(x, y);
-                        if (index == 1)
+                        if (CalcUtility.getConfirmButton(x, y) == 1)
                         {
                             // exit side panel
                             map[curSelectedX][curSelectedY].drawTile(mapGC, curSelectedX, curSelectedY);
@@ -415,30 +369,71 @@ public class MapGeneratorVisualisor extends Application
                             curSelectedX = -1;
                             curSelectedY = -1;
                         }
+                        else
+                        {
+                            Tile t = map[curSelectedX][curSelectedY];
+                            ArrayList<ActionButton> actions = getActionButtons(t);
+                            int index = CalcUtility.getButtonIndex(x, y);
+                            if (index < actions.size() && index != -1)
+                            {
+                                isConfirmScreen = true;
+                                curButton = actions.get(index);
+                                
+                                DisplayUtility.drawConfirmScreen(mapGC);
+                                DisplayUtility.showType(mapGC, t);
+                                
+                                curButton.displayInfo(mapGC, sceneWidth);
+                            }
+                        }
+                    }
+                    // troop actions
+                    else if (curLayer == 1)
+                    {
+                        if (CalcUtility.getConfirmButton(x, y) == 1)
+                        {
+                            // exit side panel
+                            map[curSelectedX][curSelectedY].drawTile(mapGC, curSelectedX, curSelectedY);
+                            DisplayUtility.drawRegularScreen(mapGC);
+                    
+                            curLayer = 0;
+                            curSelectedX = -1;
+                            curSelectedY = -1;
+                        }
+                        else
+                        {
+                            Troop t = Player.troopMap[curSelectedX][curSelectedY];
+                            ArrayList<ActionButton> actions = getActionButtons(t,curSelectedX, curSelectedY);
+                            int index = CalcUtility.getButtonIndex(x, y);
+                            if (index < actions.size() && index != -1)
+                            {
+                                if (actions.get(index).doAction(t))
+                                {
+                                    ((City)map[curSelectedX][curSelectedY]).setPlayer(players[curPlayer], curSelectedX, curSelectedY);
+                                    map[curSelectedX][curSelectedY].drawTile(mapGC, curSelectedX, curSelectedY);
+                                }
+                                t.updateLastMoveTurn(curTurn);
+                                t.updateLastAttackTurn(curTurn);
+                                
+                                DisplayUtility.drawRegularScreen(mapGC);
+                                DisplayUtility.clearTile(troopGC, curSelectedX, curSelectedY);
+                                DisplayUtility.clearMovableTiles(troopGC, map, curSelectedX, curSelectedY);
+                                t.drawTroop(troopGC, curSelectedX, curSelectedY);
+                        
+                                curLayer = 0;
+                                curSelectedX = -1;
+                                curSelectedY = -1;
+                            }
+                        }
                     }
                     // regular actions
                     else if (curLayer == 0)
                     {
                         int temp = CalcUtility.getConfirmButton(x, y);
                         
-                        // end turn
                         if (temp == 1)
-                        {
-                            curPlayer++;
-                            curPlayer %= NUM_PLAYERS;
-                            curTurn++;
-                            
-                            transition.toFront();
-                            GraphicsContext gc = transition.getGraphicsContext2D();
-                            
-                            gc.drawImage(new Image("images\\starbackground.jfif"), 0, 0, 1000, 800);
-                            gc.setTextAlign(TextAlignment.CENTER);
-                            gc.setFont(new Font(100));
-                            gc.setFill(Color.LIGHTGREY);
-                            gc.fillText("Player "+(curPlayer+1)+" Turn", sceneWidth/2+100, 400);
-                            gc.setFont(new Font(35));
-                            gc.fillText("click screen to continue", sceneWidth/2+100, 480);
-                        }
+                            endTurn(transition);
+                        else if (temp == 0)
+                            showTree(treeLayer);
                     }
                 }
             }
@@ -453,6 +448,105 @@ public class MapGeneratorVisualisor extends Application
                 troopLayer.toFront();
             }
         });
+        
+        treeLayer.addEventHandler(MouseEvent.MOUSE_CLICKED, new EventHandler<MouseEvent>()
+        {
+            @Override
+            public void handle(MouseEvent e)
+            {
+                double x = e.getX();
+                double y = e.getY();
+                TechTree t = players[curPlayer].getTree();
+                GraphicsContext gc = treeLayer.getGraphicsContext2D();
+                
+                if (isConfirmScreen)
+                {
+                    int temp = CalcUtility.getConfirmButton(x, y);
+                    if (temp == 1)
+                    {
+                        
+                    }
+                    else if (temp == 0)
+                    {
+                        t.showTechTree(gc);
+                        curButton = null;
+                    }
+                }
+                else
+                {
+                    if (CalcUtility.getConfirmButton(x, y) == 1)
+                    {
+                        mapLayer.toFront();
+                        troopLayer.toFront();
+                    }
+                }
+            }
+        });
+    }
+    
+    private void selectedTile(Canvas mapLayer, int x, int y)
+    {
+        GraphicsContext mapGC = mapLayer.getGraphicsContext2D();
+        Tile t = map[x][y];
+        ArrayList<ActionButton> actions = getActionButtons(t);
+
+        // display tile type
+        DisplayUtility.showType(mapGC, t);
+        
+        // show selected tile
+        if (actions.size() == 0)
+            DisplayUtility.showSelectedTile(mapGC, Color.GAINSBORO, x, y);
+        else
+            DisplayUtility.showSelectedTile(mapGC, Color.LIGHTBLUE, x, y);
+        
+        // draw action buttons
+        for (int i = 0; i < actions.size(); i++)
+        {
+            mapGC.drawImage(actions.get(i).getButton(), sceneWidth+20, 80+i*200, 160, 160);
+        }
+        
+        DisplayUtility.showXBtn(mapGC);
+    }
+    
+    private void endTurn(Canvas transition)
+    {
+        curPlayer++;
+        curPlayer %= NUM_PLAYERS;
+        curTurn++;
+        
+        transition.toFront();
+        GraphicsContext gc = transition.getGraphicsContext2D();
+        
+        gc.drawImage(new Image("images\\starbackground.jfif"), 0, 0, 1000, 800);
+        gc.setTextAlign(TextAlignment.CENTER);
+        gc.setFont(new Font(100));
+        gc.setFill(Color.LIGHTGREY);
+        gc.fillText("Player "+(curPlayer+1)+" Turn", sceneWidth/2+100, 400);
+        gc.setFont(new Font(35));
+        gc.fillText("click screen to continue", sceneWidth/2+100, 480);
+    }
+    
+    private void showTree(Canvas treeLayer)
+    {
+        treeLayer.toFront();
+        GraphicsContext gc = treeLayer.getGraphicsContext2D();
+        TechTree t = players[curPlayer].getTree();
+        t.showTechTree(gc);
+        DisplayUtility.showXBtn(gc);
+    }
+    
+    private ArrayList<ActionButton> getActionButtons(Troop t, int x, int y)
+    {
+        ArrayList<ActionButton> actions = new ArrayList<ActionButton>();
+        
+        if (t.canHeal())
+            actions.add(ActionButton.heal);
+        if (t.getLastMoveTurn() < curTurn && t.getLastAttackTurn() < curTurn &&
+            (map[x][y].getInfo().equals("village") || (map[x][y].getInfo().substring(0, 4).equals("city")
+                && ((City)map[x][y]).getPlayer() != t.getPlayer())))
+            actions.add(ActionButton.claimCity);
+        
+        return actions;
     }
     
     private ArrayList<ActionButton> getActionButtons(Tile t)
@@ -461,12 +555,13 @@ public class MapGeneratorVisualisor extends Application
             return new ArrayList<ActionButton>();
         
         ArrayList<ActionButton> actions = new ArrayList<ActionButton>();
+        TechTree tree = players[curPlayer].getTree();
         String type = t.getInfo();
         if (type.equals("mountain"))
         {
-            if (((Mountain)t).canGrabGold())
+            if (((Mountain)t).canGrabGold() && tree.getClimbing())
                 actions.add(ActionButton.pickGold);
-            if (((Mountain)t).canBuildMine())
+            if (((Mountain)t).canBuildMine() && tree.getMining())
                 actions.add(ActionButton.buildMine);
         }
         else if (type.equals("field"))
@@ -476,21 +571,21 @@ public class MapGeneratorVisualisor extends Application
         }
         else if (type.equals("forest"))
         {
-            if (((Forest)t).canHunt())
+            if (((Forest)t).canHunt() && tree.getHunting())
                 actions.add(ActionButton.hunt);
-            if (((Forest)t).canBuildHut())
+            if (((Forest)t).canBuildHut() && tree.getForestry())
                 actions.add(ActionButton.buildHut);
         }
         else if (type.equals("water"))
         {
-            if (((Water)t).canFish())
+            if (((Water)t).canFish() && tree.getFishing())
                 actions.add(ActionButton.fish);
-            if (((Water)t).canBuildPort())
+            if (((Water)t).canBuildPort() && tree.getSailing())
                 type = "water"; // placeholder
         }
         else if (type.equals("grass"))
         {
-            if (((Grass)t).canBuildFarm())
+            if (((Grass)t).canBuildFarm() && tree.getFarming())
                 type = "grass"; // placeholder
         }
         
