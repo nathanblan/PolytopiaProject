@@ -1,5 +1,5 @@
 #BlueJ class context
-comment0.target=MapGeneratorVisualisor
+comment0.target=Display
 comment0.text=\r\n\ Use\ to\ visualize\ the\ map\ made\ by\ MapGenerator.\r\n
 comment1.params=stage
 comment1.target=void\ start(javafx.stage.Stage)

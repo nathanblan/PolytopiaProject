@@ -34,31 +34,32 @@ public class City extends Tile
         population = 0;
     }
     
-    public void setPlayer (Player newPlayer, int x, int y)
+    public void setPlayer (Player newPlayer, Tile[][] map, int x, int y)
     {
         if (player == null)
         {
             ArrayList<Integer> xValues = new ArrayList<Integer>();
             ArrayList<Integer> yValues = new ArrayList<Integer>();
+            int size = map.length;
             
             xValues.add(x);
             if (x != 0)
                 xValues.add(x-1);
-            if (x != MapGeneratorVisualisor.map.length-1)
+            if (x != size-1)
                 xValues.add(x+1);
             
             yValues.add(y);
             if (y != 0)
                 yValues.add(y-1);
-            if (y != MapGeneratorVisualisor.map[0].length-1)
+            if (y != size-1)
                 yValues.add(y+1);
                 
             for (int a : xValues)
             {
                 for (int b : yValues)
                 {
-                    if (MapGeneratorVisualisor.map[a][b].getCity() == null)
-                        MapGeneratorVisualisor.map[a][b].setCity(this);
+                    if (map[a][b].getCity() == null)
+                        map[a][b].setCity(this);
                 }
             }
         }

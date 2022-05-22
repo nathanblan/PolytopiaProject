@@ -14,13 +14,13 @@ import javafx.scene.image.Image;
 /**
  * Use to visualize the map made by MapGenerator.
  */
-public class MapGeneratorVisualisor extends Application
+public class Display extends Application
 {
     private double sceneWidth = 800;
     private double sceneHeight = 800;
     private static final int SIZE = 16;
     
-    public static Tile[][] map = getTileMap();
+    private Tile[][] map = getTileMap();
 
     private int curX = 0;
     private int curY = 0;
@@ -108,9 +108,9 @@ public class MapGeneratorVisualisor extends Application
                 }
             }
         }
-        ((City)map[firstX][firstY]).setPlayer(players[0], firstX, firstY);
+        ((City)map[firstX][firstY]).setPlayer(players[0], map, firstX, firstY);
         Player.troopMap[firstX][firstY] = new Warrior(players[0]);
-        ((City)map[secondX][secondY]).setPlayer(players[1], secondX, secondY);
+        ((City)map[secondX][secondY]).setPlayer(players[1], map, secondX, secondY);
         Player.troopMap[secondX][secondY] = new Warrior(players[1]);
     }
     
@@ -411,7 +411,7 @@ public class MapGeneratorVisualisor extends Application
                             {
                                 if (actions.get(index).doAction(t))
                                 {
-                                    ((City)map[curSelectedX][curSelectedY]).setPlayer(players[curPlayer], curSelectedX, curSelectedY);
+                                    ((City)map[curSelectedX][curSelectedY]).setPlayer(players[curPlayer], map, curSelectedX, curSelectedY);
                                     map[curSelectedX][curSelectedY].drawTile(mapGC, curSelectedX, curSelectedY);
                                 }
                                 t.updateLastMoveTurn(curTurn);
@@ -447,8 +447,7 @@ public class MapGeneratorVisualisor extends Application
             @Override
             public void handle(MouseEvent e)
             {
-                mapLayer.toFront();
-                troopLayer.toFront();
+                transition.toBack();
             }
         });
         
@@ -495,10 +494,7 @@ public class MapGeneratorVisualisor extends Application
                 else
                 {
                     if (CalcUtility.getConfirmButton(x, y) == 1)
-                    {
-                        mapLayer.toFront();
-                        troopLayer.toFront();
-                    }
+                        treeLayer.toBack();
                 }
             }
         });
