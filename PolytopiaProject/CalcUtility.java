@@ -132,7 +132,7 @@ public class CalcUtility
                 }
                 else if (type.equals("deep water"))
                 {
-                    if (t.getShipLevel() > 1)
+                    if (t.getShipLevel() > 0 && t.getPlayer().getTree().getNavigation())
                         movable = true;
                 }
                 else

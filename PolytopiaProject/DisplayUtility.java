@@ -138,8 +138,7 @@ public class DisplayUtility
     public static void fillFog(Canvas fog)
     {
         GraphicsContext gc = fog.getGraphicsContext2D();
-        gc.setFill(Color.WHITE);
-        gc.fillRect(0, 0, w, h);
+        gc.drawImage(new Image("images\\fog.png"), 0, 0, w, h);
     }
     
     public static void drawActionButtons(GraphicsContext gc, ArrayList<ActionButton> actions)

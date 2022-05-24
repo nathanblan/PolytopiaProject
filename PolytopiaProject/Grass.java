@@ -36,7 +36,10 @@ public class Grass extends Tile
     
     public void drawTile(GraphicsContext gc, int x, int y)
     {
-        gc.drawImage(new Image("images\\grass.jpg"), x*TILE_SIZE, y*TILE_SIZE, TILE_SIZE, TILE_SIZE);
+        if (isFarm)
+            gc.drawImage(new Image("images\\farm.png"), x*TILE_SIZE, y*TILE_SIZE, TILE_SIZE, TILE_SIZE);
+        else  
+            gc.drawImage(new Image("images\\grass.jpg"), x*TILE_SIZE, y*TILE_SIZE, TILE_SIZE, TILE_SIZE);
     }
     
     public String getInfo()

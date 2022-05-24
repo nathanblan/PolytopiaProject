@@ -328,6 +328,9 @@ public class Display extends Application
                     t.updateLastMoveTurn(curTurn);
                     if (!t.canDash())
                         t.updateLastAttackTurn(curTurn);
+                        
+                    if (map[x][y].getInfo().equals("water") && ((Water)map[x][y]).hasPort() && t.getShipLevel() < 1)
+                        t.upgradeShip();
 
                     ArrayList<Coord> attackable = CalcUtility.getAttackableTiles(x, y);
                     // nothing can be attacked, deselect troop
@@ -367,8 +370,13 @@ public class Display extends Application
                     if (!temp || t.getRange() > 1)
                         t.updateLastAttackTurn(curTurn);
                     t.updateLastMoveTurn(curTurn);
-
-                    if (temp && t.getRange() == 1)
+                    
+                    String s = map[x][y].getInfo();
+                    
+                    if (temp && t.getRange() == 1 &&
+                        (s.equals("field") || s.equals("forest") || s.equals("grass")
+                        || (s.equals("mountain") && players[curPlayer].getTree().getClimbing())
+                        || (s.equals("water") && players[curPlayer].getTree().getFishing() && ((Water)map[x][y]).hasPort())))
                     {
                         // take other troop's location
                         DisplayUtility.clearTile(troopGC, curSelectedX, curSelectedY);
@@ -423,12 +431,14 @@ public class Display extends Application
             
             if (temp == 1)
             {
+                players[curPlayer].decStars(15);
                 map[curSelectedX][curSelectedY] = new Field(false);
                 map[curSelectedX][curSelectedY].setCity(t.getCity());
                 t = map[curSelectedX][curSelectedY];
             }
             else if (temp == 2)
             {
+                players[curPlayer].decStars(20);
                 map[curSelectedX][curSelectedY] = new City(curSelectedX, curSelectedY);
                 ((City)map[curSelectedX][curSelectedY]).setPlayer(players[curPlayer], map);
                 t = map[curSelectedX][curSelectedY];
@@ -626,7 +636,9 @@ public class Display extends Application
         ArrayList<ActionButton> actions = new ArrayList<ActionButton>();
         
         Tile t = map[x][y];
-        if (t.getPlayer() == null && Player.troopMap[x][y] != null && Player.troopMap[x][y].getPlayer() == players[curPlayer])
+        if (t.getPlayer() == null && Player.troopMap[x][y] != null &&
+            Player.troopMap[x][y].getPlayer() == players[curPlayer] && players[curPlayer].getStars() >= 20
+            && !t.getInfo().equals("water") && !t.getInfo().equals("mountain") && !t.getInfo().equals("deep water"))
         {
             actions.add(ActionButton.buildCity);
             return actions;
@@ -643,7 +655,7 @@ public class Display extends Application
                 actions.add(ActionButton.pickGold);
             if (((Mountain)t).canBuildMine() && tree.getMining())
                 actions.add(ActionButton.buildMine);
-            if (tree.getMountainDestroyer())
+            if (tree.getMountainDestroyer() && players[curPlayer].getStars() >= 15)
                 actions.add(ActionButton.destroyMountain);
         }
         else if (type.equals("field"))
@@ -672,11 +684,13 @@ public class Display extends Application
         }
         else if (type.substring(0,4).equals("city") && Player.troopMap[x][y] == null) 
         {
-            if (t.getPlayer().getStars()>=3 && tree.getRiding())
+            if (t.getPlayer().getStars() >= 2)
+                actions.add(ActionButton.trainWarrior);
+            if (t.getPlayer().getStars() >= 3 && tree.getRiding())
                 actions.add(ActionButton.trainRider);
-            if (t.getPlayer().getStars()>=3 && tree.getArchery())
+            if (t.getPlayer().getStars() >= 3 && tree.getArchery())
                 actions.add(ActionButton.trainArcher);
-            if (t.getPlayer().getStars()>=3 && tree.getShields())
+            if (t.getPlayer().getStars() >= 3 && tree.getShields())
                 actions.add(ActionButton.trainShield);
         }
         

@@ -74,17 +74,17 @@ public class ActionButton
         else if (type.equals("build port"))
             info = "Builds a port in shallow water. Costs 5 stars, gains 2 population.";
         else if (type.equals("build city"))
-            info = "Build a city.";
+            info = "Builds a city. Costs 20 stars.";
         else if (type.equals("destroy mtn"))
-            info = "Destroys a mountain";
+            info = "Destroys a mountain. Costs 15 stars.";
             
         else if (type.equals("warrior"))
-            info = "Train a new warrior";
-        else if (type.equals("archer"))
+            info = "Train a  warrior.";
+        else if (type.equals("archer."))
             info = "Train an archer";
-        else if (type.equals("rider"))
+        else if (type.equals("rider."))
             info = "Train rider";
-        else if (type.equals("shield"))
+        else if (type.equals("shield."))
             info = "Train shield";
             
         else if (type.equals("organization"))
