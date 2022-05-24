@@ -227,9 +227,9 @@ public class Display extends Application
                     DisplayUtility.fillSide(mapGC, players[curPlayer].getStars());
                     if (curLayer == 1)
                     {
-                        DisplayUtility.clearMovableTiles(troopGC, map, curSelectedX, curSelectedY);
+                        DisplayUtility.clearMovableTiles(troopGC, map, curSelectedX, curSelectedY, curPlayer);
                         DisplayUtility.clearTile(troopGC, curSelectedX, curSelectedY);
-                        Player.troopMap[curSelectedX][curSelectedY].drawTroop(troopGC, curSelectedX, curSelectedY);
+                        Player.troopMap[curSelectedX][curSelectedY].drawTroop(troopGC, curSelectedX, curSelectedY, Player.troopMap[curSelectedX][curSelectedY].getPlayer().getPlayerNum()+1);
                     }
                     else if (curLayer == 2)
                     {
@@ -316,8 +316,8 @@ public class Display extends Application
                 if (c.x == x && c.y == y)
                 {
                     DisplayUtility.clearTile(troopGC, curSelectedX, curSelectedY);
-                    t.drawTroop(troopGC, x, y);
-
+                    t.drawTroop(troopGC, x, y, t.getPlayer().getPlayerNum()+1);
+                    
                     Player.troopMap[curSelectedX][curSelectedY] = null;
                     Player.troopMap[x][y] = t;
                     if (map[x][y].getInfo().equals("mountain"))
@@ -372,8 +372,8 @@ public class Display extends Application
                     {
                         // take other troop's location
                         DisplayUtility.clearTile(troopGC, curSelectedX, curSelectedY);
-                        t.drawTroop(troopGC, x, y);
-
+                        t.drawTroop(troopGC, x, y, t.getPlayer().getPlayerNum()+1);
+                        
                         Player.troopMap[curSelectedX][curSelectedY] = null;
                         Player.troopMap[x][y] = t;
 
@@ -463,11 +463,11 @@ public class Display extends Application
         {
             // exit side panel
             DisplayUtility.drawRegularScreen(mapGC, players[curPlayer].getStars());
-
-            DisplayUtility.clearMovableTiles(troopGC, map, curSelectedX, curSelectedY);
+            
+            DisplayUtility.clearMovableTiles(troopGC, map, curSelectedX, curSelectedY, curPlayer+1);
             DisplayUtility.clearTile(troopGC, curSelectedX, curSelectedY);
-            Player.troopMap[curSelectedX][curSelectedY].drawTroop(troopGC, curSelectedX, curSelectedY);
-
+            Player.troopMap[curSelectedX][curSelectedY].drawTroop(troopGC, curSelectedX, curSelectedY, Player.troopMap[curSelectedX][curSelectedY].getPlayer().getPlayerNum()+1);
+    
             curLayer = 0;
             curSelectedX = -1;
             curSelectedY = -1;
@@ -489,9 +489,9 @@ public class Display extends Application
 
                 DisplayUtility.drawRegularScreen(mapGC, players[curPlayer].getStars());
                 DisplayUtility.clearTile(troopGC, curSelectedX, curSelectedY);
-                DisplayUtility.clearMovableTiles(troopGC, map, curSelectedX, curSelectedY);
-                t.drawTroop(troopGC, curSelectedX, curSelectedY);
-
+                DisplayUtility.clearMovableTiles(troopGC, map, curSelectedX, curSelectedY, curPlayer+1);
+                t.drawTroop(troopGC, curSelectedX, curSelectedY, t.getPlayer().getPlayerNum()+1);
+        
                 curLayer = 0;
                 curSelectedX = -1;
                 curSelectedY = -1;
@@ -670,7 +670,7 @@ public class Display extends Application
             if (((Grass)t).canBuildFarm() && tree.getFarming())
                 actions.add(ActionButton.buildFarm);
         }
-        else if (type.substring(0,4).equals("city") && Player.troopMap[x][y] == null) // check if troop alredy exists
+        else if (type.substring(0,4).equals("city") && Player.troopMap[x][y] == null) 
         {
             if (t.getPlayer().getStars()>=3 && tree.getRiding())
                 actions.add(ActionButton.trainRider);

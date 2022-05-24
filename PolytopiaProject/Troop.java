@@ -175,19 +175,19 @@ public class Troop
         
     }
     
-    public void drawTroop(GraphicsContext gc, int x, int y)
+    public void drawTroop(GraphicsContext gc, int x, int y, int playerNum)
     {
         if(shipLevel == 1) //draw sailboat
         {
-            gc.drawImage(new Image("troops\\boat.jpg"), x*Tile.TILE_SIZE, y*Tile.TILE_SIZE, Tile.TILE_SIZE, Tile.TILE_SIZE);
+            gc.drawImage(new Image("troops\\boat"+playerNum+".png"), x*Tile.TILE_SIZE, y*Tile.TILE_SIZE, Tile.TILE_SIZE, Tile.TILE_SIZE);
         }
         else if(shipLevel == 2) //draw cruiser
         {
-            gc.drawImage(new Image("troops\\sailboat.jpg"), x*Tile.TILE_SIZE, y*Tile.TILE_SIZE, Tile.TILE_SIZE, Tile.TILE_SIZE);
+            gc.drawImage(new Image("troops\\sailboat"+playerNum+".png"), x*Tile.TILE_SIZE, y*Tile.TILE_SIZE, Tile.TILE_SIZE, Tile.TILE_SIZE);
         }
         else //draw battleship
         {
-            gc.drawImage(new Image("troops\\battleship.jpg"), x*Tile.TILE_SIZE, y*Tile.TILE_SIZE, Tile.TILE_SIZE, Tile.TILE_SIZE);
+            gc.drawImage(new Image("troops\\battleship"+playerNum+".png"), x*Tile.TILE_SIZE, y*Tile.TILE_SIZE, Tile.TILE_SIZE, Tile.TILE_SIZE);
         }
         
     }
