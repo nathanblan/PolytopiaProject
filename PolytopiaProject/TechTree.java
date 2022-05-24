@@ -33,6 +33,7 @@ public class TechTree
     private boolean hasRiding;
     private boolean hasCityBuilding;
     private boolean hasMountainDestroyer;
+    private boolean hasCanalDigger;
     public TechTree()
     {
         hasOrganization = true;
@@ -41,6 +42,7 @@ public class TechTree
         
         hasClimbing = false;
         hasMining = false;
+        hasCanalDigger = false;
         
         hasFishing = false;
         hasSailing = false;
@@ -52,7 +54,7 @@ public class TechTree
         
         hasRiding = false;
         hasCityBuilding = false;
-        hasMountainDestroyer = false;
+        hasMountainDestroyer = false;      
     }
     
     public void showTechTree(GraphicsContext gc)
@@ -74,6 +76,7 @@ public class TechTree
         
         gc.drawImage(button(hasCityBuilding, "citybuilding"), 450, 130, 100, 100);
         gc.drawImage(button(hasMountainDestroyer, "mtndestroyer"), 325, 75, 100, 100);
+        gc.drawImage(button(hasCanalDigger, "cnldigger"), 400, 75, 100, 100);
         
         gc.drawImage(button(hasSailing, "sailing"), 150, 510, 100, 100);
         gc.drawImage(button(hasNavigation, "navigation"), 250, 600, 100, 100);
@@ -153,6 +156,11 @@ public class TechTree
     public boolean getMountainDestroyer()
     {
         return hasMountainDestroyer;
+    }
+    
+    public boolean getCanalDigger()
+    {
+        return hasCanalDigger;
     }
     
     //Unlocking!!! Lvl 1 = 5 Stars, Lvl 2 = 10 Stars, Lvl 3 = 20 Stars
@@ -273,6 +281,15 @@ public class TechTree
         if(person.getStars() >= 20 && hasCityBuilding)
         {
             hasMountainDestroyer = true;
+            person.decStars(20);
+        }
+    }
+    
+    public void unlockCanalDigger(Player person)
+    {
+        if(person.getStars() >= 20 && hasMining)
+        {
+            hasCanalDigger = true;
             person.decStars(20);
         }
     }

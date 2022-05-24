@@ -37,6 +37,7 @@ public class ActionButton
     public static final ActionButton techShields = new ActionButton("shields");
     public static final ActionButton techClimbing = new ActionButton("climbing");
     public static final ActionButton techMining = new ActionButton("mining");
+    public static final ActionButton techCanalDigger = new ActionButton("dig canal");
     public static final ActionButton techFishing = new ActionButton("fishing");
     public static final ActionButton techSailing = new ActionButton("sailing");
     public static final ActionButton techNavigation = new ActionButton("navigation");
@@ -85,6 +86,8 @@ public class ActionButton
             info = "Enables the training of shield troops.";
         else if (type.equals("climbing"))
             info = "Enables troops to move onto mountain tiles. Enables picking up gold from mountains.";
+        else if (type.equals("dig canal"))
+            info = "Enables the creation of canals.";
         else if (type.equals("mining"))
             info = "Enables the construction of mines on mountains.";
         else if (type.equals("fishing"))
@@ -210,6 +213,8 @@ public class ActionButton
             t.unlockCityBuilding(p);
         else if (type.equals("destroy mountain"))
             t.unlockMountainDestroyer(p);
+        else if (type.equals("dig canal"))
+            t.unlockCanalDigger(p);
     }
     
     public boolean canDoAction(Player p)
@@ -269,6 +274,12 @@ public class ActionButton
         {
             if (t.getCityBuilding())
                 return !t.getMountainDestroyer();
+            return false;
+        }
+        if (type.equals("dig canal") && p.getStars() >= 20)
+        {
+            if (t.getMining())
+                return !t.getCanalDigger();
             return false;
         }
         return false;
