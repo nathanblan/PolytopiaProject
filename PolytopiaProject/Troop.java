@@ -177,11 +177,7 @@ public class Troop
     
     public void drawTroop(GraphicsContext gc, int x, int y)
     {
-        /*if(shipLevel == 0) //non aquatic version of troop
-        {
-            gc.drawImage(new Image("images\\claimcity_button.png"), x*Tile.TILE_SIZE, y*Tile.TILE_SIZE, Tile.TILE_SIZE, Tile.TILE_SIZE);
-        }
-        else */if(shipLevel == 1) //draw sailboat
+        if(shipLevel == 1) //draw sailboat
         {
             gc.drawImage(new Image("troops\\boat.jpg"), x*Tile.TILE_SIZE, y*Tile.TILE_SIZE, Tile.TILE_SIZE, Tile.TILE_SIZE);
         }

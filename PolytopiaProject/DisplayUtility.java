@@ -21,10 +21,126 @@ public class DisplayUtility
 {
     private static final int w = 800;
     private static final int h = 800;
+    private static final int size = 16;
     
     public static final Image X_BTN = new Image("images\\X_button.png");
     public static final Image CHECK_BTN = new Image("images\\check_button.png");
     public static final Image END_TURN_BTN = new Image("images\\endturn_button.png");
+    
+    public static void clearTroopFog(Canvas fog, int x, int y, int r, Player p)
+    {
+        ArrayList<Integer> Xs = new ArrayList<Integer>();
+        ArrayList<Integer> Ys = new ArrayList<Integer>();
+        
+        Xs.add(x);
+        if (x != 0)
+        {
+            Xs.add(x-1);
+            if (x != 1 && r > 1)
+            {
+                Xs.add(x-2);
+                if (x != 2 && r > 2)
+                    Xs.add(x-3);
+            }
+        }
+        if (x != size-1)
+        {
+            Xs.add(x+1);
+            if (x != size-2 && r > 1)
+            {
+                Xs.add(x+2);
+                if (x != size-3 && r > 2)
+                    Xs.add(x+3);
+            }
+        }
+                            
+        Ys.add(y);
+        if (y != 0)
+        {
+            Ys.add(y-1);
+            if (y != 1 && r > 1)
+            {
+                Ys.add(y-2);
+                if (y != 2 && r > 2)
+                    Ys.add(y-3);
+            }
+        }
+        if (y != size-1)
+        {
+            Ys.add(y+1);
+            if (y != size-2 && r > 1)
+            {
+                Ys.add(y+2);
+                if (y != size-3 && r > 2)
+                    Ys.add(y+3);
+            }
+        }
+        
+        for (int a : Xs)
+        {
+            for (int b : Ys)
+            {
+                clearFog(fog, a, b);
+                p.fogMap[a][b] = true;
+            }
+        }
+    }
+    
+    public static void clearStartingFog(Canvas fog, int x, int y, Player p)
+    {
+        ArrayList<Integer> Xs = new ArrayList<Integer>();
+        ArrayList<Integer> Ys = new ArrayList<Integer>();
+        
+        Xs.add(x);
+        if (x != 0)
+        {
+            Xs.add(x-1);
+            if (x != 1)
+                Xs.add(x-2);
+        }
+        if (x != size-1)
+        {
+            Xs.add(x+1);
+            if (x != size-2)
+                Xs.add(x+2);
+        }
+                            
+        Ys.add(y);
+        if (y != 0)
+        {
+            Ys.add(y-1);
+            if (y != 1)
+                Ys.add(y-2);
+        }
+        if (y != size-1)
+        {
+            Ys.add(y+1);
+            if (y != size-2)
+                Ys.add(y+2);
+        }
+        
+        
+        for (int a : Xs)
+        {
+            for (int b : Ys)
+            {
+                clearFog(fog, a, b);
+                p.fogMap[a][b] = true;
+            }
+        }
+    }
+    
+    private static void clearFog(Canvas fog, int x, int y)
+    {
+        clearTile(fog.getGraphicsContext2D(), x, y);
+    }
+
+    public static void fillFog(Canvas fog)
+    {
+        GraphicsContext gc = fog.getGraphicsContext2D();
+        gc.setFill(Color.WHITE);
+        gc.fillRect(0, 0, w, h);
+    }
     
     public static void drawActionButtons(GraphicsContext gc, ArrayList<ActionButton> actions)
     {

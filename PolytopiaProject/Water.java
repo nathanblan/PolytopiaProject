@@ -58,7 +58,7 @@ public class Water extends Tile
     public void drawTile(GraphicsContext gc, int x, int y)
     {
         if (hasPort)
-            hasPort = hasPort; //placeholder
+            gc.drawImage(new Image("images\\port.png"), x*TILE_SIZE, y*TILE_SIZE, TILE_SIZE, TILE_SIZE);
         else if (hasFish)
             gc.drawImage(new Image("images\\water_with_fish.jpg"), x*TILE_SIZE, y*TILE_SIZE, TILE_SIZE, TILE_SIZE);
         else

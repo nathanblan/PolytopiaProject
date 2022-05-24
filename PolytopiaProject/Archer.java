@@ -33,6 +33,6 @@ public class Archer extends Troop
         if (shipLevel > 0)
             super.drawTroop(gc, x, y);
         else
-            gc.drawImage(new Image("troops\\archer.png"), x*Tile.TILE_SIZE, y*Tile.TILE_SIZE, Tile.TILE_SIZE, Tile.TILE_SIZE);
+            gc.drawImage(new Image("troops\\archer1.png"), x*Tile.TILE_SIZE, y*Tile.TILE_SIZE, Tile.TILE_SIZE, Tile.TILE_SIZE);
     }
 }

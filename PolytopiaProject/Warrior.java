@@ -33,6 +33,6 @@ public class Warrior extends Troop
         if (shipLevel > 0)
             super.drawTroop(gc, x, y);
         else
-            gc.drawImage(new Image("troops\\warrior.png"), x*Tile.TILE_SIZE, y*Tile.TILE_SIZE, Tile.TILE_SIZE, Tile.TILE_SIZE);
+            gc.drawImage(new Image("troops\\warrior1.png"), x*Tile.TILE_SIZE, y*Tile.TILE_SIZE, Tile.TILE_SIZE, Tile.TILE_SIZE);
     }
 }

@@ -19,7 +19,12 @@ public class Field extends Tile
      */
     public Field()
     {
-        hasFruit = Math.random() < 0.2;
+        hasFruit = Math.random() < 0.4;
+    }
+    
+    public Field(boolean fruit)
+    {
+        hasFruit = fruit;
     }
     
     public int harvestFruit()
