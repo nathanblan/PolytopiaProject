@@ -643,7 +643,7 @@ public class Display extends Application
                 else if (charMap[r][c] == '-')
                     map[r][c] = new Field();
                 else if (charMap[r][c] == 'c')
-                    map[r][c] = new City();
+                    map[r][c] = new City(r,c);
             }
         }
 

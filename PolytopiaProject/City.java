@@ -15,16 +15,20 @@ public class City extends Tile
     private int population;
     private int level;
     private int levelInc; // incrementor for population until next level
+    private int x;
+    private int y;
     
     /**
      * Constructor for objects of class City
      */
-    public City()
+    public City(int x, int y)
     {
         player = null;
         level = 1;
         levelInc = 2;
         population = 0;
+        this.x=x;
+        this.y=y;
     }
     
     public void setPlayer (Player newPlayer, Tile[][] map, int x, int y)
@@ -115,5 +119,10 @@ public class City extends Tile
         if (player == null)
             return "village";
         return "city lvl "+level;
+    }
+    
+    public void trainTroop(Troop type)
+    {
+        Player.troopMap[x][y] = type;
     }
 }
