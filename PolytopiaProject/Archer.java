@@ -28,11 +28,11 @@ public class Archer extends Troop
         return "archer";
     }
     
-    public void drawTroop(GraphicsContext gc, int x, int y)
+    public void drawTroop(GraphicsContext gc, int x, int y, int playerNum)
     {
         if (shipLevel > 0)
-            super.drawTroop(gc, x, y);
+            super.drawTroop(gc, x, y, playerNum);
         else
-            gc.drawImage(new Image("troops\\archer.png"), x*Tile.TILE_SIZE, y*Tile.TILE_SIZE, Tile.TILE_SIZE, Tile.TILE_SIZE);
+            gc.drawImage(new Image("troops\\archer"+playerNum+".png"), x*Tile.TILE_SIZE, y*Tile.TILE_SIZE, Tile.TILE_SIZE, Tile.TILE_SIZE);
     }
 }
