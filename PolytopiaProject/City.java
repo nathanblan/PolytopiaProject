@@ -1,6 +1,7 @@
 import javafx.scene.image.Image;
 import javafx.scene.canvas.*;
 import java.util.ArrayList;
+import javafx.scene.paint.*;
 
 /**
  * City buildings
@@ -92,6 +93,21 @@ public class City extends Tile
             gc.drawImage(new Image("images\\city.png"), x*TILE_SIZE, y*TILE_SIZE, TILE_SIZE, TILE_SIZE);
         else // player 2 city
             gc.drawImage(new Image("images\\city.png"), x*TILE_SIZE, y*TILE_SIZE, TILE_SIZE, TILE_SIZE);
+    }
+    
+    public void drawPopulation(GraphicsContext gc, double w)
+    {
+        gc.setFill(Color.WHITE);
+        gc.fillRoundRect(w+50, 75, 100, 13, 6, 5);
+        gc.setFill(Color.TAN);
+        gc.fillRoundRect(w+50, 75, 100.0*population/(level+1), 13, 6, 5);
+        if (population > 0)
+            gc.fillRect(w+56, 75, 100.0*population/(level+1)-6, 13);
+        gc.setFill(Color.BLACK);
+        for (int i = 1; i <= level; i++)
+        {
+            gc.fillRect(w+50+100.0*i/(level+1)-1, 75, 2, 13);
+        }
     }
     
     public String getInfo()

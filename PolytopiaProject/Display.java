@@ -147,7 +147,9 @@ public class Display extends Application
                             map[curSelectedX][curSelectedY].drawTile(mapGC, curSelectedX, curSelectedY);
                         }
                     }
-                        
+                    
+                    boolean actionDone = false;
+                    
                     // selected same tile
                     if (x == curSelectedX && y == curSelectedY)
                     {
@@ -164,113 +166,10 @@ public class Display extends Application
                     else
                     {
                         if (curSelectedX != -1 && curSelectedY != -1)
-                        {
-                            // check if selected a movement/attack for troop
-                            Troop t = Player.troopMap[curSelectedX][curSelectedY];
-                            if (curLayer == 1 && t.getLastMoveTurn() < curTurn && t.getPlayer() == players[curPlayer])
-                            {
-                                // check if selected troop movement
-                                ArrayList<Coord> movable = CalcUtility.getMovableTiles(map, curSelectedX, curSelectedY);
-                                for (Coord c : movable)
-                                {
-                                    if (c.x == x && c.y == y)
-                                    {
-                                        DisplayUtility.clearTile(troopGC, curSelectedX, curSelectedY);
-                                        t.drawTroop(troopGC, x, y);
-                                        
-                                        Player.troopMap[curSelectedX][curSelectedY] = null;
-                                        Player.troopMap[x][y] = t;
-                                        
-                                        t.updateLastMoveTurn(curTurn);
-                                        if (!t.canDash())
-                                            t.updateLastAttackTurn(curTurn);
-                                        
-                                        ArrayList<Coord> attackable = CalcUtility.getAttackableTiles(x, y);
-                                        // nothing can be attacked, deselect troop
-                                        if (attackable.size() == 0 && t.getLastAttackTurn() < curTurn)
-                                        {
-                                            curSelectedX = -1;
-                                            curSelectedY = -1;
-                                            curLayer = 0;
-                                            DisplayUtility.drawRegularScreen(mapGC, players[curPlayer].getStars());
-                                        }
-                                        else
-                                        {
-                                            curSelectedX = x;
-                                            curSelectedY = y;
-                                            DisplayUtility.fillSide(mapGC, players[curPlayer].getStars());
-                                            DisplayUtility.showType(mapGC, t);
-                                            DisplayUtility.showAttackableTiles(troopGC, x, y);
-                                        }
-                                        
-                                        x = -1;
-                                        y = -1;
-                                    }
-                                }
-                            }
-                            
-                            // check if attacked troop
-                            if (x != -1 && y != -1 && curLayer == 1 &&
-                                t.getLastAttackTurn() < curTurn && t.getPlayer() == players[curPlayer])
-                            {
-                                ArrayList<Coord> attackable = CalcUtility.getAttackableTiles(curSelectedX, curSelectedY);
-                                for (Coord c : attackable)
-                                {
-                                    if (c.x == x && c.y == y)
-                                    {
-                                        Troop other = Player.troopMap[x][y];
-                                        
-                                        boolean temp = t.attack(other, CalcUtility.getDistance(x, y, curSelectedX, curSelectedY));
-                                        
-                                        if (!temp || t.getRange() > 1)
-                                            t.updateLastAttackTurn(curTurn);
-                                        t.updateLastMoveTurn(curTurn);
-                                        
-                                        if (temp && t.getRange() == 1)
-                                        {
-                                            // take other troop's location
-                                            DisplayUtility.clearTile(troopGC, curSelectedX, curSelectedY);
-                                            t.drawTroop(troopGC, x, y);
-                                            
-                                            Player.troopMap[curSelectedX][curSelectedY] = null;
-                                            Player.troopMap[x][y] = t;
-                                            
-                                            attackable = CalcUtility.getAttackableTiles(x, y);
-                                            // nothing can be attacked, deselect troop
-                                            if (attackable.size() == 0 && t.getLastAttackTurn() < curTurn)
-                                            {
-                                                curSelectedX = -1;
-                                                curSelectedY = -1;
-                                                curLayer = 0;
-                                                DisplayUtility.drawRegularScreen(mapGC, players[curPlayer].getStars());
-                                            }
-                                            else
-                                            {
-                                                curSelectedX = x;
-                                                curSelectedY = y;
-                                                DisplayUtility.fillSide(mapGC, players[curPlayer].getStars());
-                                                DisplayUtility.showType(mapGC, t);
-                                                DisplayUtility.showAttackableTiles(troopGC, x, y);
-                                                DisplayUtility.showSelectedTroop(troopGC, x, y);
-                                            }
-                                        }
-                                        else
-                                        {
-                                            curSelectedX = -1;
-                                            curSelectedY = -1;
-                                            curLayer = 0;
-                                            DisplayUtility.drawRegularScreen(mapGC, players[curPlayer].getStars());
-                                        }
-                                        
-                                        x = -1;
-                                        y = -1;
-                                    }
-                                }
-                            }
-                        }
+                            actionDone = selectTroopMovement(mapGC, troopGC, x, y);
                         
                         // did not select a troop movement/attack tile
-                        if (x != -1 && y != -1)
+                        if (!actionDone)
                         {
                             curSelectedX = x;
                             curSelectedY = y;
@@ -282,40 +181,12 @@ public class Display extends Application
                         }
                     }
 
-                    if (x != -1 && y != -1)
+                    if (!actionDone)
                     {
                         if (curLayer == 2)
-                            selectedTile(mapLayer, x, y);
-                        // if selected a troop
+                            selectedTile(mapGC, x, y);
                         else if (curLayer == 1)
-                        {
-                            Troop t = Player.troopMap[x][y];
-                            DisplayUtility.fillSide(mapGC, players[curPlayer].getStars());
-                            DisplayUtility.showType(mapGC, t);
-                            DisplayUtility.showXBtn(mapGC);
-                            
-                            DisplayUtility.showSelectedTroop(troopGC, x, y);
-                            
-                            if (t.getPlayer() == players[curPlayer])
-                            {
-                                // show movable locations
-                                if (t.getLastMoveTurn() < curTurn)
-                                {
-                                    DisplayUtility.showMovableTiles(troopGC, map, x, y);
-                                    
-                                    // show actions
-                                    ArrayList<ActionButton> actions = getActionButtons(t, x, y);
-                                    for (int i = 0; i < actions.size(); i++)
-                                    {
-                                        mapGC.drawImage(actions.get(i).getButton(), sceneWidth+20, 80+i*200, 160, 160);
-                                    }
-                                }
-                                if (t.getLastAttackTurn() < curTurn)
-                                {
-                                    DisplayUtility.showAttackableTiles(troopGC, x, y);
-                                }
-                            }
-                        }
+                            selectedTroop(mapGC, troopGC, x, y);
                     }
                 }
                 // clicked on side panel
@@ -324,110 +195,12 @@ public class Display extends Application
                     x = (int)e.getX();
                     y = (int)e.getY();
                     
-                    // confirmation screen
                     if (isConfirmScreen)
-                    {
-                        int temp = CalcUtility.getConfirmButton(x, y);
-                        if (temp == 1)
-                        {
-                            // do action
-                            Tile t = map[curSelectedX][curSelectedY];
-                            curButton.doAction(t);
-                            
-                            // update tile graphics + clear side panel
-                            t.drawTile(mapGC, curSelectedX, curSelectedY);
-                            DisplayUtility.drawRegularScreen(mapGC, players[curPlayer].getStars());
-                            
-                            // clear variables
-                            curSelectedX = -1;
-                            curSelectedY = -1;
-                            curLayer = 0;
-                            isConfirmScreen = false;
-                        }
-                        else if (temp == 0)
-                        {
-                            map[curSelectedX][curSelectedY].drawTile(mapGC, curSelectedX, curSelectedY);
-                            DisplayUtility.drawRegularScreen(mapGC, players[curPlayer].getStars());
-                            
-                            // clear variables
-                            curSelectedX = -1;
-                            curSelectedY = -1;
-                            curLayer = 0;
-                            isConfirmScreen = false;
-                        }
-                    }
-                    // tile actions
+                        selectConfirmAction(mapGC, x, y);
                     else if (curLayer == 2)
-                    {
-                        if (CalcUtility.getConfirmButton(x, y) == 1)
-                        {
-                            // exit side panel
-                            map[curSelectedX][curSelectedY].drawTile(mapGC, curSelectedX, curSelectedY);
-                            DisplayUtility.drawRegularScreen(mapGC, players[curPlayer].getStars());
-                    
-                            curLayer = 0;
-                            curSelectedX = -1;
-                            curSelectedY = -1;
-                        }
-                        else
-                        {
-                            Tile t = map[curSelectedX][curSelectedY];
-                            ArrayList<ActionButton> actions = getActionButtons(t);
-                            int index = CalcUtility.getButtonIndex(x, y);
-                            if (index < actions.size() && index != -1)
-                            {
-                                isConfirmScreen = true;
-                                curButton = actions.get(index);
-                                
-                                DisplayUtility.drawConfirmScreen(mapGC, players[curPlayer].getStars());
-                                DisplayUtility.showType(mapGC, t);
-                                
-                                curButton.displayInfo(mapGC, sceneWidth);
-                            }
-                        }
-                    }
-                    // troop actions
+                        selectTileAction(mapGC, x, y);
                     else if (curLayer == 1)
-                    {
-                        if (CalcUtility.getConfirmButton(x, y) == 1)
-                        {
-                            // exit side panel
-                            DisplayUtility.drawRegularScreen(mapGC, players[curPlayer].getStars());
-                            
-                            DisplayUtility.clearMovableTiles(troopGC, map, curSelectedX, curSelectedY);
-                            DisplayUtility.clearTile(troopGC, curSelectedX, curSelectedY);
-                            Player.troopMap[curSelectedX][curSelectedY].drawTroop(troopGC, curSelectedX, curSelectedY);
-                    
-                            curLayer = 0;
-                            curSelectedX = -1;
-                            curSelectedY = -1;
-                        }
-                        else
-                        {
-                            Troop t = Player.troopMap[curSelectedX][curSelectedY];
-                            ArrayList<ActionButton> actions = getActionButtons(t,curSelectedX, curSelectedY);
-                            int index = CalcUtility.getButtonIndex(x, y);
-                            if (index < actions.size() && index != -1)
-                            {
-                                if (actions.get(index).doAction(t))
-                                {
-                                    ((City)map[curSelectedX][curSelectedY]).setPlayer(players[curPlayer], map, curSelectedX, curSelectedY);
-                                    map[curSelectedX][curSelectedY].drawTile(mapGC, curSelectedX, curSelectedY);
-                                }
-                                t.updateLastMoveTurn(curTurn);
-                                t.updateLastAttackTurn(curTurn);
-                                
-                                DisplayUtility.drawRegularScreen(mapGC, players[curPlayer].getStars());
-                                DisplayUtility.clearTile(troopGC, curSelectedX, curSelectedY);
-                                DisplayUtility.clearMovableTiles(troopGC, map, curSelectedX, curSelectedY);
-                                t.drawTroop(troopGC, curSelectedX, curSelectedY);
-                        
-                                curLayer = 0;
-                                curSelectedX = -1;
-                                curSelectedY = -1;
-                            }
-                        }
-                    }
+                        selectTroopAction(mapGC, troopGC, x, y);
                     // regular actions
                     else if (curLayer == 0)
                     {
@@ -507,15 +280,248 @@ public class Display extends Application
         });
     }
     
-    private void selectedTile(Canvas mapLayer, int x, int y)
+    private boolean selectTroopMovement(GraphicsContext mapGC, GraphicsContext troopGC, int x, int y)
     {
-        GraphicsContext mapGC = mapLayer.getGraphicsContext2D();
+        Troop t = Player.troopMap[curSelectedX][curSelectedY];
+        if (curLayer == 1 && t.getLastMoveTurn() < curTurn && t.getPlayer() == players[curPlayer])
+        {
+            // check if selected troop movement
+            ArrayList<Coord> movable = CalcUtility.getMovableTiles(map, curSelectedX, curSelectedY);
+            for (Coord c : movable)
+            {
+                if (c.x == x && c.y == y)
+                {
+                    DisplayUtility.clearTile(troopGC, curSelectedX, curSelectedY);
+                    t.drawTroop(troopGC, x, y);
+                    
+                    Player.troopMap[curSelectedX][curSelectedY] = null;
+                    Player.troopMap[x][y] = t;
+                    
+                    t.updateLastMoveTurn(curTurn);
+                    if (!t.canDash())
+                        t.updateLastAttackTurn(curTurn);
+                    
+                    ArrayList<Coord> attackable = CalcUtility.getAttackableTiles(x, y);
+                    // nothing can be attacked, deselect troop
+                    if (attackable.size() == 0 && t.getLastAttackTurn() < curTurn)
+                    {
+                        curSelectedX = -1;
+                        curSelectedY = -1;
+                        curLayer = 0;
+                        DisplayUtility.drawRegularScreen(mapGC, players[curPlayer].getStars());
+                    }
+                    else
+                    {
+                        curSelectedX = x;
+                        curSelectedY = y;
+                        DisplayUtility.fillSide(mapGC, players[curPlayer].getStars());
+                        DisplayUtility.showType(mapGC, t);
+                        DisplayUtility.showAttackableTiles(troopGC, x, y);
+                    }
+                    
+                    return true;
+                }
+            }
+        }
+        
+        // check if attacked troop
+        if (curLayer == 1 && t.getLastAttackTurn() < curTurn && t.getPlayer() == players[curPlayer])
+        {
+            ArrayList<Coord> attackable = CalcUtility.getAttackableTiles(curSelectedX, curSelectedY);
+            for (Coord c : attackable)
+            {
+                if (c.x == x && c.y == y)
+                {
+                    Troop other = Player.troopMap[x][y];
+                    
+                    boolean temp = t.attack(other, CalcUtility.getDistance(x, y, curSelectedX, curSelectedY));
+                    
+                    if (!temp || t.getRange() > 1)
+                        t.updateLastAttackTurn(curTurn);
+                    t.updateLastMoveTurn(curTurn);
+                    
+                    if (temp && t.getRange() == 1)
+                    {
+                        // take other troop's location
+                        DisplayUtility.clearTile(troopGC, curSelectedX, curSelectedY);
+                        t.drawTroop(troopGC, x, y);
+                        
+                        Player.troopMap[curSelectedX][curSelectedY] = null;
+                        Player.troopMap[x][y] = t;
+                        
+                        attackable = CalcUtility.getAttackableTiles(x, y);
+                        // nothing can be attacked, deselect troop
+                        if (attackable.size() == 0 && t.getLastAttackTurn() < curTurn)
+                        {
+                            curSelectedX = -1;
+                            curSelectedY = -1;
+                            curLayer = 0;
+                            DisplayUtility.drawRegularScreen(mapGC, players[curPlayer].getStars());
+                        }
+                        else
+                        {
+                            curSelectedX = x;
+                            curSelectedY = y;
+                            DisplayUtility.fillSide(mapGC, players[curPlayer].getStars());
+                            DisplayUtility.showType(mapGC, t);
+                            DisplayUtility.showAttackableTiles(troopGC, x, y);
+                            DisplayUtility.showSelectedTroop(troopGC, x, y);
+                        }
+                    }
+                    else
+                    {
+                        curSelectedX = -1;
+                        curSelectedY = -1;
+                        curLayer = 0;
+                        DisplayUtility.drawRegularScreen(mapGC, players[curPlayer].getStars());
+                    }
+                    
+                    return true;
+                }
+            }
+        }
+        
+        return false;
+    }
+    
+    private void selectConfirmAction(GraphicsContext mapGC, int x, int y)
+    {
+        int temp = CalcUtility.getConfirmButton(x, y);
+        if (temp == 1)
+        {
+            // do action
+            Tile t = map[curSelectedX][curSelectedY];
+            curButton.doAction(t);
+            
+            // update tile graphics + clear side panel
+            t.drawTile(mapGC, curSelectedX, curSelectedY);
+            DisplayUtility.drawRegularScreen(mapGC, players[curPlayer].getStars());
+            
+            // clear variables
+            curSelectedX = -1;
+            curSelectedY = -1;
+            curLayer = 0;
+            isConfirmScreen = false;
+        }
+        else if (temp == 0)
+        {
+            map[curSelectedX][curSelectedY].drawTile(mapGC, curSelectedX, curSelectedY);
+            DisplayUtility.drawRegularScreen(mapGC, players[curPlayer].getStars());
+            
+            // clear variables
+            curSelectedX = -1;
+            curSelectedY = -1;
+            curLayer = 0;
+            isConfirmScreen = false;
+        }
+    }
+    
+    private void selectTroopAction(GraphicsContext mapGC, GraphicsContext troopGC, int x, int y)
+    {
+        if (CalcUtility.getConfirmButton(x, y) == 1)
+        {
+            // exit side panel
+            DisplayUtility.drawRegularScreen(mapGC, players[curPlayer].getStars());
+            
+            DisplayUtility.clearMovableTiles(troopGC, map, curSelectedX, curSelectedY);
+            DisplayUtility.clearTile(troopGC, curSelectedX, curSelectedY);
+            Player.troopMap[curSelectedX][curSelectedY].drawTroop(troopGC, curSelectedX, curSelectedY);
+    
+            curLayer = 0;
+            curSelectedX = -1;
+            curSelectedY = -1;
+        }
+        else
+        {
+            Troop t = Player.troopMap[curSelectedX][curSelectedY];
+            ArrayList<ActionButton> actions = getActionButtons(t,curSelectedX, curSelectedY);
+            int index = CalcUtility.getButtonIndex(x, y);
+            if (index < actions.size() && index != -1)
+            {
+                if (actions.get(index).doAction(t))
+                {
+                    ((City)map[curSelectedX][curSelectedY]).setPlayer(players[curPlayer], map, curSelectedX, curSelectedY);
+                    map[curSelectedX][curSelectedY].drawTile(mapGC, curSelectedX, curSelectedY);
+                }
+                t.updateLastMoveTurn(curTurn);
+                t.updateLastAttackTurn(curTurn);
+                
+                DisplayUtility.drawRegularScreen(mapGC, players[curPlayer].getStars());
+                DisplayUtility.clearTile(troopGC, curSelectedX, curSelectedY);
+                DisplayUtility.clearMovableTiles(troopGC, map, curSelectedX, curSelectedY);
+                t.drawTroop(troopGC, curSelectedX, curSelectedY);
+        
+                curLayer = 0;
+                curSelectedX = -1;
+                curSelectedY = -1;
+            }
+        }
+    }
+    
+    private void selectTileAction(GraphicsContext mapGC, int x, int y)
+    {
+        if (CalcUtility.getConfirmButton(x, y) == 1)
+        {
+            // exit side panel
+            map[curSelectedX][curSelectedY].drawTile(mapGC, curSelectedX, curSelectedY);
+            DisplayUtility.drawRegularScreen(mapGC, players[curPlayer].getStars());
+    
+            curLayer = 0;
+            curSelectedX = -1;
+            curSelectedY = -1;
+        }
+        else
+        {
+            Tile t = map[curSelectedX][curSelectedY];
+            ArrayList<ActionButton> actions = getActionButtons(t);
+            int index = CalcUtility.getButtonIndex(x, y);
+            if (index < actions.size() && index != -1)
+            {
+                isConfirmScreen = true;
+                curButton = actions.get(index);
+                
+                DisplayUtility.drawConfirmScreen(mapGC, players[curPlayer].getStars());
+                DisplayUtility.showType(mapGC, t);
+                
+                curButton.displayInfo(mapGC, sceneWidth);
+            }
+        }
+    }
+    
+    private void selectedTroop(GraphicsContext mapGC, GraphicsContext troopGC, int x, int y)
+    {
+        Troop t = Player.troopMap[x][y];
+        DisplayUtility.fillSide(mapGC, players[curPlayer].getStars());
+        DisplayUtility.showType(mapGC, t);
+        DisplayUtility.showXBtn(mapGC);
+        
+        DisplayUtility.showSelectedTroop(troopGC, x, y);
+        
+        if (t.getPlayer() == players[curPlayer])
+        {
+            // show movable locations
+            if (t.getLastMoveTurn() < curTurn)
+            {
+                DisplayUtility.showMovableTiles(troopGC, map, x, y);
+                DisplayUtility.drawActionButtons(mapGC, getActionButtons(t, x, y));
+            }
+            if (t.getLastAttackTurn() < curTurn)
+            {
+                DisplayUtility.showAttackableTiles(troopGC, x, y);
+            }
+        }
+    }
+    
+    private void selectedTile(GraphicsContext mapGC, int x, int y)
+    {
         Tile t = map[x][y];
         ArrayList<ActionButton> actions = getActionButtons(t);
 
         // display tile type
         DisplayUtility.fillSide(mapGC, players[curPlayer].getStars());
         DisplayUtility.showType(mapGC, t);
+        if (t.getInfo().substring(0, 4).equals("city") && t.getPlayer() == players[curPlayer])
+            ((City)t).drawPopulation(mapGC, sceneWidth);
         
         // show selected tile
         if (actions.size() == 0)
@@ -524,10 +530,7 @@ public class Display extends Application
             DisplayUtility.showSelectedTile(mapGC, Color.LIGHTBLUE, x, y);
         
         // draw action buttons
-        for (int i = 0; i < actions.size(); i++)
-        {
-            mapGC.drawImage(actions.get(i).getButton(), sceneWidth+20, 80+i*200, 160, 160);
-        }
+        DisplayUtility.drawActionButtons(mapGC, actions);
         
         DisplayUtility.showXBtn(mapGC);
     }
@@ -612,7 +615,7 @@ public class Display extends Application
         else if (type.equals("grass"))
         {
             if (((Grass)t).canBuildFarm() && tree.getFarming())
-                type = "grass"; // placeholder
+                actions.add(ActionButton.buildFarm);
         }
         
         return actions;

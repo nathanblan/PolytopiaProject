@@ -26,6 +26,14 @@ public class DisplayUtility
     public static final Image CHECK_BTN = new Image("images\\check_button.png");
     public static final Image END_TURN_BTN = new Image("images\\endturn_button.png");
     
+    public static void drawActionButtons(GraphicsContext gc, ArrayList<ActionButton> actions)
+    {
+        for (int i = 0; i < actions.size(); i++)
+        {
+            gc.drawImage(actions.get(i).getButton(), w+20, 100+i*180, 160, 160);
+        }
+    }
+    
     public static void drawTileMap(GraphicsContext gc, Tile[][] map)
     {
         int size = map.length;

@@ -22,6 +22,7 @@ public class ActionButton
     public static final ActionButton pickGold = new ActionButton("gold");
     public static final ActionButton buildMine = new ActionButton("mine");
     public static final ActionButton buildHut = new ActionButton("lumberhut");
+    public static final ActionButton buildFarm = new ActionButton("farm");
     
     public static final ActionButton claimCity = new ActionButton("claimcity");
     public static final ActionButton heal = new ActionButton("heal");
@@ -154,6 +155,8 @@ public class ActionButton
             ((Mountain)t).buildMine();
         else if (type.equals("lumberhut"))
             ((Forest)t).buildHut();
+        else if (type.equals("farm"))
+            ((Grass)t).buildFarm();
     }
     
     public void doAction(Player p)

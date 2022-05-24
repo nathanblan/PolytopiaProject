@@ -25,7 +25,7 @@ public class Troop
     // if 1, sailboat
     // if 2, cruiser
     // if 3, battleship
-    private int shipLevel = 0;
+    protected int shipLevel = 0;
     
     protected int range;
     protected int movement;

@@ -30,6 +30,9 @@ public class Warrior extends Troop
     
     public void drawTroop(GraphicsContext gc, int x, int y)
     {
-        gc.drawImage(new Image("troops\\warrior.png"), x*Tile.TILE_SIZE, y*Tile.TILE_SIZE, Tile.TILE_SIZE, Tile.TILE_SIZE);
+        if (shipLevel > 0)
+            super.drawTroop(gc, x, y);
+        else
+            gc.drawImage(new Image("troops\\warrior.png"), x*Tile.TILE_SIZE, y*Tile.TILE_SIZE, Tile.TILE_SIZE, Tile.TILE_SIZE);
     }
 }
