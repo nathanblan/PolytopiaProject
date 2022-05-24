@@ -27,6 +27,11 @@ public class ActionButton
     public static final ActionButton claimCity = new ActionButton("claimcity");
     public static final ActionButton heal = new ActionButton("heal");
     
+    public static final ActionButton trainWarrior = new ActionButton("warrior");
+    public static final ActionButton trainArcher = new ActionButton("archer");
+    public static final ActionButton trainShield = new ActionButton("shield");
+    public static final ActionButton trainRider = new ActionButton("rider");
+    
     public static final ActionButton techOrganization = new ActionButton("organization");
     public static final ActionButton techFarming = new ActionButton("farming");
     public static final ActionButton techShields = new ActionButton("shields");
@@ -62,6 +67,15 @@ public class ActionButton
             info = "Builds a mine on the mountain. Costs 5 stars, gains 2 population.";
         else if (type.equals("lumberhut"))
             info = "Builds a lumberhut in the forest. Costs 2 stars, gains 1 population.";
+            
+        else if (type.equals("warrior"))
+            info = "Train a new warrior";
+        else if (type.equals("archer"))
+            info = "Train an archer";
+        else if (type.equals("rider"))
+            info = "Train rider";
+        else if (type.equals("shield"))
+            info = "Train shield";
         
         else if (type.equals("organization"))
             info = "Enables organization.";
@@ -157,6 +171,14 @@ public class ActionButton
             ((Forest)t).buildHut();
         else if (type.equals("farm"))
             ((Grass)t).buildFarm();
+        else if (type.equals("warrior"))
+            ((City)t).trainTroop(new Warrior(t.getPlayer()));
+        else if (type.equals("archer"))
+            ((City)t).trainTroop(new Archer(t.getPlayer()));
+        else if (type.equals("rider"))
+            ((City)t).trainTroop(new Rider(t.getPlayer()));
+        else if (type.equals("shield"))
+            ((City)t).trainTroop(new Shield(t.getPlayer()));
     }
     
     public void doAction(Player p)

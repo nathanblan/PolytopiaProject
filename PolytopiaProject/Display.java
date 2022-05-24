@@ -578,7 +578,7 @@ public class Display extends Application
         return actions;
     }
     
-    private ArrayList<ActionButton> getActionButtons(Tile t)
+    private ArrayList<ActionButton> getActionButtons(Tile t) // add x and y coords to check if troop already exists on a city
     {
         if (t.getPlayer() != players[curPlayer])
             return new ArrayList<ActionButton>();
@@ -616,6 +616,15 @@ public class Display extends Application
         {
             if (((Grass)t).canBuildFarm() && tree.getFarming())
                 actions.add(ActionButton.buildFarm);
+        }
+        else if (type.substring(0,4).equals("city") && Player.troopMap[][]) // check if troop alredy exists
+        {
+            if (t.getPlayer().getStars()>=3 && tree.getRiding())
+                actions.add(ActionButton.trainRider);
+            if (t.getPlayer().getStars()>=3 && tree.getArchery())
+                actions.add(ActionButton.trainArcher);
+            if (t.getPlayer().getStars()>=3 && tree.getShields())
+                actions.add(ActionButton.trainShield);
         }
         
         return actions;

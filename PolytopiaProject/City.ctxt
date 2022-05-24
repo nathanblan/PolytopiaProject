@@ -1,8 +1,8 @@
 #BlueJ class context
 comment0.target=City
 comment0.text=\r\n\ City\ buildings\r\n\r\n\ @author\ (your\ name)\r\n\ @version\ (a\ version\ number\ or\ a\ date)\r\n
-comment1.params=
-comment1.target=City()
+comment1.params=x\ y
+comment1.target=City(int,\ int)
 comment1.text=\r\n\ Constructor\ for\ objects\ of\ class\ City\r\n
 comment2.params=newPlayer\ map\ x\ y
 comment2.target=void\ setPlayer(Player,\ Tile[][],\ int,\ int)
@@ -18,4 +18,6 @@ comment7.params=gc\ w
 comment7.target=void\ drawPopulation(javafx.scene.canvas.GraphicsContext,\ double)
 comment8.params=
 comment8.target=java.lang.String\ getInfo()
-numComments=9
+comment9.params=type
+comment9.target=void\ trainTroop(Troop)
+numComments=10
