@@ -315,6 +315,11 @@ public class Display extends Application
             {
                 if (c.x == x && c.y == y)
                 {
+                    if (map[x][y].getInfo().equals("water") && ((Water)map[x][y]).hasPort() && t.getShipLevel() < 1)
+                        t.upgradeShip();
+                    else if (!map[x][y].isWater() && t.getShipLevel() > 0)
+                        t.destroyShip();
+                        
                     DisplayUtility.clearTile(troopGC, curSelectedX, curSelectedY);
                     t.drawTroop(troopGC, x, y, t.getPlayer().getPlayerNum()+1);
                     
@@ -328,13 +333,10 @@ public class Display extends Application
                     t.updateLastMoveTurn(curTurn);
                     if (!t.canDash())
                         t.updateLastAttackTurn(curTurn);
-                        
-                    if (map[x][y].getInfo().equals("water") && ((Water)map[x][y]).hasPort() && t.getShipLevel() < 1)
-                        t.upgradeShip();
 
                     ArrayList<Coord> attackable = CalcUtility.getAttackableTiles(x, y);
                     // nothing can be attacked, deselect troop
-                    if (attackable.size() == 0 && t.getLastAttackTurn() < curTurn)
+                    if (attackable.size() == 0 || t.getLastAttackTurn() == curTurn)
                     {
                         curSelectedX = -1;
                         curSelectedY = -1;
@@ -348,6 +350,7 @@ public class Display extends Application
                         DisplayUtility.fillSide(mapGC, players[curPlayer].getStars());
                         DisplayUtility.showType(mapGC, t);
                         DisplayUtility.showAttackableTiles(troopGC, x, y);
+                        DisplayUtility.showXBtn(mapGC);
                     }
 
                     return true;

@@ -127,7 +127,7 @@ public class CalcUtility
                 }
                 else if (type.equals("water"))
                 {
-                    if ((((Water)map[c.x][c.y]).hasPort() && t.getShipLevel() == 0) || t.getShipLevel() > 0)
+                    if ((((Water)map[c.x][c.y]).hasPort() || t.getShipLevel() > 0) && t.getPlayer().getTree().getSailing())
                         movable = true;
                 }
                 else if (type.equals("deep water"))

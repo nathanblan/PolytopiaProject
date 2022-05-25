@@ -29,6 +29,7 @@ public class ActionButton
     
     public static final ActionButton claimCity = new ActionButton("claimcity");
     public static final ActionButton heal = new ActionButton("heal");
+    public static final ActionButton upgrade = new ActionButton("upgrade");
     
     public static final ActionButton trainWarrior = new ActionButton("warrior");
     public static final ActionButton trainArcher = new ActionButton("archer");

@@ -84,4 +84,9 @@ public class Water extends Tile
     {
         return hasPort;
     }
+    
+    public boolean isWater()
+    {
+        return true;
+    }
 }
