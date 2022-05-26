@@ -58,4 +58,9 @@ public class Field extends Tile
     {
         return hasFruit && getPlayer().getStars() >= 2;
     }
+    
+    public boolean canAfford(int x)
+    {
+        return getPlayer().getStars() >= 2;
+    }
 }

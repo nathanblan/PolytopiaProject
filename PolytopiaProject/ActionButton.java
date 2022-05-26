@@ -122,6 +122,54 @@ public class ActionButton
     
     public Image getButton()
     {
+        // dont forget to put Tile t in the parameters
+        /*
+        if (type.equals("animal"))
+            t = (Forest)t;
+        else if (type.equals("berry"))
+            t = (Field)t;
+        else if (type.equals("fish"))
+            t = (Water)t;
+        else if (type.equals("gold"))
+            t = (Mountain)t;
+        else if (type.equals("mine"))
+            t = (Mountain)t;
+        else if (type.equals("lumberhut"))
+            t = (Forest)t;
+        else if (type.equals("farm"))
+            t = (Grass)t;
+        else if (type.equals("build port"))
+            t = (Water)t;
+        else if (type.equals("destroy mtn"))
+            t = (Mountain)t;
+        else if (type.equals("build city"))
+            t = (Field)t;
+        
+            //figure out destroy mountain and city
+        
+        if(type.equals("build port"))
+        {
+            if(t.canAfford(2))
+                return new Image("images\\"+type+"_button.png");
+        }
+        else
+        {
+            if(t.canAfford(1))
+                return new Image("images\\"+type+"_button.png");
+            return new Image("images\\"+type+"_button" +"_L"+".png");
+        }
+        */
+            
+        /*else if (type.equals("warrior"))
+            ((City)t).trainTroop(new Warrior(t.getPlayer(), turn));
+        else if (type.equals("archer"))
+            ((City)t).trainTroop(new Archer(t.getPlayer(), turn));
+        else if (type.equals("rider"))
+            ((City)t).trainTroop(new Rider(t.getPlayer(), turn));
+        else if (type.equals("shield"))
+            ((City)t).trainTroop(new Shield(t.getPlayer(), turn));
+        return 0;*/
+        
         return new Image("images\\"+type+"_button.png");
     }
     

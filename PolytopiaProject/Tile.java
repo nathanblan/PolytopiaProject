@@ -48,4 +48,14 @@ public class Tile
     {
         return "basic";
     }
+    
+    public boolean canAfford()
+    {
+        return false;
+    }
+    
+    public boolean canAfford(int select)
+    {
+        return false;
+    }
 }

@@ -69,6 +69,11 @@ public class Mountain extends Tile
         return !hasMine && getPlayer().getStars() >= 5;
     }
     
+    public boolean canAfford(int x)
+    {
+        return getPlayer().getStars() >= 5;
+    }
+    
     public boolean canGrabGold()
     {
         return hasGold;

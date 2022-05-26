@@ -80,6 +80,19 @@ public class Water extends Tile
         return !hasPort && getPlayer().getStars() >= 5;
     }
     
+    public boolean canAfford(int select)
+    {
+        if(select == 1)
+        {
+            return getPlayer().getStars() >= 2;
+        }
+        else if(select == 2)
+        {
+            return getPlayer().getStars() >= 5;
+        }
+        return false;
+    }
+    
     public boolean hasPort()
     {
         return hasPort;

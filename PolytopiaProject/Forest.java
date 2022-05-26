@@ -67,6 +67,11 @@ public class Forest extends Tile
         return hasAnimal && getPlayer().getStars() >= 2;
     }
     
+    public boolean canAfford()
+    {
+        return getPlayer().getStars() >= 2;
+    }
+    
     public boolean canBuildHut()
     {
         return !hasLumberHut && getPlayer().getStars() >= 2;

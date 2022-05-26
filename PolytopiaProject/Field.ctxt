@@ -13,4 +13,6 @@ comment5.params=
 comment5.target=java.lang.String\ getInfo()
 comment6.params=
 comment6.target=boolean\ canHarvestFruit()
-numComments=7
+comment7.params=x
+comment7.target=boolean\ canAfford(int)
+numComments=8
