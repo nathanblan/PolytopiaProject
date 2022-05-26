@@ -1,8 +1,8 @@
 #BlueJ class context
 comment0.target=Troop
 comment0.text=\r\n\ Main\ class\ for\ Troops\r\n\ \r\n
-comment1.params=p\ h\ a\ d
-comment1.target=Troop(Player,\ int,\ double,\ double)
+comment1.params=p\ h\ a\ d\ r\ m
+comment1.target=Troop(Player,\ int,\ double,\ double,\ int,\ int)
 comment1.text=\r\n\ Constructor\ for\ objects\ of\ class\ Troop\r\n
 comment10.params=
 comment10.target=int\ getLastAttackTurn()
@@ -12,11 +12,11 @@ comment11.text=\r\n\ @return\ true\ if\ kills\ the\ other\ troop,\ false\ otherw
 comment12.params=
 comment12.target=int\ getMovement()
 comment13.params=
-comment13.target=boolean\ getWaterMovement()
+comment13.target=int\ getRange()
 comment14.params=
-comment14.target=int\ getRange()
+comment14.target=void\ upgradeShip()
 comment15.params=
-comment15.target=void\ upgradeShip()
+comment15.target=boolean\ canUpgradeShip()
 comment16.params=
 comment16.target=int\ getShipLevel()
 comment17.params=

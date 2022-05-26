@@ -12,13 +12,13 @@ public class Swordsman extends Troop
      */
     public Swordsman(Player p)
     {
-        super(p, 15, 3, 3);
-        movement = 1;
-        range = 1;
+        super(p, 15, 3, 3, 1, 1);
     }
     
     public String getInfo()
     {
+        if (shipLevel > 0)
+            return super.getInfo();
         return "swordsman";
     }
 }

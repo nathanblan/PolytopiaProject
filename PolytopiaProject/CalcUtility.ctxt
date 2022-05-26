@@ -16,5 +16,5 @@ comment6.target=int\ getButtonIndex(int,\ int)
 comment6.text=\r\n\ Returns\ the\ index\ of\ the\ button\ clicked,\ -1\ if\ not\ clicking\ a\ button\r\n
 comment7.params=x\ y
 comment7.target=int\ getConfirmButton(double,\ double)
-comment7.text=\r\n\ Returns\ -1\ if\ neither\ confirm\ button\ pressed\r\n\ Returns\ 1\ if\ confirm\ button\ pressed\r\n\ Returns\ 0\ if\ cancel\ button\ pressed\r\n
+comment7.text=\r\n\ Returns\ -1\ if\ neither\ confirm\ button\ pressed,\ \r\n\ 1\ if\ confirm\ button\ pressed,\ \r\n\ 0\ if\ cancel\ button\ pressed\r\n
 numComments=8

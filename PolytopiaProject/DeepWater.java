@@ -28,4 +28,9 @@ public class DeepWater extends Tile
     {
         return "deep water";
     }
+    
+    public boolean isWater()
+    {
+        return true;
+    }
 }

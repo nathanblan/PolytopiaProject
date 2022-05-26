@@ -39,6 +39,11 @@ public class Tile
         city = c;
     }
     
+    public boolean isWater()
+    {
+        return false;
+    }
+    
     public String getInfo()
     {
         return "basic";

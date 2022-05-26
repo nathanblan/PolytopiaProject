@@ -127,12 +127,12 @@ public class CalcUtility
                 }
                 else if (type.equals("water"))
                 {
-                    if ((((Water)map[c.x][c.y]).hasPort() && t.getShipLevel() == 0) || t.getShipLevel() > 0)
+                    if ((((Water)map[c.x][c.y]).hasPort() || t.getShipLevel() > 0) && t.getPlayer().getTree().getSailing())
                         movable = true;
                 }
                 else if (type.equals("deep water"))
                 {
-                    if (t.getShipLevel() > 1)
+                    if (t.getShipLevel() > 0 && t.getPlayer().getTree().getNavigation())
                         movable = true;
                 }
                 else
@@ -165,7 +165,7 @@ public class CalcUtility
      */
     public static int getButtonIndex(int x, int y)
     {
-        if (x < w)
+        if (x < w || getConfirmButton(x, y) == 1)
             return -1;
             
         x -= w+100;
@@ -183,9 +183,9 @@ public class CalcUtility
     }
     
     /**
-     * Returns -1 if neither confirm button pressed
-     * Returns 1 if confirm button pressed
-     * Returns 0 if cancel button pressed
+     * Returns -1 if neither confirm button pressed, 
+     * 1 if confirm button pressed, 
+     * 0 if cancel button pressed
      */
     public static int getConfirmButton(double x, double y)
     {

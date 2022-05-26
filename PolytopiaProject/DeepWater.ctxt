@@ -7,4 +7,6 @@ comment2.params=gc\ x\ y
 comment2.target=void\ drawTile(javafx.scene.canvas.GraphicsContext,\ int,\ int)
 comment3.params=
 comment3.target=java.lang.String\ getInfo()
-numComments=4
+comment4.params=
+comment4.target=boolean\ isWater()
+numComments=5

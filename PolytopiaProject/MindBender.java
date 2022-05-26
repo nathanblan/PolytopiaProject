@@ -12,13 +12,13 @@ public class MindBender extends Troop
      */
     public MindBender(Player p)
     {
-        super(p, 10, 0, 1);
-        movement = 1;
-        range = 1;
+        super(p, 10, 0, 1, 1, 1);
     }
     
     public String getInfo()
     {
+        if (shipLevel > 0)
+            return super.getInfo();
         return "mind bender";
     }
 }

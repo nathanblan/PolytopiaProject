@@ -31,7 +31,7 @@ public class City extends Tile
         this.y=y;
     }
     
-    public void setPlayer (Player newPlayer, Tile[][] map, int x, int y)
+    public void setPlayer (Player newPlayer, Tile[][] map)
     {
         if (player == null)
         {

@@ -23,9 +23,13 @@ public class ActionButton
     public static final ActionButton buildMine = new ActionButton("mine");
     public static final ActionButton buildHut = new ActionButton("lumberhut");
     public static final ActionButton buildFarm = new ActionButton("farm");
+    public static final ActionButton buildCity = new ActionButton("build city");
+    public static final ActionButton buildPort = new ActionButton("build port");
+    public static final ActionButton destroyMountain = new ActionButton("destroy mtn");
     
     public static final ActionButton claimCity = new ActionButton("claimcity");
     public static final ActionButton heal = new ActionButton("heal");
+    public static final ActionButton upgrade = new ActionButton("upgrade");
     
     public static final ActionButton trainWarrior = new ActionButton("warrior");
     public static final ActionButton trainArcher = new ActionButton("archer");
@@ -68,16 +72,22 @@ public class ActionButton
             info = "Builds a mine on the mountain. Costs 5 stars, gains 2 population.";
         else if (type.equals("lumberhut"))
             info = "Builds a lumberhut in the forest. Costs 2 stars, gains 1 population.";
+        else if (type.equals("build port"))
+            info = "Builds a port in shallow water. Costs 5 stars, gains 2 population.";
+        else if (type.equals("build city"))
+            info = "Builds a city. Costs 20 stars.";
+        else if (type.equals("destroy mtn"))
+            info = "Destroys a mountain. Costs 15 stars.";
             
         else if (type.equals("warrior"))
-            info = "Train a new warrior";
+            info = "Train a  warrior.";
         else if (type.equals("archer"))
             info = "Train an archer";
         else if (type.equals("rider"))
             info = "Train rider";
         else if (type.equals("shield"))
             info = "Train shield";
-        
+            
         else if (type.equals("organization"))
             info = "Enables organization.";
         else if (type.equals("farming"))
@@ -155,10 +165,12 @@ public class ActionButton
             t.heal(4);
         else if (type.equals("claimcity"))
             return true;
+        else if (type.equals("upgrade"))
+            t.upgradeShip();
         return false;
     }
     
-    public void doAction(Tile t)
+    public int doAction(Tile t)
     {
         if (type.equals("animal"))
             ((Forest)t).hunt();
@@ -174,6 +186,13 @@ public class ActionButton
             ((Forest)t).buildHut();
         else if (type.equals("farm"))
             ((Grass)t).buildFarm();
+        else if (type.equals("build port"))
+            ((Water)t).buildPort();
+        else if (type.equals("destroy mtn"))
+            return 1;
+        else if (type.equals("build city"))
+            return 2;
+        
         else if (type.equals("warrior"))
             ((City)t).trainTroop(new Warrior(t.getPlayer()));
         else if (type.equals("archer"))
@@ -182,6 +201,7 @@ public class ActionButton
             ((City)t).trainTroop(new Rider(t.getPlayer()));
         else if (type.equals("shield"))
             ((City)t).trainTroop(new Shield(t.getPlayer()));
+        return 0;
     }
     
     public void doAction(Player p)
