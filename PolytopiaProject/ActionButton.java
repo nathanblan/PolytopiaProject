@@ -81,11 +81,11 @@ public class ActionButton
             
         else if (type.equals("warrior"))
             info = "Train a  warrior.";
-        else if (type.equals("archer."))
+        else if (type.equals("archer"))
             info = "Train an archer";
-        else if (type.equals("rider."))
+        else if (type.equals("rider"))
             info = "Train rider";
-        else if (type.equals("shield."))
+        else if (type.equals("shield"))
             info = "Train shield";
             
         else if (type.equals("organization"))
@@ -165,6 +165,8 @@ public class ActionButton
             t.heal(4);
         else if (type.equals("claimcity"))
             return true;
+        else if (type.equals("upgrade"))
+            t.upgradeShip();
         return false;
     }
     

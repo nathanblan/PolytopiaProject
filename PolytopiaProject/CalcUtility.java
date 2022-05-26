@@ -165,7 +165,7 @@ public class CalcUtility
      */
     public static int getButtonIndex(int x, int y)
     {
-        if (x < w)
+        if (x < w || getConfirmButton(x, y) == 1)
             return -1;
             
         x -= w+100;
@@ -183,9 +183,9 @@ public class CalcUtility
     }
     
     /**
-     * Returns -1 if neither confirm button pressed
-     * Returns 1 if confirm button pressed
-     * Returns 0 if cancel button pressed
+     * Returns -1 if neither confirm button pressed, 
+     * 1 if confirm button pressed, 
+     * 0 if cancel button pressed
      */
     public static int getConfirmButton(double x, double y)
     {

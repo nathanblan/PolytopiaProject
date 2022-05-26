@@ -27,6 +27,8 @@ public class Troop
     // if 3, battleship
     protected int shipLevel = 0;
     
+    private final int baseRange;
+    private final int baseMovement;
     protected int range;
     protected int movement;
     protected boolean waterMovement = false;
@@ -36,7 +38,7 @@ public class Troop
     /**
      * Constructor for objects of class Troop
      */
-    public Troop(Player p, int h, double a, double d)
+    public Troop(Player p, int h, double a, double d, int r, int m)
     {
         player = p;
         
@@ -44,8 +46,12 @@ public class Troop
         health = maxHealth;
         attack = a;
         defense = d;
+        range = r;
+        movement = m;
         baseAttack = a;
         baseDefense = d;
+        baseRange = r;
+        baseMovement = m;
         
         lastMoveTurn = -1;
         lastAttackTurn = -1;
@@ -125,11 +131,6 @@ public class Troop
         return movement;
     }
     
-    public boolean getWaterMovement()
-    {
-        return waterMovement;
-    }
-    
     public int getRange()
     {
         return range;
@@ -140,17 +141,30 @@ public class Troop
         shipLevel++;
         if (shipLevel == 1)
         {
-            waterMovement = true;
-            movement = 1;
+            movement = 2;
+            range = 2;
+            attack = 1;
+            defense = 1;
         }
-        if (shipLevel == 2)
+        else if (shipLevel == 2)
         {
             movement = 3;
+            range = 2;
+            attack = 2;
+            defense = 2;
         }
-        if (shipLevel == 3)
+        else if (shipLevel == 3)
         {
-            attack = 10;
+            movement = 3;
+            range = 2;
+            attack = 4;
+            defense = 3;
         }
+    }
+    
+    public boolean canUpgradeShip()
+    {
+        return (shipLevel==1 || (shipLevel==2 && player.getTree().getNavigation())) && player.getStars() >= 10;
     }
     
     public int getShipLevel()
@@ -164,6 +178,8 @@ public class Troop
         waterMovement = false;
         attack = baseAttack;
         defense = baseDefense;
+        range = baseRange;
+        movement = baseMovement;
     }
     private int round (double num)
     {
@@ -175,15 +191,16 @@ public class Troop
         
     }
     
-    public void drawTroop(GraphicsContext gc, int x, int y, int playerNum)
+    public void drawTroop(GraphicsContext gc, int x, int y)
     {
-        if(shipLevel == 1) //draw sailboat
+        int playerNum = player.getPlayerNum()+1;
+        if (shipLevel == 1) //draw sailboat
         {
             gc.drawImage(new Image("troops\\boat"+playerNum+".png"), x*Tile.TILE_SIZE, y*Tile.TILE_SIZE, Tile.TILE_SIZE, Tile.TILE_SIZE);
         }
-        else if(shipLevel == 2) //draw cruiser
+        else if (shipLevel == 2) //draw cruiser
         {
-            gc.drawImage(new Image("troops\\sailboat"+playerNum+".png"), x*Tile.TILE_SIZE, y*Tile.TILE_SIZE, Tile.TILE_SIZE, Tile.TILE_SIZE);
+            gc.drawImage(new Image("troops\\ship"+playerNum+".png"), x*Tile.TILE_SIZE, y*Tile.TILE_SIZE, Tile.TILE_SIZE, Tile.TILE_SIZE);
         }
         else //draw battleship
         {
@@ -194,6 +211,12 @@ public class Troop
     
     public String getInfo()
     {
+        if (shipLevel == 1)
+            return "boat";
+        if (shipLevel == 2)
+            return "ship";
+        if (shipLevel == 3)
+            return "battleship";
         return "basic";
     }
 }

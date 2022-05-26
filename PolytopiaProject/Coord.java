@@ -70,9 +70,11 @@ public class Coord
         {
             for (int b : Ys)
             {
-                output.add(new Coord(a, b, this));
+                if (a != x || b != y)
+                    output.add(new Coord(a, b, this));
             }
         }
+        
         return output;
     }
     

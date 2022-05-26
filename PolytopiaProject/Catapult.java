@@ -12,13 +12,13 @@ public class Catapult extends Troop
      */
     public Catapult(Player p)
     {
-        super(p, 10, 4, 0);
-        movement = 1;
-        range = 3;
+        super(p, 10, 4, 0, 3, 1);
     }
     
     public String getInfo()
     {
+        if (shipLevel > 0)
+            return super.getInfo();
         return "catapult";
     }
 }

@@ -202,7 +202,7 @@ public class DisplayUtility
         gc.fillRect(x*Tile.TILE_SIZE+Tile.TILE_SIZE-5, y*Tile.TILE_SIZE+5, 5, Tile.TILE_SIZE-5);
     }
     
-    public static void clearMovableTiles(GraphicsContext gc, Tile[][] map, int x, int y, int playerNum)
+    public static void clearMovableTiles(GraphicsContext gc, Tile[][] map, int x, int y)
     {
         ArrayList<Coord> movable = CalcUtility.getMovableTiles(map, x, y);
         for (Coord c : movable)
@@ -213,7 +213,7 @@ public class DisplayUtility
         for (Coord c : attackable)
         {
             clearTile(gc, c.x, c.y);
-            Player.troopMap[c.x][c.y].drawTroop(gc, c.x, c.y, Player.troopMap[c.x][c.y].getPlayer().getPlayerNum()+1);
+            Player.troopMap[c.x][c.y].drawTroop(gc, c.x, c.y);
         }
         clearTile(gc, x, y);
     }
@@ -288,19 +288,6 @@ public class DisplayUtility
         gc.fillText(t.getHealth()+" health", w+100, 85);
     }
     
-    public static void drawTroops(Troop[][] map, GraphicsContext gc, int playerNum)
-    {
-        for (int x = 0; x < map.length; x++)
-        {
-            for (int y = 0; y < map[0].length; y++)
-            {
-                Troop t = map[x][y];
-                if (t != null)
-                    t.drawTroop(gc, x, y, t.getPlayer().getPlayerNum()+1);
-            }
-        }
-    }
-    
     public static void drawTroops(Troop[][] map, GraphicsContext gc)
     {
         for (int x = 0; x < map.length; x++)
@@ -309,7 +296,7 @@ public class DisplayUtility
             {
                 Troop t = map[x][y];
                 if (t != null)
-                    t.drawTroop(gc, x, y, t.getPlayer().getPlayerNum()+1);
+                    t.drawTroop(gc, x, y);
             }
         }
     }

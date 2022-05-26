@@ -16,22 +16,33 @@ public class Archer extends Troop
      */
     public Archer(Player p)
     {
-        super(p, 10, 2, 1);
-        movement = 1;
-        range = 2;
+        super(p, 10, 2, 1, 2, 1);
         
         canDash = true;
     }
     
+    public Archer(Player p, int turn)
+    {
+        super(p, 10, 2, 1, 2, 1);
+        
+        canDash = true;
+        
+        super.updateLastAttackTurn(turn);
+        super.updateLastMoveTurn(turn);
+    }
+    
     public String getInfo()
     {
+        if (shipLevel > 0)
+            return super.getInfo();
         return "archer";
     }
     
-    public void drawTroop(GraphicsContext gc, int x, int y, int playerNum)
+    public void drawTroop(GraphicsContext gc, int x, int y)
     {
+        int playerNum = getPlayer().getPlayerNum()+1;
         if (shipLevel > 0)
-            super.drawTroop(gc, x, y, playerNum);
+            super.drawTroop(gc, x, y);
         else
             gc.drawImage(new Image("troops\\archer"+playerNum+".png"), x*Tile.TILE_SIZE, y*Tile.TILE_SIZE, Tile.TILE_SIZE, Tile.TILE_SIZE);
     }

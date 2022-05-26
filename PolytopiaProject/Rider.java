@@ -16,22 +16,33 @@ public class Rider extends Troop
      */
     public Rider(Player p)
     {
-        super(p, 10, 2, 1);
-        movement = 2;
-        range = 1;
+        super(p, 10, 2, 1, 1, 2);
         
         canDash = true;
     }
     
+    public Rider(Player p, int turn)
+    {
+        super(p, 10, 2, 1, 1, 2);
+        
+        canDash = true;
+        
+        super.updateLastAttackTurn(turn);
+        super.updateLastMoveTurn(turn);
+    }
+    
     public String getInfo()
     {
+        if (shipLevel > 0)
+            return super.getInfo();
         return "rider";
     }
     
-    public void drawTroop(GraphicsContext gc, int x, int y, int playerNum)
+    public void drawTroop(GraphicsContext gc, int x, int y)
     {
+        int playerNum = getPlayer().getPlayerNum()+1;
         if (shipLevel > 0)
-            super.drawTroop(gc, x, y, playerNum);
+            super.drawTroop(gc, x, y);
         else
             gc.drawImage(new Image("troops\\rider"+playerNum+".png"), x*Tile.TILE_SIZE, y*Tile.TILE_SIZE, Tile.TILE_SIZE, Tile.TILE_SIZE);
     }

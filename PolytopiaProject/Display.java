@@ -227,9 +227,9 @@ public class Display extends Application
                     DisplayUtility.fillSide(mapGC, players[curPlayer].getStars());
                     if (curLayer == 1)
                     {
-                        DisplayUtility.clearMovableTiles(troopGC, map, curSelectedX, curSelectedY, curPlayer);
+                        DisplayUtility.clearMovableTiles(troopGC, map, curSelectedX, curSelectedY);
                         DisplayUtility.clearTile(troopGC, curSelectedX, curSelectedY);
-                        Player.troopMap[curSelectedX][curSelectedY].drawTroop(troopGC, curSelectedX, curSelectedY, Player.troopMap[curSelectedX][curSelectedY].getPlayer().getPlayerNum()+1);
+                        Player.troopMap[curSelectedX][curSelectedY].drawTroop(troopGC, curSelectedX, curSelectedY);
                     }
                     else if (curLayer == 2)
                     {
@@ -286,7 +286,7 @@ public class Display extends Application
             y = (int)e.getY();
 
             if (isConfirmScreen)
-                selectConfirmAction(mapGC, x, y);
+                selectConfirmAction(mapGC, troopGC, x, y);
             else if (curLayer == 2)
                 selectTileAction(mapGC, x, y);
             else if (curLayer == 1)
@@ -307,6 +307,83 @@ public class Display extends Application
     private boolean selectTroopMovement(GraphicsContext mapGC, GraphicsContext troopGC, int x, int y)
     {
         Troop t = Player.troopMap[curSelectedX][curSelectedY];
+        // check if attacked troop
+        if (curLayer == 1 && t.getLastAttackTurn() < curTurn && t.getPlayer() == players[curPlayer])
+        {
+            ArrayList<Coord> attackable = CalcUtility.getAttackableTiles(curSelectedX, curSelectedY);
+            for (Coord c : attackable)
+            {
+                if (c.x == x && c.y == y)
+                {
+                    Troop other = Player.troopMap[x][y];
+
+                    boolean temp = t.attack(other, CalcUtility.getDistance(x, y, curSelectedX, curSelectedY));
+
+                    if (!temp || t.getRange() > 1)
+                        t.updateLastAttackTurn(curTurn);
+                    t.updateLastMoveTurn(curTurn);
+                    
+                    if (t.getHealth() <= 0)
+                    {
+                        DisplayUtility.clearTile(troopGC, curSelectedX, curSelectedY);
+                        Player.troopMap[curSelectedX][curSelectedY] = null;
+                    }
+                    
+                    String s = map[x][y].getInfo();
+                    
+                    if (temp && t.getRange() == 1 && t.getHealth() > 0 &&
+                        (s.equals("field") || s.equals("forest") || s.equals("grass") || s.substring(0, 4).equals("city") || s.equals("village")
+                        || (s.equals("mountain") && players[curPlayer].getTree().getClimbing())))
+                    {
+                        // take other troop's location
+                        DisplayUtility.clearTile(troopGC, curSelectedX, curSelectedY);
+                        t.drawTroop(troopGC, x, y);
+                        
+                        Player.troopMap[curSelectedX][curSelectedY] = null;
+                        Player.troopMap[x][y] = t;
+                        if (map[x][y].getInfo().equals("mountain"))
+                            DisplayUtility.clearTroopFog(fog[curPlayer], x, y, 2, players[curPlayer]);
+                        else
+                            DisplayUtility.clearTroopFog(fog[curPlayer], x, y, 1, players[curPlayer]);
+
+                        attackable = CalcUtility.getAttackableTiles(x, y);
+                        // nothing can be attacked, deselect troop
+                        if (attackable.size() == 0 && t.getLastAttackTurn() < curTurn)
+                        {
+                            curSelectedX = -1;
+                            curSelectedY = -1;
+                            curLayer = 0;
+                            DisplayUtility.drawRegularScreen(mapGC, players[curPlayer].getStars());
+                        }
+                        else
+                        {
+                            curSelectedX = x;
+                            curSelectedY = y;
+                            DisplayUtility.fillSide(mapGC, players[curPlayer].getStars());
+                            DisplayUtility.showType(mapGC, t);
+                            DisplayUtility.showAttackableTiles(troopGC, x, y);
+                            DisplayUtility.showSelectedTroop(troopGC, x, y);
+                        }
+                    }
+                    else if (temp)
+                    {
+                        Player.troopMap[x][y] = null;
+                        DisplayUtility.clearTile(troopGC, x, y);
+                    }
+                    else
+                    {
+                        curSelectedX = -1;
+                        curSelectedY = -1;
+                        curLayer = 0;
+                        DisplayUtility.drawRegularScreen(mapGC, players[curPlayer].getStars());
+                    }
+
+                    return true;
+                }
+            }
+        }
+        
+        
         if (curLayer == 1 && t.getLastMoveTurn() < curTurn && t.getPlayer() == players[curPlayer])
         {
             // check if selected troop movement
@@ -315,13 +392,13 @@ public class Display extends Application
             {
                 if (c.x == x && c.y == y)
                 {
-                    if (map[x][y].getInfo().equals("water") && ((Water)map[x][y]).hasPort() && t.getShipLevel() < 1)
+                    if (map[x][y].getInfo().equals("water") && ((Water)map[x][y]).hasPort() && t.getShipLevel() == 0)
                         t.upgradeShip();
                     else if (!map[x][y].isWater() && t.getShipLevel() > 0)
                         t.destroyShip();
                         
                     DisplayUtility.clearTile(troopGC, curSelectedX, curSelectedY);
-                    t.drawTroop(troopGC, x, y, t.getPlayer().getPlayerNum()+1);
+                    t.drawTroop(troopGC, x, y);
                     
                     Player.troopMap[curSelectedX][curSelectedY] = null;
                     Player.troopMap[x][y] = t;
@@ -358,72 +435,10 @@ public class Display extends Application
             }
         }
 
-        // check if attacked troop
-        if (curLayer == 1 && t.getLastAttackTurn() < curTurn && t.getPlayer() == players[curPlayer])
-        {
-            ArrayList<Coord> attackable = CalcUtility.getAttackableTiles(curSelectedX, curSelectedY);
-            for (Coord c : attackable)
-            {
-                if (c.x == x && c.y == y)
-                {
-                    Troop other = Player.troopMap[x][y];
-
-                    boolean temp = t.attack(other, CalcUtility.getDistance(x, y, curSelectedX, curSelectedY));
-
-                    if (!temp || t.getRange() > 1)
-                        t.updateLastAttackTurn(curTurn);
-                    t.updateLastMoveTurn(curTurn);
-                    
-                    String s = map[x][y].getInfo();
-                    
-                    if (temp && t.getRange() == 1 &&
-                        (s.equals("field") || s.equals("forest") || s.equals("grass")
-                        || (s.equals("mountain") && players[curPlayer].getTree().getClimbing())
-                        || (s.equals("water") && players[curPlayer].getTree().getFishing() && ((Water)map[x][y]).hasPort())))
-                    {
-                        // take other troop's location
-                        DisplayUtility.clearTile(troopGC, curSelectedX, curSelectedY);
-                        t.drawTroop(troopGC, x, y, t.getPlayer().getPlayerNum()+1);
-                        
-                        Player.troopMap[curSelectedX][curSelectedY] = null;
-                        Player.troopMap[x][y] = t;
-
-                        attackable = CalcUtility.getAttackableTiles(x, y);
-                        // nothing can be attacked, deselect troop
-                        if (attackable.size() == 0 && t.getLastAttackTurn() < curTurn)
-                        {
-                            curSelectedX = -1;
-                            curSelectedY = -1;
-                            curLayer = 0;
-                            DisplayUtility.drawRegularScreen(mapGC, players[curPlayer].getStars());
-                        }
-                        else
-                        {
-                            curSelectedX = x;
-                            curSelectedY = y;
-                            DisplayUtility.fillSide(mapGC, players[curPlayer].getStars());
-                            DisplayUtility.showType(mapGC, t);
-                            DisplayUtility.showAttackableTiles(troopGC, x, y);
-                            DisplayUtility.showSelectedTroop(troopGC, x, y);
-                        }
-                    }
-                    else
-                    {
-                        curSelectedX = -1;
-                        curSelectedY = -1;
-                        curLayer = 0;
-                        DisplayUtility.drawRegularScreen(mapGC, players[curPlayer].getStars());
-                    }
-
-                    return true;
-                }
-            }
-        }
-
         return false;
     }
 
-    private void selectConfirmAction(GraphicsContext mapGC, int x, int y)
+    private void selectConfirmAction(GraphicsContext mapGC, GraphicsContext troopGC, int x, int y)
     {
         int temp = CalcUtility.getConfirmButton(x, y);
         if (temp == 1)
@@ -450,6 +465,9 @@ public class Display extends Application
             // update tile graphics + clear side panel
             t.drawTile(mapGC, curSelectedX, curSelectedY);
             DisplayUtility.drawRegularScreen(mapGC, players[curPlayer].getStars());
+            DisplayUtility.clearTile(troopGC, curSelectedX, curSelectedY);
+            if (Player.troopMap[curSelectedX][curSelectedY] != null)
+                Player.troopMap[curSelectedX][curSelectedY].drawTroop(troopGC, curSelectedX, curSelectedY);
 
             // clear variables
             curSelectedX = -1;
@@ -477,9 +495,9 @@ public class Display extends Application
             // exit side panel
             DisplayUtility.drawRegularScreen(mapGC, players[curPlayer].getStars());
             
-            DisplayUtility.clearMovableTiles(troopGC, map, curSelectedX, curSelectedY, curPlayer+1);
+            DisplayUtility.clearMovableTiles(troopGC, map, curSelectedX, curSelectedY);
             DisplayUtility.clearTile(troopGC, curSelectedX, curSelectedY);
-            Player.troopMap[curSelectedX][curSelectedY].drawTroop(troopGC, curSelectedX, curSelectedY, Player.troopMap[curSelectedX][curSelectedY].getPlayer().getPlayerNum()+1);
+            Player.troopMap[curSelectedX][curSelectedY].drawTroop(troopGC, curSelectedX, curSelectedY);
     
             curLayer = 0;
             curSelectedX = -1;
@@ -502,8 +520,8 @@ public class Display extends Application
 
                 DisplayUtility.drawRegularScreen(mapGC, players[curPlayer].getStars());
                 DisplayUtility.clearTile(troopGC, curSelectedX, curSelectedY);
-                DisplayUtility.clearMovableTiles(troopGC, map, curSelectedX, curSelectedY, curPlayer+1);
-                t.drawTroop(troopGC, curSelectedX, curSelectedY, t.getPlayer().getPlayerNum()+1);
+                DisplayUtility.clearMovableTiles(troopGC, map, curSelectedX, curSelectedY);
+                t.drawTroop(troopGC, curSelectedX, curSelectedY);
         
                 curLayer = 0;
                 curSelectedX = -1;
@@ -630,6 +648,8 @@ public class Display extends Application
         (map[x][y].getInfo().equals("village") || (map[x][y].getInfo().substring(0, 4).equals("city")
                 && ((City)map[x][y]).getPlayer() != t.getPlayer())))
             actions.add(ActionButton.claimCity);
+        if (t.canUpgradeShip())
+            actions.add(ActionButton.upgrade);
 
         return actions;
     }
@@ -641,7 +661,8 @@ public class Display extends Application
         Tile t = map[x][y];
         if (t.getPlayer() == null && Player.troopMap[x][y] != null &&
             Player.troopMap[x][y].getPlayer() == players[curPlayer] && players[curPlayer].getStars() >= 20
-            && !t.getInfo().equals("water") && !t.getInfo().equals("mountain") && !t.getInfo().equals("deep water"))
+            && !t.getInfo().equals("water") && !t.getInfo().equals("mountain") && !t.getInfo().equals("deep water")
+            && players[curPlayer].getTree().getCityBuilding())
         {
             actions.add(ActionButton.buildCity);
             return actions;
