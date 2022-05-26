@@ -76,7 +76,7 @@ public class TechTree
         
         gc.drawImage(button(hasCityBuilding, "citybuilding"), 450, 130, 100, 100);
         gc.drawImage(button(hasMountainDestroyer, "mtndestroyer"), 325, 75, 100, 100);
-        gc.drawImage(button(hasCanalDigger, "cnldigger"), 400, 75, 100, 100);
+        //gc.drawImage(button(hasCanalDigger, "cnldigger"), 400, 75, 100, 100);
         
         gc.drawImage(button(hasSailing, "sailing"), 150, 510, 100, 100);
         gc.drawImage(button(hasNavigation, "navigation"), 250, 600, 100, 100);
