@@ -12,5 +12,5 @@ comment5.params=other\ size
 comment5.target=void\ addCities(char[][],\ int)
 comment6.params=size
 comment6.target=char[][]\ createTerrain(int)
-comment6.text=\r\n\ Make\ a\ map\ with\ land\ and\ water\r\n
+comment6.text=\n\ Make\ a\ map\ with\ land\ and\ water\n
 numComments=7

@@ -166,6 +166,10 @@ public class DisplayUtility
     public static void fillSide(GraphicsContext gc, int stars)
     {
         gc.drawImage(new Image("images\\starbackground.png"), w, 0, 200, h);
+    }
+    public static void clearSide(GraphicsContext gc, int stars)
+    {
+        gc.clearRect(w, 0, 200, h);
         showStars(gc, stars);
     }
     
@@ -181,14 +185,14 @@ public class DisplayUtility
     
     public static void drawConfirmScreen(GraphicsContext gc, int stars)
     {
-        fillSide(gc, stars);
+        clearSide(gc, stars);
         gc.drawImage(X_BTN, w+20, h-80, 60, 60);
         gc.drawImage(CHECK_BTN, w+120, h-80, 60, 60);
     }
     
     public static void drawRegularScreen(GraphicsContext gc, int stars)
     {
-        fillSide(gc, stars);
+        clearSide(gc, stars);
         gc.drawImage(new Image("techtree_images\\tech tree.png"), w+20, h-80, 60, 60);
         gc.drawImage(END_TURN_BTN, w+120, h-80, 60, 60);
     }
@@ -213,7 +217,6 @@ public class DisplayUtility
         for (Coord c : attackable)
         {
             clearTile(gc, c.x, c.y);
-            Player.troopMap[c.x][c.y].drawTroop(gc, c.x, c.y);
         }
         clearTile(gc, x, y);
     }
@@ -290,7 +293,7 @@ public class DisplayUtility
     
     public static void drawTroops(Troop[][] map, GraphicsContext gc)
     {
-        for (int x = 0; x < map.length; x++)
+        /*for (int x = 0; x < map.length; x++)
         {
             for (int y = 0; y < map[0].length; y++)
             {
@@ -298,6 +301,6 @@ public class DisplayUtility
                 if (t != null)
                     t.drawTroop(gc, x, y);
             }
-        }
+        }*/
     }
 }

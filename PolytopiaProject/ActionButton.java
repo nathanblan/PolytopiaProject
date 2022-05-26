@@ -10,6 +10,7 @@ import javafx.scene.image.Image;
 import javafx.scene.input.*;
 import javafx.scene.text.*;
 import javafx.scene.paint.*;
+import javafx.scene.Group;
 
 public class ActionButton
 {
@@ -220,6 +221,8 @@ public class ActionButton
     
     public int doAction(Tile t, int x, int y, int turn)
     {
+        Troop w = null;
+        
         if (type.equals("animal"))
             ((Forest)t).hunt();
         else if (type.equals("berry"))
@@ -242,13 +245,19 @@ public class ActionButton
             return 2;
         
         else if (type.equals("warrior"))
-            ((City)t).trainTroop(new Warrior(t.getPlayer(), turn));
+            w = new Warrior(t.getPlayer(), turn);
         else if (type.equals("archer"))
-            ((City)t).trainTroop(new Archer(t.getPlayer(), turn));
+            w = new Archer(t.getPlayer(), turn);
         else if (type.equals("rider"))
-            ((City)t).trainTroop(new Rider(t.getPlayer(), turn, x, y));
+            w = new Rider(t.getPlayer(), turn, x, y);
         else if (type.equals("shield"))
-            ((City)t).trainTroop(new Shield(t.getPlayer(), turn));
+            w = new Shield(t.getPlayer(), turn);
+            
+        if (w != null)
+        {
+            ((City)t).trainTroop(w);
+            return 3;
+        }
         return 0;
     }
     

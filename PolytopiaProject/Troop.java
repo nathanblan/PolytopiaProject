@@ -4,6 +4,7 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.animation.TranslateTransition;
 import javafx.util.Duration;
+import javafx.scene.shape.Circle;
 
 /**
  * Main class for Troops
@@ -40,6 +41,8 @@ public class Troop extends ImageView
     
     protected boolean canDash;
     
+    private final TranslateTransition animation;
+    
     /**
      * Constructor for objects of class Troop
      */
@@ -64,6 +67,9 @@ public class Troop extends ImageView
         
         super.setFitHeight(Tile.TILE_SIZE);
         super.setFitWidth(Tile.TILE_SIZE);
+        
+        animation = new TranslateTransition();
+        animation.setNode(this);
     }
     
     public Player getPlayer()
@@ -128,8 +134,10 @@ public class Troop extends ImageView
     /**
      * @return true if kills the other troop, false otherwise
      */
-    public boolean attack(Troop other, int distance)
+    public void attack(Troop other)
     {
+        int distance = CalcUtility.getDistance(getXCoord(), getYCoord(), other.getXCoord(), other.getYCoord());
+        
         double attackForce = attack * ((double)health/maxHealth);
         double defenseForce = other.defense * (other.health / other.maxHealth) * 1;
         double totalDamage = attackForce + defenseForce;
@@ -138,11 +146,13 @@ public class Troop extends ImageView
         
         other.health -= attackResult;
         if (other.health <= 0)
-            return true;
-        
-        if (other.range <= distance)
+            other.destroyTroop();
+        else if (other.range <= distance)
+        {
             health -= defenseResult;
-        return false;
+            if (health <= 0)
+                destroyTroop();
+        }
     }
     
     public int getMovement()
@@ -179,6 +189,8 @@ public class Troop extends ImageView
             attack = 4;
             defense = 3;
         }
+        
+        updateImage();
     }
     
     public boolean canUpgradeShip()
@@ -199,6 +211,8 @@ public class Troop extends ImageView
         defense = baseDefense;
         range = baseRange;
         movement = baseMovement;
+        
+        updateImage();
     }
     private int round (double num)
     {
@@ -211,18 +225,57 @@ public class Troop extends ImageView
         super.setY(y*Tile.TILE_SIZE);
     }
     
+    public void moveTo(int x, int y)
+    {
+        moveTo(x, y, 500);
+    }
+    
     public void moveTo(int x, int y, int millis)
     {
-        TranslateTransition transition = new TranslateTransition(Duration.millis(millis), this);
-        transition.setFromX(super.getX());
-        transition.setFromY(super.getY());
-        transition.setToX(super.getX() + x*Tile.TILE_SIZE);
-        transition.setToY(super.getY() + y*Tile.TILE_SIZE);
+        animation.setDelay(Duration.millis(millis));
+        animation.setFromX(getX());
+        animation.setFromY(getY());
+        animation.setToX(super.getX() + x*Tile.TILE_SIZE);
+        animation.setToY(super.getY() + y*Tile.TILE_SIZE);
         
-        transition.setCycleCount(1);
-        transition.play();
+        animation.setCycleCount(1);
+        animation.play();
         
         setXY(x, y);
+    }
+    
+    public void destroyTroop()
+    {
+        Player.troopMap[getXCoord()][getYCoord()] = null;
+        setImage(null);
+    }
+    
+    public void animateAttack(int x, int y)
+    {
+        if (range == 0)
+            meleeAttack(x, y);
+        else
+            rangeAttack(x, y);
+    }
+    
+    public void meleeAttack(int x, int y)
+    {
+        int curX = (int)getX();
+        int curY = (int)getY();
+        moveTo(x, y, 250);
+        moveTo(curX, curY, 250);
+    }
+    
+    public void rangeAttack(int x, int y)
+    {}
+    
+    public int getXCoord()
+    {
+        return (int)getX()/Tile.TILE_SIZE;
+    }
+    public int getYCoord()
+    {
+        return (int)getY()/Tile.TILE_SIZE;
     }
     
     public void updateImage()
@@ -234,24 +287,6 @@ public class Troop extends ImageView
             super.setImage(new Image("troops\\ship"+n+".png"));
         else
             super.setImage(new Image("troops\\battleship"+n+".png"));
-    }
-    
-    public void drawTroop(GraphicsContext gc, int x, int y)
-    {
-        int playerNum = player.getPlayerNum()+1;
-        if (shipLevel == 1) //draw sailboat
-        {
-            gc.drawImage(new Image("troops\\boat"+playerNum+".png"), x*Tile.TILE_SIZE, y*Tile.TILE_SIZE, Tile.TILE_SIZE, Tile.TILE_SIZE);
-        }
-        else if (shipLevel == 2) //draw cruiser
-        {
-            gc.drawImage(new Image("troops\\ship"+playerNum+".png"), x*Tile.TILE_SIZE, y*Tile.TILE_SIZE, Tile.TILE_SIZE, Tile.TILE_SIZE);
-        }
-        else //draw battleship
-        {
-            gc.drawImage(new Image("troops\\battleship"+playerNum+".png"), x*Tile.TILE_SIZE, y*Tile.TILE_SIZE, Tile.TILE_SIZE, Tile.TILE_SIZE);
-        }
-        
     }
     
     public String getInfo()

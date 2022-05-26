@@ -34,13 +34,4 @@ public class Shield extends Troop
             return super.getInfo();
         return "shield";
     }
-    
-    public void drawTroop(GraphicsContext gc, int x, int y)
-    {
-        int playerNum = getPlayer().getPlayerNum()+1;
-        if (shipLevel > 0)
-            super.drawTroop(gc, x, y);
-        else
-            gc.drawImage(new Image("troops\\shield"+playerNum+".png"), x*Tile.TILE_SIZE, y*Tile.TILE_SIZE, Tile.TILE_SIZE, Tile.TILE_SIZE);
-    }
 }

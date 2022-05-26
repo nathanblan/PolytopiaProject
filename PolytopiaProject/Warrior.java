@@ -8,6 +8,7 @@
 
 import javafx.scene.canvas.*;
 import javafx.scene.image.Image;
+import javafx.scene.*;
 
 public class Warrior extends Troop
 {
@@ -37,15 +38,5 @@ public class Warrior extends Troop
         if (shipLevel > 0)
             return super.getInfo();
         return "warrior";
-    }
-    
-    
-    public void drawTroop(GraphicsContext gc, int x, int y)
-    {
-        int playerNum = getPlayer().getPlayerNum()+1;
-        if (shipLevel > 0)
-            super.drawTroop(gc, x, y);
-        else
-            gc.drawImage(new Image("troops\\warrior"+playerNum+".png"), x*Tile.TILE_SIZE, y*Tile.TILE_SIZE, Tile.TILE_SIZE, Tile.TILE_SIZE);
     }
 }

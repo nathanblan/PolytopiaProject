@@ -37,12 +37,13 @@ public class Display extends Application
     private int curTurn = 0;
 
     private Canvas[] fog;
+    
+    private final Group root = new Group();
 
     @Override
     public void start(Stage stage)
     {
         stage.setTitle("Polytopia");
-        Group root = new Group();
 
         Canvas mapLayer = new Canvas(sceneWidth+200, sceneHeight);
         GraphicsContext gc = mapLayer.getGraphicsContext2D();
@@ -63,27 +64,26 @@ public class Display extends Application
         gc = transition.getGraphicsContext2D();
         gc.drawImage(new Image("images\\startscreen.png"), 0, 0, sceneWidth+200, sceneHeight);
 
-        Canvas troopLayer = new Canvas(sceneWidth+200, sceneHeight);
-        DisplayUtility.drawTroops(Player.troopMap, troopLayer.getGraphicsContext2D());
+        Canvas overlay = new Canvas(sceneWidth+200, sceneHeight);
 
         Canvas treeLayer = new Canvas(sceneWidth+200, sceneHeight);
 
         root.getChildren().add(mapLayer);
         root.getChildren().add(transition);
-        root.getChildren().add(troopLayer);
+        root.getChildren().add(overlay);
         root.getChildren().add(treeLayer);
         stage.setScene(new Scene(root));
         stage.show();
 
-        mapLayer.toFront();
-        troopLayer.toFront();
+        overlay.toBack();
+        mapLayer.toBack();
         fog[0].toFront();
         for (int i = 1; i < NUM_PLAYERS; i++)
         {
             fog[i].toBack();
         }
         transition.toFront();
-        takeUserInput(mapLayer, troopLayer, treeLayer, transition);
+        takeUserInput(mapLayer, overlay, treeLayer, transition);
     }
 
     private void setStartingCity()
@@ -119,11 +119,18 @@ public class Display extends Application
                 }
             }
         }
+        
+        Warrior w = new Warrior(players[0]);
+        root.getChildren().add(w);
         ((City)map[firstX][firstY]).setPlayer(players[0], map);
-        Player.troopMap[firstX][firstY] = new Warrior(players[0]);
+        Player.troopMap[firstX][firstY] = w;
         DisplayUtility.clearStartingFog(fog[0], firstX, firstY, players[0]);
+        
         ((City)map[secondX][secondY]).setPlayer(players[1], map);
-        Player.troopMap[secondX][secondY] = new Warrior(players[1]);
+        
+        w = new Warrior(players[1]);
+        root.getChildren().add(w);
+        Player.troopMap[secondX][secondY] = w;
         DisplayUtility.clearStartingFog(fog[1], secondX, secondY, players[1]);
     }
 
@@ -206,13 +213,13 @@ public class Display extends Application
         });
     }
 
-    private void handleRegularActions(MouseEvent e, Canvas mapLayer, Canvas troopLayer, Canvas transition, Canvas treeLayer)
+    private void handleRegularActions(MouseEvent e, Canvas mapLayer, Canvas overlay, Canvas transition, Canvas treeLayer)
     {
         int x = (int)(e.getX()/Tile.TILE_SIZE);
         int y = (int)(e.getY()/Tile.TILE_SIZE);
 
         GraphicsContext mapGC = mapLayer.getGraphicsContext2D();
-        GraphicsContext troopGC = troopLayer.getGraphicsContext2D();
+        GraphicsContext overlayGC = overlay.getGraphicsContext2D();
 
         // clicked in the map
         if (x < SIZE && y < SIZE)
@@ -224,12 +231,11 @@ public class Display extends Application
                 // clear side panel and selected tile
                 if (curSelectedX != -1 && curSelectedY != -1)
                 {
-                    DisplayUtility.fillSide(mapGC, players[curPlayer].getStars());
+                    DisplayUtility.clearSide(mapGC, players[curPlayer].getStars());
                     if (curLayer == 1)
                     {
-                        DisplayUtility.clearMovableTiles(troopGC, map, curSelectedX, curSelectedY);
-                        DisplayUtility.clearTile(troopGC, curSelectedX, curSelectedY);
-                        Player.troopMap[curSelectedX][curSelectedY].drawTroop(troopGC, curSelectedX, curSelectedY);
+                        DisplayUtility.clearMovableTiles(overlayGC, map, curSelectedX, curSelectedY);
+                        DisplayUtility.clearTile(overlayGC, curSelectedX, curSelectedY);
                     }
                     else if (curLayer == 2)
                     {
@@ -255,7 +261,7 @@ public class Display extends Application
                 else
                 {
                     if (curSelectedX != -1 && curSelectedY != -1)
-                        actionDone = selectTroopMovement(mapGC, troopGC, x, y);
+                        actionDone = selectTroopMovement(mapGC, overlayGC, x, y);
     
                     // did not select a troop movement/attack tile
                     if (!actionDone)
@@ -273,9 +279,9 @@ public class Display extends Application
                 if (!actionDone)
                 {
                     if (curLayer == 2)
-                        selectedTile(mapGC, x, y);
+                        selectedTile(overlayGC, x, y);
                     else if (curLayer == 1)
-                        selectedTroop(mapGC, troopGC, x, y);
+                        selectedTroop(overlayGC, x, y);
                 }
             }
         }
@@ -286,11 +292,11 @@ public class Display extends Application
             y = (int)e.getY();
 
             if (isConfirmScreen)
-                selectConfirmAction(mapGC, troopGC, x, y);
+                selectConfirmAction(mapGC, overlay, x, y);
             else if (curLayer == 2)
-                selectTileAction(mapGC, x, y);
+                selectTileAction(mapGC, overlayGC, x, y);
             else if (curLayer == 1)
-                selectTroopAction(mapGC, troopGC, x, y);
+                selectTroopAction(mapGC, overlayGC, x, y);
             // regular actions
             else if (curLayer == 0)
             {
@@ -304,7 +310,7 @@ public class Display extends Application
         }
     }
 
-    private boolean selectTroopMovement(GraphicsContext mapGC, GraphicsContext troopGC, int x, int y)
+    private boolean selectTroopMovement(GraphicsContext mapGC, GraphicsContext overlayGC, int x, int y)
     {
         Troop t = Player.troopMap[curSelectedX][curSelectedY];
         // check if attacked troop
@@ -316,28 +322,21 @@ public class Display extends Application
                 if (c.x == x && c.y == y)
                 {
                     Troop other = Player.troopMap[x][y];
+                    t.attack(other);
+                    other = Player.troopMap[x][y];
 
-                    boolean temp = t.attack(other, CalcUtility.getDistance(x, y, curSelectedX, curSelectedY));
-
-                    if (!temp || t.getRange() > 1)
+                    if (other != null || t.getRange() > 1)
                         t.updateLastAttackTurn(curTurn);
                     t.updateLastMoveTurn(curTurn);
                     
-                    if (t.getHealth() <= 0)
-                    {
-                        DisplayUtility.clearTile(troopGC, curSelectedX, curSelectedY);
-                        Player.troopMap[curSelectedX][curSelectedY] = null;
-                    }
-                    
                     String s = map[x][y].getInfo();
                     
-                    if (temp && t.getRange() == 1 && t.getHealth() > 0 &&
-                        (s.equals("field") || s.equals("forest") || s.equals("grass") || s.substring(0, 4).equals("city") || s.equals("village")
+                    if (other== null && t.getRange() == 1 && (s.equals("field") || s.equals("forest")
+                        || s.equals("grass") || s.substring(0, 4).equals("city") || s.equals("village")
                         || (s.equals("mountain") && players[curPlayer].getTree().getClimbing())))
                     {
                         // take other troop's location
-                        DisplayUtility.clearTile(troopGC, curSelectedX, curSelectedY);
-                        t.drawTroop(troopGC, x, y);
+                        t.moveTo(x, y);
                         
                         Player.troopMap[curSelectedX][curSelectedY] = null;
                         Player.troopMap[x][y] = t;
@@ -359,23 +358,20 @@ public class Display extends Application
                         {
                             curSelectedX = x;
                             curSelectedY = y;
-                            DisplayUtility.fillSide(mapGC, players[curPlayer].getStars());
+                            DisplayUtility.clearSide(mapGC, players[curPlayer].getStars());
                             DisplayUtility.showType(mapGC, t);
-                            DisplayUtility.showAttackableTiles(troopGC, x, y);
-                            DisplayUtility.showSelectedTroop(troopGC, x, y);
+                            DisplayUtility.showAttackableTiles(overlayGC, x, y);
+                            DisplayUtility.showSelectedTroop(overlayGC, x, y);
                         }
                     }
-                    else if (temp)
+                    else if (other == null)
                     {
-                        Player.troopMap[x][y] = null;
-                        DisplayUtility.clearTile(troopGC, x, y);
+                        t.animateAttack(x, y);
                     }
                     else
                     {
-                        curSelectedX = -1;
-                        curSelectedY = -1;
-                        curLayer = 0;
-                        DisplayUtility.drawRegularScreen(mapGC, players[curPlayer].getStars());
+                        t.animateAttack(x, y);
+                        other.animateAttack(curSelectedX, curSelectedY);
                     }
 
                     return true;
@@ -392,16 +388,16 @@ public class Display extends Application
             {
                 if (c.x == x && c.y == y)
                 {
+                    t.moveTo(x, y);
+                    
                     if (map[x][y].getInfo().equals("water") && ((Water)map[x][y]).hasPort() && t.getShipLevel() == 0)
                         t.upgradeShip();
                     else if (!map[x][y].isWater() && t.getShipLevel() > 0)
                         t.destroyShip();
-                        
-                    DisplayUtility.clearTile(troopGC, curSelectedX, curSelectedY);
-                    t.drawTroop(troopGC, x, y);
                     
                     Player.troopMap[curSelectedX][curSelectedY] = null;
                     Player.troopMap[x][y] = t;
+                    
                     if (map[x][y].getInfo().equals("mountain"))
                         DisplayUtility.clearTroopFog(fog[curPlayer], x, y, 2, players[curPlayer]);
                     else
@@ -424,9 +420,9 @@ public class Display extends Application
                     {
                         curSelectedX = x;
                         curSelectedY = y;
-                        DisplayUtility.fillSide(mapGC, players[curPlayer].getStars());
+                        DisplayUtility.clearSide(mapGC, players[curPlayer].getStars());
                         DisplayUtility.showType(mapGC, t);
-                        DisplayUtility.showAttackableTiles(troopGC, x, y);
+                        DisplayUtility.showAttackableTiles(overlayGC, x, y);
                         DisplayUtility.showXBtn(mapGC);
                     }
 
@@ -438,9 +434,10 @@ public class Display extends Application
         return false;
     }
 
-    private void selectConfirmAction(GraphicsContext mapGC, GraphicsContext troopGC, int x, int y)
+    private void selectConfirmAction(GraphicsContext mapGC, Canvas overlay, int x, int y)
     {
         int temp = CalcUtility.getConfirmButton(x, y);
+        GraphicsContext overlayGC = overlay.getGraphicsContext2D();
         if (temp == 1)
         {
             // do action
@@ -461,13 +458,17 @@ public class Display extends Application
                 ((City)map[curSelectedX][curSelectedY]).setPlayer(players[curPlayer], map);
                 t = map[curSelectedX][curSelectedY];
             }
+            else if (temp == 3)
+            {
+                root.getChildren().add(Player.troopMap[curSelectedX][curSelectedY]);
+                overlay.toFront();
+                fog[curPlayer].toFront();
+            }
 
             // update tile graphics + clear side panel
             t.drawTile(mapGC, curSelectedX, curSelectedY);
-            DisplayUtility.drawRegularScreen(mapGC, players[curPlayer].getStars());
-            DisplayUtility.clearTile(troopGC, curSelectedX, curSelectedY);
-            if (Player.troopMap[curSelectedX][curSelectedY] != null)
-                Player.troopMap[curSelectedX][curSelectedY].drawTroop(troopGC, curSelectedX, curSelectedY);
+            DisplayUtility.drawRegularScreen(overlayGC, players[curPlayer].getStars());
+            DisplayUtility.clearTile(overlayGC, curSelectedX, curSelectedY);
 
             // clear variables
             curSelectedX = -1;
@@ -477,8 +478,8 @@ public class Display extends Application
         }
         else if (temp == 0)
         {
-            map[curSelectedX][curSelectedY].drawTile(mapGC, curSelectedX, curSelectedY);
-            DisplayUtility.drawRegularScreen(mapGC, players[curPlayer].getStars());
+            DisplayUtility.clearTile(overlayGC, curSelectedX, curSelectedY);
+            DisplayUtility.drawRegularScreen(overlayGC, players[curPlayer].getStars());
 
             // clear variables
             curSelectedX = -1;
@@ -488,16 +489,15 @@ public class Display extends Application
         }
     }
 
-    private void selectTroopAction(GraphicsContext mapGC, GraphicsContext troopGC, int x, int y)
+    private void selectTroopAction(GraphicsContext mapGC, GraphicsContext overlayGC, int x, int y)
     {
         if (CalcUtility.getConfirmButton(x, y) == 1)
         {
             // exit side panel
-            DisplayUtility.drawRegularScreen(mapGC, players[curPlayer].getStars());
+            DisplayUtility.drawRegularScreen(overlayGC, players[curPlayer].getStars());
             
-            DisplayUtility.clearMovableTiles(troopGC, map, curSelectedX, curSelectedY);
-            DisplayUtility.clearTile(troopGC, curSelectedX, curSelectedY);
-            Player.troopMap[curSelectedX][curSelectedY].drawTroop(troopGC, curSelectedX, curSelectedY);
+            DisplayUtility.clearMovableTiles(overlayGC, map, curSelectedX, curSelectedY);
+            DisplayUtility.clearTile(overlayGC, curSelectedX, curSelectedY);
     
             curLayer = 0;
             curSelectedX = -1;
@@ -518,10 +518,9 @@ public class Display extends Application
                 t.updateLastMoveTurn(curTurn);
                 t.updateLastAttackTurn(curTurn);
 
-                DisplayUtility.drawRegularScreen(mapGC, players[curPlayer].getStars());
-                DisplayUtility.clearTile(troopGC, curSelectedX, curSelectedY);
-                DisplayUtility.clearMovableTiles(troopGC, map, curSelectedX, curSelectedY);
-                t.drawTroop(troopGC, curSelectedX, curSelectedY);
+                DisplayUtility.drawRegularScreen(overlayGC, players[curPlayer].getStars());
+                DisplayUtility.clearTile(overlayGC, curSelectedX, curSelectedY);
+                DisplayUtility.clearMovableTiles(overlayGC, map, curSelectedX, curSelectedY);
         
                 curLayer = 0;
                 curSelectedX = -1;
@@ -530,12 +529,13 @@ public class Display extends Application
         }
     }
 
-    private void selectTileAction(GraphicsContext mapGC, int x, int y)
+    private void selectTileAction(GraphicsContext mapGC, GraphicsContext overlayGC, int x, int y)
     {
         if (CalcUtility.getConfirmButton(x, y) == 1)
         {
             // exit side panel
-            map[curSelectedX][curSelectedY].drawTile(mapGC, curSelectedX, curSelectedY);
+            //map[curSelectedX][curSelectedY].drawTile(mapGC, curSelectedX, curSelectedY);
+            DisplayUtility.clearTile(overlayGC, curSelectedX, curSelectedY);
             DisplayUtility.drawRegularScreen(mapGC, players[curPlayer].getStars());
 
             curLayer = 0;
@@ -552,59 +552,59 @@ public class Display extends Application
                 isConfirmScreen = true;
                 curButton = actions.get(index);
 
-                DisplayUtility.drawConfirmScreen(mapGC, players[curPlayer].getStars());
-                DisplayUtility.showType(mapGC, t);
+                DisplayUtility.drawConfirmScreen(overlayGC, players[curPlayer].getStars());
+                DisplayUtility.showType(overlayGC, t);
 
-                curButton.displayInfo(mapGC, sceneWidth);
+                curButton.displayInfo(overlayGC, sceneWidth);
             }
         }
     }
 
-    private void selectedTroop(GraphicsContext mapGC, GraphicsContext troopGC, int x, int y)
+    private void selectedTroop(GraphicsContext overlayGC, int x, int y)
     {
         Troop t = Player.troopMap[x][y];
-        DisplayUtility.fillSide(mapGC, players[curPlayer].getStars());
-        DisplayUtility.showType(mapGC, t);
-        DisplayUtility.showXBtn(mapGC);
+        DisplayUtility.clearSide(overlayGC, players[curPlayer].getStars());
+        DisplayUtility.showType(overlayGC, t);
+        DisplayUtility.showXBtn(overlayGC);
 
-        DisplayUtility.showSelectedTroop(troopGC, x, y);
+        DisplayUtility.showSelectedTroop(overlayGC, x, y);
 
         if (t.getPlayer() == players[curPlayer])
         {
             // show movable locations
             if (t.getLastMoveTurn() < curTurn)
             {
-                DisplayUtility.showMovableTiles(troopGC, map, x, y);
-                DisplayUtility.drawActionButtons(mapGC, getActionButtons(t, x, y));
+                DisplayUtility.showMovableTiles(overlayGC, map, x, y);
+                DisplayUtility.drawActionButtons(overlayGC, getActionButtons(t, x, y));
             }
             if (t.getLastAttackTurn() < curTurn)
             {
-                DisplayUtility.showAttackableTiles(troopGC, x, y);
+                DisplayUtility.showAttackableTiles(overlayGC, x, y);
             }
         }
     }
 
-    private void selectedTile(GraphicsContext mapGC, int x, int y)
+    private void selectedTile(GraphicsContext overlayGC, int x, int y)
     {
         Tile t = map[x][y];
         ArrayList<ActionButton> actions = getActionButtons(x, y);
 
         // display tile type
-        DisplayUtility.fillSide(mapGC, players[curPlayer].getStars());
-        DisplayUtility.showType(mapGC, t);
+        DisplayUtility.clearSide(overlayGC, players[curPlayer].getStars());
+        DisplayUtility.showType(overlayGC, t);
         if (t.getInfo().substring(0, 4).equals("city") && t.getPlayer() == players[curPlayer])
-            ((City)t).drawPopulation(mapGC, sceneWidth);
+            ((City)t).drawPopulation(overlayGC, sceneWidth);
 
         // show selected tile
         if (actions.size() == 0)
-            DisplayUtility.showSelectedTile(mapGC, Color.GAINSBORO, x, y);
+            DisplayUtility.showSelectedTile(overlayGC, Color.GAINSBORO, x, y);
         else
-            DisplayUtility.showSelectedTile(mapGC, Color.LIGHTBLUE, x, y);
+            DisplayUtility.showSelectedTile(overlayGC, Color.LIGHTBLUE, x, y);
 
         // draw action buttons
-        DisplayUtility.drawActionButtons(mapGC, actions);
+        DisplayUtility.drawActionButtons(overlayGC, actions);
 
-        DisplayUtility.showXBtn(mapGC);
+        DisplayUtility.showXBtn(overlayGC);
     }
 
     private void endTurn(Canvas transition)

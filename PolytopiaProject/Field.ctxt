@@ -2,7 +2,7 @@
 comment0.target=Field
 comment1.params=
 comment1.target=Field()
-comment1.text=\r\n\ Constructor\ for\ objects\ of\ class\ Land\r\n
+comment1.text=\n\ Constructor\ for\ objects\ of\ class\ Land\n
 comment2.params=fruit
 comment2.target=Field(boolean)
 comment3.params=

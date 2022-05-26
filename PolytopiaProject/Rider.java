@@ -50,13 +50,4 @@ public class Rider extends Troop
         else
             super.setImage(new Image("troops\\rider"+n+".png"));
     }
-    
-    public void drawTroop(GraphicsContext gc, int x, int y)
-    {
-        int playerNum = getPlayer().getPlayerNum()+1;
-        if (shipLevel > 0)
-            super.drawTroop(gc, x, y);
-        else
-            gc.drawImage(new Image("troops\\rider"+playerNum+".png"), x*Tile.TILE_SIZE, y*Tile.TILE_SIZE, Tile.TILE_SIZE, Tile.TILE_SIZE);
-    }
 }
