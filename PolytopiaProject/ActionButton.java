@@ -170,7 +170,7 @@ public class ActionButton
         return false;
     }
     
-    public int doAction(Tile t, int turn)
+    public int doAction(Tile t, int x, int y, int turn)
     {
         if (type.equals("animal"))
             ((Forest)t).hunt();
@@ -198,7 +198,7 @@ public class ActionButton
         else if (type.equals("archer"))
             ((City)t).trainTroop(new Archer(t.getPlayer(), turn));
         else if (type.equals("rider"))
-            ((City)t).trainTroop(new Rider(t.getPlayer(), turn));
+            ((City)t).trainTroop(new Rider(t.getPlayer(), turn, x, y));
         else if (type.equals("shield"))
             ((City)t).trainTroop(new Shield(t.getPlayer(), turn));
         return 0;

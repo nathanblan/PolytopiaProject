@@ -1,11 +1,15 @@
 import javafx.scene.canvas.*;
 import javafx.scene.paint.Color;
 import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
+import javafx.animation.TranslateTransition;
+import javafx.util.Duration;
+
 /**
  * Main class for Troops
  * 
  */
-public class Troop
+public class Troop extends ImageView
 {
     // instance variables
     private int health;
@@ -57,6 +61,9 @@ public class Troop
         lastMoveTurn = -1;
         lastAttackTurn = -1;
         lastActionTurn = -1;
+        
+        super.setFitHeight(Tile.TILE_SIZE);
+        super.setFitWidth(Tile.TILE_SIZE);
     }
     
     public Player getPlayer()
@@ -198,9 +205,35 @@ public class Troop
         return (int)(num+0.5);
     }
     
-    public void claimCity(Player player)
+    public void setXY(int x, int y)
     {
+        super.setX(x*Tile.TILE_SIZE);
+        super.setY(y*Tile.TILE_SIZE);
+    }
+    
+    public void moveTo(int x, int y, int millis)
+    {
+        TranslateTransition transition = new TranslateTransition(Duration.millis(millis), this);
+        transition.setFromX(super.getX());
+        transition.setFromY(super.getY());
+        transition.setToX(super.getX() + x*Tile.TILE_SIZE);
+        transition.setToY(super.getY() + y*Tile.TILE_SIZE);
         
+        transition.setCycleCount(1);
+        transition.play();
+        
+        setXY(x, y);
+    }
+    
+    public void updateImage()
+    {
+        int n = player.getPlayerNum()+1;
+        if (shipLevel == 1)
+            super.setImage(new Image("troops\\boat"+n+".png"));
+        else if (shipLevel == 2)
+            super.setImage(new Image("troops\\ship"+n+".png"));
+        else
+            super.setImage(new Image("troops\\battleship"+n+".png"));
     }
     
     public void drawTroop(GraphicsContext gc, int x, int y)

@@ -14,14 +14,15 @@ public class Rider extends Troop
     /**
      * Constructor for objects of class Rider
      */
-    public Rider(Player p)
+    public Rider(Player p, int x, int y)
     {
         super(p, 10, 2, 1, 1, 2);
         
         canDash = true;
+        super.setXY(x, y);
     }
     
-    public Rider(Player p, int turn)
+    public Rider(Player p, int turn, int x, int y)
     {
         super(p, 10, 2, 1, 1, 2);
         
@@ -30,6 +31,8 @@ public class Rider extends Troop
         super.updateLastAttackTurn(turn);
         super.updateLastMoveTurn(turn);
         super.updateLastActionTurn(turn);
+        
+        super.setXY(x, y);
     }
     
     public String getInfo()
@@ -37,6 +40,15 @@ public class Rider extends Troop
         if (shipLevel > 0)
             return super.getInfo();
         return "rider";
+    }
+    
+    public void updateImage()
+    {
+        int n = getPlayer().getPlayerNum()+1;
+        if (super.getShipLevel() > 0)
+            super.updateImage();
+        else
+            super.setImage(new Image("troops\\rider"+n+".png"));
     }
     
     public void drawTroop(GraphicsContext gc, int x, int y)

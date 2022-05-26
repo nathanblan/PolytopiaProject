@@ -445,7 +445,7 @@ public class Display extends Application
         {
             // do action
             Tile t = map[curSelectedX][curSelectedY];
-            temp = curButton.doAction(t, curTurn);
+            temp = curButton.doAction(t, curSelectedX, curSelectedY, curTurn);
             
             if (temp == 1)
             {
