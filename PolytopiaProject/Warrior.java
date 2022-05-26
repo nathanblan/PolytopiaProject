@@ -29,6 +29,7 @@ public class Warrior extends Troop
         
         super.updateLastAttackTurn(turn);
         super.updateLastMoveTurn(turn);
+        super.updateLastActionTurn(turn);
     }
     
     public String getInfo()

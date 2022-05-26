@@ -18,6 +18,7 @@ public class Troop
     
     private int lastMoveTurn;
     private int lastAttackTurn;
+    private int lastActionTurn;
     
     private Player player;
     
@@ -55,6 +56,7 @@ public class Troop
         
         lastMoveTurn = -1;
         lastAttackTurn = -1;
+        lastActionTurn = -1;
     }
     
     public Player getPlayer()
@@ -104,6 +106,16 @@ public class Troop
     public int getLastAttackTurn()
     {
         return lastAttackTurn;
+    }
+    
+    public void updateLastActionTurn(int turn)
+    {
+        lastActionTurn = turn;
+    }
+    
+    public int updateLastActionTurn()
+    {
+        return lastActionTurn;
     }
     
     /**

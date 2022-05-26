@@ -445,11 +445,11 @@ public class Display extends Application
         {
             // do action
             Tile t = map[curSelectedX][curSelectedY];
-            temp = curButton.doAction(t);
+            temp = curButton.doAction(t, curTurn);
             
             if (temp == 1)
             {
-                players[curPlayer].decStars(15);
+                players[curPlayer].decStars(20);
                 map[curSelectedX][curSelectedY] = new Field(false);
                 map[curSelectedX][curSelectedY].setCity(t.getCity());
                 t = map[curSelectedX][curSelectedY];
@@ -679,7 +679,7 @@ public class Display extends Application
                 actions.add(ActionButton.pickGold);
             if (((Mountain)t).canBuildMine() && tree.getMining())
                 actions.add(ActionButton.buildMine);
-            if (tree.getMountainDestroyer() && players[curPlayer].getStars() >= 15)
+            if (tree.getMountainDestroyer() && players[curPlayer].getStars() >= 20)
                 actions.add(ActionButton.destroyMountain);
         }
         else if (type.equals("field"))

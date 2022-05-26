@@ -25,6 +25,7 @@ public class Shield extends Troop
         
         super.updateLastAttackTurn(turn);
         super.updateLastMoveTurn(turn);
+        super.updateLastActionTurn(turn);
     }
     
     public String getInfo()
