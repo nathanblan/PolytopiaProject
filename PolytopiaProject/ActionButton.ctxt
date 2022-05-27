@@ -2,12 +2,12 @@
 comment0.target=ActionButton
 comment1.params=t
 comment1.target=ActionButton(java.lang.String)
-comment1.text=\n\ Constructor\ for\ objects\ of\ class\ ActionButton\n
+comment1.text=\r\n\ Constructor\ for\ objects\ of\ class\ ActionButton\r\n
 comment2.params=
 comment2.target=javafx.scene.image.Image\ getButton()
 comment3.params=gc\ width
 comment3.target=void\ displayInfo(javafx.scene.canvas.GraphicsContext,\ double)
-comment3.text=\n\ Displays\ the\ text\ onto\ the\ side\ panel,\ formats\ it\ somewhat\ nicely\n
+comment3.text=\r\n\ Displays\ the\ text\ onto\ the\ side\ panel,\ formats\ it\ somewhat\ nicely\r\n
 comment4.params=t
 comment4.target=boolean\ doAction(Troop)
 comment5.params=t\ x\ y\ turn

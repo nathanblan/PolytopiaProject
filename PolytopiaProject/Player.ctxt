@@ -1,6 +1,6 @@
 #BlueJ class context
 comment0.target=Player
-comment0.text=\n\ Store\ all\ player\ information\ in\ objects\ from\ this\ class.\n\n\ @author\ (your\ name)\n\ @version\ (a\ version\ number\ or\ a\ date)\n
+comment0.text=\r\n\ Store\ all\ player\ information\ in\ objects\ from\ this\ class.\r\n\r\n\ @author\ (your\ name)\r\n\ @version\ (a\ version\ number\ or\ a\ date)\r\n
 comment1.params=playerNum
 comment1.target=Player(int)
 comment2.params=num

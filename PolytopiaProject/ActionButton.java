@@ -245,13 +245,13 @@ public class ActionButton
             return 2;
         
         else if (type.equals("warrior"))
-            w = new Warrior(t.getPlayer(), turn);
+            w = new Warrior(t.getPlayer(), turn, x, y);
         else if (type.equals("archer"))
-            w = new Archer(t.getPlayer(), turn);
+            w = new Archer(t.getPlayer(), turn, x, y);
         else if (type.equals("rider"))
             w = new Rider(t.getPlayer(), turn, x, y);
         else if (type.equals("shield"))
-            w = new Shield(t.getPlayer(), turn);
+            w = new Shield(t.getPlayer(), turn, x, y);
             
         if (w != null)
         {

@@ -20,6 +20,8 @@ public class Rider extends Troop
         
         canDash = true;
         super.setXY(x, y);
+        setX(x*Tile.TILE_SIZE);
+        setY(y*Tile.TILE_SIZE);
     }
     
     public Rider(Player p, int turn, int x, int y)
@@ -33,6 +35,8 @@ public class Rider extends Troop
         super.updateLastActionTurn(turn);
         
         super.setXY(x, y);
+        setX(x*Tile.TILE_SIZE);
+        setY(y*Tile.TILE_SIZE);
     }
     
     public String getInfo()

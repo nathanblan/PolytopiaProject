@@ -1,6 +1,6 @@
 #BlueJ class context
 comment0.target=Display
-comment0.text=\n\ Use\ to\ visualize\ the\ map\ made\ by\ MapGenerator.\n
+comment0.text=\r\n\ Use\ to\ visualize\ the\ map\ made\ by\ MapGenerator.\r\n
 comment1.params=stage
 comment1.target=void\ start(javafx.stage.Stage)
 comment10.params=mapGC\ overlayGC\ x\ y
@@ -23,7 +23,7 @@ comment18.params=
 comment18.target=Tile[][]\ getTileMap()
 comment2.params=
 comment2.target=void\ setStartingCity()
-comment3.params=mapLayer\ troopLayer\ treeLayer\ transition
+comment3.params=mapLayer\ overlay\ treeLayer\ transition
 comment3.target=void\ takeUserInput(javafx.scene.canvas.Canvas,\ javafx.scene.canvas.Canvas,\ javafx.scene.canvas.Canvas,\ javafx.scene.canvas.Canvas)
 comment4.params=e
 comment4.target=void\ handle(javafx.scene.input.MouseEvent)

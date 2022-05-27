@@ -120,7 +120,7 @@ public class Display extends Application
             }
         }
         
-        Warrior w = new Warrior(players[0]);
+        Warrior w = new Warrior(players[0], firstX, firstY);
         root.getChildren().add(w);
         ((City)map[firstX][firstY]).setPlayer(players[0], map);
         Player.troopMap[firstX][firstY] = w;
@@ -128,13 +128,13 @@ public class Display extends Application
         
         ((City)map[secondX][secondY]).setPlayer(players[1], map);
         
-        w = new Warrior(players[1]);
+        w = new Warrior(players[1], secondX, secondY);
         root.getChildren().add(w);
         Player.troopMap[secondX][secondY] = w;
         DisplayUtility.clearStartingFog(fog[1], secondX, secondY, players[1]);
     }
 
-    private void takeUserInput(Canvas mapLayer, Canvas troopLayer, Canvas treeLayer, Canvas transition)
+    private void takeUserInput(Canvas mapLayer, Canvas overlay, Canvas treeLayer, Canvas transition)
     {
         for (Canvas f : fog)
         {
@@ -143,7 +143,7 @@ public class Display extends Application
                 @Override
                 public void handle(MouseEvent e)
                 {
-                    handleRegularActions(e, mapLayer, troopLayer, transition, treeLayer);
+                    handleRegularActions(e, mapLayer, overlay, transition, treeLayer);
                 }
             });
         }
@@ -154,7 +154,7 @@ public class Display extends Application
             public void handle(MouseEvent e)
             {
                 transition.toBack();
-                DisplayUtility.drawRegularScreen(mapLayer.getGraphicsContext2D(), players[curPlayer].getStars());
+                DisplayUtility.drawRegularScreen(overlay.getGraphicsContext2D(), players[curPlayer].getStars());
             }
         });
 
@@ -206,7 +206,7 @@ public class Display extends Application
                     if (CalcUtility.getConfirmButton(x, y) == 1)
                     {
                         treeLayer.toBack();
-                        DisplayUtility.drawRegularScreen(mapLayer.getGraphicsContext2D(), players[curPlayer].getStars());
+                        DisplayUtility.drawRegularScreen(overlay.getGraphicsContext2D(), players[curPlayer].getStars());
                     }
                 }
             }
@@ -231,7 +231,7 @@ public class Display extends Application
                 // clear side panel and selected tile
                 if (curSelectedX != -1 && curSelectedY != -1)
                 {
-                    DisplayUtility.clearSide(mapGC, players[curPlayer].getStars());
+                    DisplayUtility.clearSide(overlayGC, players[curPlayer].getStars());
                     if (curLayer == 1)
                     {
                         DisplayUtility.clearMovableTiles(overlayGC, map, curSelectedX, curSelectedY);
@@ -240,6 +240,7 @@ public class Display extends Application
                     else if (curLayer == 2)
                     {
                         map[curSelectedX][curSelectedY].drawTile(mapGC, curSelectedX, curSelectedY);
+                        DisplayUtility.clearTile(overlayGC, curSelectedX, curSelectedY);
                     }
                 }
     
@@ -253,7 +254,7 @@ public class Display extends Application
     
                     if (curLayer == 0)
                     {
-                        DisplayUtility.drawRegularScreen(mapGC, players[curPlayer].getStars());
+                        DisplayUtility.drawRegularScreen(overlayGC, players[curPlayer].getStars());
                         curSelectedX = -1;
                         curSelectedY = -1;
                     }
@@ -352,14 +353,14 @@ public class Display extends Application
                             curSelectedX = -1;
                             curSelectedY = -1;
                             curLayer = 0;
-                            DisplayUtility.drawRegularScreen(mapGC, players[curPlayer].getStars());
+                            DisplayUtility.drawRegularScreen(overlayGC, players[curPlayer].getStars());
                         }
                         else
                         {
                             curSelectedX = x;
                             curSelectedY = y;
-                            DisplayUtility.clearSide(mapGC, players[curPlayer].getStars());
-                            DisplayUtility.showType(mapGC, t);
+                            DisplayUtility.clearSide(overlayGC, players[curPlayer].getStars());
+                            DisplayUtility.showType(overlayGC, t);
                             DisplayUtility.showAttackableTiles(overlayGC, x, y);
                             DisplayUtility.showSelectedTroop(overlayGC, x, y);
                         }
@@ -414,16 +415,16 @@ public class Display extends Application
                         curSelectedX = -1;
                         curSelectedY = -1;
                         curLayer = 0;
-                        DisplayUtility.drawRegularScreen(mapGC, players[curPlayer].getStars());
+                        DisplayUtility.drawRegularScreen(overlayGC, players[curPlayer].getStars());
                     }
                     else
                     {
                         curSelectedX = x;
                         curSelectedY = y;
-                        DisplayUtility.clearSide(mapGC, players[curPlayer].getStars());
-                        DisplayUtility.showType(mapGC, t);
+                        DisplayUtility.clearSide(overlayGC, players[curPlayer].getStars());
+                        DisplayUtility.showType(overlayGC, t);
                         DisplayUtility.showAttackableTiles(overlayGC, x, y);
-                        DisplayUtility.showXBtn(mapGC);
+                        DisplayUtility.showXBtn(overlayGC);
                     }
 
                     return true;
@@ -534,9 +535,8 @@ public class Display extends Application
         if (CalcUtility.getConfirmButton(x, y) == 1)
         {
             // exit side panel
-            //map[curSelectedX][curSelectedY].drawTile(mapGC, curSelectedX, curSelectedY);
             DisplayUtility.clearTile(overlayGC, curSelectedX, curSelectedY);
-            DisplayUtility.drawRegularScreen(mapGC, players[curPlayer].getStars());
+            DisplayUtility.drawRegularScreen(overlayGC, players[curPlayer].getStars());
 
             curLayer = 0;
             curSelectedX = -1;

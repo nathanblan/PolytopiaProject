@@ -160,10 +160,10 @@ public class DisplayUtility
             }
         }
 
-        drawRegularScreen(gc, 5);
+        fillSide(gc);
     }
     
-    public static void fillSide(GraphicsContext gc, int stars)
+    public static void fillSide(GraphicsContext gc)
     {
         gc.drawImage(new Image("images\\starbackground.png"), w, 0, 200, h);
     }
@@ -289,18 +289,5 @@ public class DisplayUtility
         gc.fillText(t.getInfo(), w+100, 60);
         gc.setFont(new Font(20));
         gc.fillText(t.getHealth()+" health", w+100, 85);
-    }
-    
-    public static void drawTroops(Troop[][] map, GraphicsContext gc)
-    {
-        /*for (int x = 0; x < map.length; x++)
-        {
-            for (int y = 0; y < map[0].length; y++)
-            {
-                Troop t = map[x][y];
-                if (t != null)
-                    t.drawTroop(gc, x, y);
-            }
-        }*/
     }
 }

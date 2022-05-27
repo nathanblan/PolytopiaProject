@@ -5,6 +5,7 @@ import javafx.scene.image.ImageView;
 import javafx.animation.TranslateTransition;
 import javafx.util.Duration;
 import javafx.scene.shape.Circle;
+import javafx.application.Platform;
 
 /**
  * Main class for Troops
@@ -43,6 +44,9 @@ public class Troop extends ImageView
     
     private final TranslateTransition animation;
     
+    private int curX;
+    private int curY;
+    
     /**
      * Constructor for objects of class Troop
      */
@@ -70,6 +74,8 @@ public class Troop extends ImageView
         
         animation = new TranslateTransition();
         animation.setNode(this);
+        updateImage();
+        animation.setAutoReverse(true);
     }
     
     public Player getPlayer()
@@ -221,22 +227,25 @@ public class Troop extends ImageView
     
     public void setXY(int x, int y)
     {
-        super.setX(x*Tile.TILE_SIZE);
-        super.setY(y*Tile.TILE_SIZE);
+        curX = x;
+        curY = y;
     }
     
     public void moveTo(int x, int y)
     {
-        moveTo(x, y, 500);
+        moveTo(x, y, 0);
     }
     
     public void moveTo(int x, int y, int millis)
     {
+        setX(curX*Tile.TILE_SIZE);
+        setY(curY*Tile.TILE_SIZE);
+        
         animation.setDelay(Duration.millis(millis));
-        animation.setFromX(getX());
-        animation.setFromY(getY());
-        animation.setToX(super.getX() + x*Tile.TILE_SIZE);
-        animation.setToY(super.getY() + y*Tile.TILE_SIZE);
+        animation.setFromX(0);
+        animation.setFromY(0);
+        animation.setToX(x*Tile.TILE_SIZE-getX());
+        animation.setToY(y*Tile.TILE_SIZE-getY());
         
         animation.setCycleCount(1);
         animation.play();
@@ -252,7 +261,7 @@ public class Troop extends ImageView
     
     public void animateAttack(int x, int y)
     {
-        if (range == 0)
+        if (range == 1)
             meleeAttack(x, y);
         else
             rangeAttack(x, y);
@@ -260,10 +269,14 @@ public class Troop extends ImageView
     
     public void meleeAttack(int x, int y)
     {
-        int curX = (int)getX();
-        int curY = (int)getY();
-        moveTo(x, y, 250);
-        moveTo(curX, curY, 250);
+        animation.setDelay(Duration.millis(0));
+        animation.setFromX(0);
+        animation.setFromY(0);
+        animation.setToX(x*Tile.TILE_SIZE-getX());
+        animation.setToY(y*Tile.TILE_SIZE-getY());
+        
+        animation.setCycleCount(2);
+        animation.play();
     }
     
     public void rangeAttack(int x, int y)
@@ -298,5 +311,17 @@ public class Troop extends ImageView
         if (shipLevel == 3)
             return "battleship";
         return "basic";
+    }
+    
+    private void wait(int millis)
+    {
+        try
+        {
+            Thread.sleep(millis);
+        }
+        catch(InterruptedException ex)
+        {
+            ex.printStackTrace();
+        }
     }
 }
