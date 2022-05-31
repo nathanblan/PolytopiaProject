@@ -113,6 +113,11 @@ public class City extends Tile
         gc.fillRect(x*TILE_SIZE+5, y*TILE_SIZE+40, 40, 5);
         gc.setFill(Color.TAN);
         gc.fillRect(x*TILE_SIZE+5, y*TILE_SIZE+40, 40.0*population/(level+1), 5);
+        gc.setFill(Color.BLACK);
+        for (int i = 1; i <= level; i++)
+        {
+            gc.fillRect(x*TILE_SIZE+5+40.0*i/(level+1)-0.5, y*TILE_SIZE+40, 1, 5);
+        }
     }
     
     public void drawPopulation(GraphicsContext gc, double w)

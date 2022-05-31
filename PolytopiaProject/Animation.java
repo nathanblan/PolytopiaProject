@@ -18,7 +18,7 @@ public class Animation extends Application {
     public void start (Stage primaryStage) throws Exception {
         Canvas c = new Canvas(600, 600);
         c.getGraphicsContext2D().setFill(Color.LIME);
-        Warrior t = new Warrior(new Player(0), 1, 1);   
+        Archer t = new Archer(new Player(0), 1, 1);   
         t.updateImage();
         Group group = new Group();
  
@@ -30,7 +30,15 @@ public class Animation extends Application {
         c.toBack();
         c.getGraphicsContext2D().fillRect(0, 0, 600, 600);
         
-        t.animateAttack(2, 2);
+        
+        c.addEventHandler(MouseEvent.MOUSE_CLICKED, new EventHandler<MouseEvent>()
+        {
+            @Override
+            public void handle(MouseEvent e)
+            {
+                t.animateAttack(2, 2, group);
+            }
+        });
     }
     
     

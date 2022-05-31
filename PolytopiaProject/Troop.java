@@ -6,6 +6,8 @@ import javafx.animation.TranslateTransition;
 import javafx.util.Duration;
 import javafx.scene.shape.Circle;
 import javafx.application.Platform;
+import javafx.scene.Group;
+import javafx.scene.Node;
 
 /**
  * Main class for Troops
@@ -250,6 +252,9 @@ public class Troop extends ImageView
         animation.setCycleCount(1);
         animation.play();
         
+        Player.troopMap[getXCoord()][getYCoord()] = null;
+        Player.troopMap[x][y] = this;
+        
         setXY(x, y);
     }
     
@@ -257,14 +262,16 @@ public class Troop extends ImageView
     {
         Player.troopMap[getXCoord()][getYCoord()] = null;
         setImage(null);
+        
+        System.out.println("destroyed troop");
     }
     
-    public void animateAttack(int x, int y)
+    public void animateAttack(int x, int y, Group root)
     {
         if (range == 1)
             meleeAttack(x, y);
         else
-            rangeAttack(x, y);
+            rangeAttack(x, y, root);
     }
     
     public void meleeAttack(int x, int y)
@@ -282,8 +289,27 @@ public class Troop extends ImageView
         animation.play();
     }
     
-    public void rangeAttack(int x, int y)
-    {}
+    public void rangeAttack(int x, int y, Group root)
+    {
+        Circle c = new Circle(curX*Tile.TILE_SIZE+Tile.TILE_SIZE/2, curY*Tile.TILE_SIZE+Tile.TILE_SIZE/2, 2.5, Color.BLACK);
+        root.getChildren().add(c);
+        animation.setNode(c);
+        
+        animation.setDelay(Duration.millis(0));
+        animation.setFromX(0);
+        animation.setFromY(0);
+        animation.setToX(x*Tile.TILE_SIZE-getX()+Tile.TILE_SIZE/2);
+        animation.setToY(y*Tile.TILE_SIZE-getY()+Tile.TILE_SIZE/2);
+        
+        animation.setCycleCount(1);
+        animation.play();
+        
+        animation.setNode(this);
+        new Thread(() -> {
+            CalcUtility.wait(500);
+            c.setFill(Color.TRANSPARENT);
+        }).start();
+    }
     
     public int getXCoord()
     {

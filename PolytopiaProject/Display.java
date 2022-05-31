@@ -326,6 +326,12 @@ public class Display extends Application
                     Troop other = Player.troopMap[x][y];
                     t.attack(other);
                     other = Player.troopMap[x][y];
+                    
+                    if (other.getHealth() <= 0)
+                    {
+                        Player.troopMap[x][y] = null;
+                        other = null;
+                    }
 
                     if (other != null || t.getRange() > 1)
                         t.updateLastAttackTurn(curTurn);
@@ -333,19 +339,21 @@ public class Display extends Application
                     
                     String s = map[x][y].getInfo();
                     
-                    if (other== null && t.getRange() == 1 && (s.equals("field") || s.equals("forest")
+                    if (other == null && t.getRange() == 1 && (s.equals("field") || s.equals("forest")
                         || s.equals("grass") || s.substring(0, 4).equals("city") || s.equals("village")
                         || (s.equals("mountain") && players[curPlayer].getTree().getClimbing())))
                     {
                         // take other troop's location
                         t.moveTo(x, y);
                         
-                        Player.troopMap[curSelectedX][curSelectedY] = null;
-                        Player.troopMap[x][y] = t;
-                        if (map[x][y].getInfo().equals("mountain"))
-                            DisplayUtility.clearTroopFog(fog[curPlayer], x, y, 2, players[curPlayer]);
-                        else
-                            DisplayUtility.clearTroopFog(fog[curPlayer], x, y, 1, players[curPlayer]);
+                        new Thread(() -> {
+                            CalcUtility.wait(250);
+                            
+                            if (map[x][y].getInfo().equals("mountain"))
+                                Platform.runLater(() -> DisplayUtility.clearTroopFog(fog[curPlayer], x, y, 2, players[curPlayer]));
+                            else
+                                Platform.runLater(() -> DisplayUtility.clearTroopFog(fog[curPlayer], x, y, 1, players[curPlayer]));
+                        }).start();
 
                         attackable = CalcUtility.getAttackableTiles(x, y);
                         // nothing can be attacked, deselect troop
@@ -368,15 +376,15 @@ public class Display extends Application
                     }
                     else if (other == null)
                     {
-                        t.animateAttack(x, y);
+                        t.animateAttack(x, y, root);
                     }
                     else
                     {
-                        t.animateAttack(x, y);
+                        t.animateAttack(x, y, root);
                         
                         new Thread(() -> {
-                            wait(1000);
-                            Platform.runLater(() -> Player.troopMap[x][y].animateAttack(curSelectedX, curSelectedY));
+                            CalcUtility.wait(1000);
+                            Platform.runLater(() -> Player.troopMap[x][y].animateAttack(curSelectedX, curSelectedY, root));
                         }).start();
                     }
 
@@ -401,13 +409,14 @@ public class Display extends Application
                     else if (!map[x][y].isWater() && t.getShipLevel() > 0)
                         t.destroyShip();
                     
-                    Player.troopMap[curSelectedX][curSelectedY] = null;
-                    Player.troopMap[x][y] = t;
-                    
-                    if (map[x][y].getInfo().equals("mountain"))
-                        DisplayUtility.clearTroopFog(fog[curPlayer], x, y, 2, players[curPlayer]);
-                    else
-                        DisplayUtility.clearTroopFog(fog[curPlayer], x, y, 1, players[curPlayer]);
+                    new Thread(() -> {
+                        CalcUtility.wait(250);
+                        
+                        if (map[x][y].getInfo().equals("mountain"))
+                            Platform.runLater(() -> DisplayUtility.clearTroopFog(fog[curPlayer], x, y, 2, players[curPlayer]));
+                        else
+                            Platform.runLater(() -> DisplayUtility.clearTroopFog(fog[curPlayer], x, y, 1, players[curPlayer]));
+                    }).start();
 
                     t.updateLastMoveTurn(curTurn);
                     if (!t.canDash())
@@ -755,17 +764,5 @@ public class Display extends Application
         }
 
         return map;
-    }
-    
-    private void wait(int millis)
-    {
-        try
-        {
-            Thread.sleep(millis);
-        }
-        catch(InterruptedException ex)
-        {
-            ex.printStackTrace();
-        }
     }
 }

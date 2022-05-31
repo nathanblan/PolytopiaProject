@@ -16,6 +16,18 @@ public class CalcUtility
         return max(abs(x1-x2), abs(y1-y2));
     }
     
+    public static void wait(int millis)
+    {
+        try
+        {
+            Thread.sleep(millis);
+        }
+        catch(InterruptedException ex)
+        {
+            ex.printStackTrace();
+        }
+    }
+    
     private static int abs(int num)
     {
         if (num > 0)
