@@ -141,11 +141,11 @@ public class DisplayUtility
         gc.drawImage(new Image("images\\fog.png"), 0, 0, w, h);
     }
     
-    public static void drawActionButtons(GraphicsContext gc, ArrayList<ActionButton> actions)
+    public static void drawActionButtons(GraphicsContext gc, ArrayList<ActionButton> actions, Player p)
     {
         for (int i = 0; i < actions.size(); i++)
         {
-            gc.drawImage(actions.get(i).getButton(), w+20, 100+i*180, 160, 160);
+            gc.drawImage(actions.get(i).getButton(p), w+20, 100+i*180, 160, 160);
         }
     }
     
@@ -183,11 +183,12 @@ public class DisplayUtility
         gc.fillText(String.valueOf(stars), w+90, 22.5);
     }
     
-    public static void drawConfirmScreen(GraphicsContext gc, int stars)
+    public static void drawConfirmScreen(GraphicsContext gc, int stars, boolean canDoAction)
     {
         clearSide(gc, stars);
         gc.drawImage(X_BTN, w+20, h-80, 60, 60);
-        gc.drawImage(CHECK_BTN, w+120, h-80, 60, 60);
+        if (canDoAction)
+            gc.drawImage(CHECK_BTN, w+120, h-80, 60, 60);
     }
     
     public static void drawRegularScreen(GraphicsContext gc, int stars)

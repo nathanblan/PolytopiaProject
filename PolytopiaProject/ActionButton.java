@@ -65,6 +65,8 @@ public class ActionButton
             info = "Hunts an animal. Costs 2 stars, gains 1 population.";
         else if (type.equals("berry"))
             info = "Picks berries. Costs 2 stars, gains 1 population.";
+        else if (type.equals("farm"))
+            info = "Builds a farm. Costs 5 stars, gains 2 population";
         else if (type.equals("fish"))
             info = "Fish some fish. Costs 2 stars, gains 1 population.";
         else if (type.equals("gold"))
@@ -121,7 +123,7 @@ public class ActionButton
             info = "Enables the destruction of mountains";
     }
     
-    public Image getButton()
+    public Image getButton(Player p)
     {
         // dont forget to put Tile t in the parameters
         /*
@@ -171,7 +173,9 @@ public class ActionButton
             ((City)t).trainTroop(new Shield(t.getPlayer(), turn));
         return 0;*/
         
-        return new Image("images\\"+type+"_button.png");
+        if (canDoAction(p))
+            return new Image("ActionButtonImages\\"+type+"_button.png");
+        return new Image("ActionButtonImages\\"+type+"_button_L.png");
     }
     
     /**
@@ -359,7 +363,38 @@ public class ActionButton
                 return !t.getCanalDigger();
             return false;
         }
-        return false;
+        
+        if (type.equals("warrior") && p.getStars() >= 2)
+            return true;
+        if (type.equals("archer") && p.getStars() >= 3)
+            return t.getArchery();
+        if (type.equals("shield") && p.getStars() >= 3)
+            return t.getShields();
+        if (type.equals("rider") && p.getStars() >= 3)
+            return t.getRiding();
+            
+        if (type.equals("animal"))
+            return p.getStars() >= 2;
+        else if (type.equals("berry"))
+            return p.getStars() >= 2;
+        else if (type.equals("fish"))
+            return p.getStars() >= 2;
+        else if (type.equals("gold"))
+            return true;
+        else if (type.equals("mine"))
+            return p.getStars() >= 5;
+        else if (type.equals("lumberhut"))
+            return p.getStars() >= 2;
+        else if (type.equals("farm"))
+            return p.getStars() >= 5;
+        else if (type.equals("build port"))
+            return p.getStars() >= 5;
+        else if (type.equals("destroy mtn"))
+            return p.getStars() >= 20;
+        else if (type.equals("build city"))
+            return p.getStars() >= 20;
+        
+        return true;
     }
     
     public String toString()

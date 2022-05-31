@@ -15,8 +15,8 @@ public class City extends Tile
     private int population;
     private int level;
     private int levelInc; // incrementor for population until next level
-    private int x;
-    private int y;
+    private final int x;
+    private final int y;
     
     /**
      * Constructor for objects of class City
@@ -89,7 +89,7 @@ public class City extends Tile
         return level;
     }
     
-    public void drawTile(GraphicsContext gc, int x, int y)
+    public void drawTile(GraphicsContext gc)
     {
         if (player == null)
             gc.drawImage(new Image("images\\village.jpg"), x*TILE_SIZE, y*TILE_SIZE, TILE_SIZE, TILE_SIZE);
@@ -97,6 +97,22 @@ public class City extends Tile
             gc.drawImage(new Image("images\\city.png"), x*TILE_SIZE, y*TILE_SIZE, TILE_SIZE, TILE_SIZE);
         else // player 2 city
             gc.drawImage(new Image("images\\city.png"), x*TILE_SIZE, y*TILE_SIZE, TILE_SIZE, TILE_SIZE);
+            
+        if (player != null)
+            drawPopulation(gc, x, y);
+    }
+    
+    public void drawTile(GraphicsContext gc, int x, int y)
+    {
+        drawTile(gc);
+    }
+    
+    protected void drawPopulation(GraphicsContext gc, int x, int y)
+    {
+        gc.setFill(Color.WHITE);
+        gc.fillRect(x*TILE_SIZE+5, y*TILE_SIZE+40, 40, 5);
+        gc.setFill(Color.TAN);
+        gc.fillRect(x*TILE_SIZE+5, y*TILE_SIZE+40, 40.0*population/(level+1), 5);
     }
     
     public void drawPopulation(GraphicsContext gc, double w)

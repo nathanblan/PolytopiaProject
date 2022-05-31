@@ -269,6 +269,9 @@ public class Troop extends ImageView
     
     public void meleeAttack(int x, int y)
     {
+        setX(curX*Tile.TILE_SIZE);
+        setY(curY*Tile.TILE_SIZE);
+        
         animation.setDelay(Duration.millis(0));
         animation.setFromX(0);
         animation.setFromY(0);

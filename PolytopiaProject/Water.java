@@ -72,25 +72,12 @@ public class Water extends Tile
     
     public boolean canFish()
     {
-        return hasFish && getPlayer().getStars() >= 2;
+        return hasFish;
     }
     
     public boolean canBuildPort()
     {
-        return !hasPort && getPlayer().getStars() >= 5;
-    }
-    
-    public boolean canAfford(int select)
-    {
-        if(select == 1)
-        {
-            return getPlayer().getStars() >= 2;
-        }
-        else if(select == 2)
-        {
-            return getPlayer().getStars() >= 5;
-        }
-        return false;
+        return !hasPort;
     }
     
     public boolean hasPort()

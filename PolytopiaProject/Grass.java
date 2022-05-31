@@ -49,11 +49,6 @@ public class Grass extends Tile
     
     public boolean canBuildFarm()
     {
-        return !isFarm && getPlayer().getStars() >= 5;
-    }
-    
-    public boolean canAfford(int x)
-    {
-        return getPlayer().getStars() >= 5;
+        return !isFarm;
     }
 }

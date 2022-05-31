@@ -66,12 +66,7 @@ public class Mountain extends Tile
     
     public boolean canBuildMine()
     {
-        return !hasMine && getPlayer().getStars() >= 5;
-    }
-    
-    public boolean canAfford(int x)
-    {
-        return getPlayer().getStars() >= 5;
+        return !hasMine;
     }
     
     public boolean canGrabGold()

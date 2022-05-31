@@ -1,4 +1,5 @@
 import javafx.application.Application;
+import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.scene.Group;
@@ -372,7 +373,11 @@ public class Display extends Application
                     else
                     {
                         t.animateAttack(x, y);
-                        other.animateAttack(curSelectedX, curSelectedY);
+                        
+                        new Thread(() -> {
+                            wait(1000);
+                            Platform.runLater(() -> Player.troopMap[x][y].animateAttack(curSelectedX, curSelectedY));
+                        }).start();
                     }
 
                     return true;
@@ -439,7 +444,7 @@ public class Display extends Application
     {
         int temp = CalcUtility.getConfirmButton(x, y);
         GraphicsContext overlayGC = overlay.getGraphicsContext2D();
-        if (temp == 1)
+        if (temp == 1 && curButton.canDoAction(players[curPlayer]))
         {
             // do action
             Tile t = map[curSelectedX][curSelectedY];
@@ -470,6 +475,9 @@ public class Display extends Application
             t.drawTile(mapGC, curSelectedX, curSelectedY);
             DisplayUtility.drawRegularScreen(overlayGC, players[curPlayer].getStars());
             DisplayUtility.clearTile(overlayGC, curSelectedX, curSelectedY);
+            
+            if (t.getCity() != null)
+                t.getCity().drawTile(mapGC, curSelectedX, curSelectedY);
 
             // clear variables
             curSelectedX = -1;
@@ -552,7 +560,7 @@ public class Display extends Application
                 isConfirmScreen = true;
                 curButton = actions.get(index);
 
-                DisplayUtility.drawConfirmScreen(overlayGC, players[curPlayer].getStars());
+                DisplayUtility.drawConfirmScreen(overlayGC, players[curPlayer].getStars(), curButton.canDoAction(players[curPlayer]));
                 DisplayUtility.showType(overlayGC, t);
 
                 curButton.displayInfo(overlayGC, sceneWidth);
@@ -575,7 +583,7 @@ public class Display extends Application
             if (t.getLastMoveTurn() < curTurn)
             {
                 DisplayUtility.showMovableTiles(overlayGC, map, x, y);
-                DisplayUtility.drawActionButtons(overlayGC, getActionButtons(t, x, y));
+                DisplayUtility.drawActionButtons(overlayGC, getActionButtons(t, x, y), players[curPlayer]);
             }
             if (t.getLastAttackTurn() < curTurn)
             {
@@ -602,7 +610,7 @@ public class Display extends Application
             DisplayUtility.showSelectedTile(overlayGC, Color.LIGHTBLUE, x, y);
 
         // draw action buttons
-        DisplayUtility.drawActionButtons(overlayGC, actions);
+        DisplayUtility.drawActionButtons(overlayGC, actions, players[curPlayer]);
 
         DisplayUtility.showXBtn(overlayGC);
     }
@@ -708,13 +716,12 @@ public class Display extends Application
         }
         else if (type.substring(0,4).equals("city") && Player.troopMap[x][y] == null) 
         {
-            if (t.getPlayer().getStars() >= 2)
-                actions.add(ActionButton.trainWarrior);
-            if (t.getPlayer().getStars() >= 3 && tree.getRiding())
+            actions.add(ActionButton.trainWarrior);
+            if (tree.getRiding())
                 actions.add(ActionButton.trainRider);
-            if (t.getPlayer().getStars() >= 3 && tree.getArchery())
+            if (tree.getArchery())
                 actions.add(ActionButton.trainArcher);
-            if (t.getPlayer().getStars() >= 3 && tree.getShields())
+            if (tree.getShields())
                 actions.add(ActionButton.trainShield);
         }
         
@@ -748,5 +755,17 @@ public class Display extends Application
         }
 
         return map;
+    }
+    
+    private void wait(int millis)
+    {
+        try
+        {
+            Thread.sleep(millis);
+        }
+        catch(InterruptedException ex)
+        {
+            ex.printStackTrace();
+        }
     }
 }

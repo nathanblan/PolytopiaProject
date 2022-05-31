@@ -11,6 +11,4 @@ comment4.params=
 comment4.target=java.lang.String\ getInfo()
 comment5.params=
 comment5.target=boolean\ canBuildFarm()
-comment6.params=x
-comment6.target=boolean\ canAfford(int)
-numComments=7
+numComments=6
