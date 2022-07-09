@@ -14,7 +14,6 @@ public class City extends Tile
     private Player player;
     private int population;
     private int level;
-    private int levelInc; // incrementor for population until next level
     private final int x;
     private final int y;
     
@@ -25,7 +24,6 @@ public class City extends Tile
     {
         player = null;
         level = 1;
-        levelInc = 2;
         population = 0;
         this.x=x;
         this.y=y;
@@ -35,30 +33,7 @@ public class City extends Tile
     {
         if (player == null)
         {
-            ArrayList<Integer> xValues = new ArrayList<Integer>();
-            ArrayList<Integer> yValues = new ArrayList<Integer>();
-            int size = map.length;
-            
-            xValues.add(x);
-            if (x != 0)
-                xValues.add(x-1);
-            if (x != size-1)
-                xValues.add(x+1);
-            
-            yValues.add(y);
-            if (y != 0)
-                yValues.add(y-1);
-            if (y != size-1)
-                yValues.add(y+1);
-                
-            for (int a : xValues)
-            {
-                for (int b : yValues)
-                {
-                    if (map[a][b].getCity() == null)
-                        map[a][b].setCity(this);
-                }
-            }
+            claimTiles(map);
         }
         else
             player.removeCity(this);
@@ -66,6 +41,34 @@ public class City extends Tile
         newPlayer.addCity(this);
         
         player = newPlayer;
+    }
+    
+    public void claimTiles(Tile[][] map)
+    {
+        ArrayList<Integer> xValues = new ArrayList<Integer>();
+        ArrayList<Integer> yValues = new ArrayList<Integer>();
+        int size = map.length;
+        
+        xValues.add(x);
+        if (x != 0)
+            xValues.add(x-1);
+        if (x != size-1)
+            xValues.add(x+1);
+        
+        yValues.add(y);
+        if (y != 0)
+            yValues.add(y-1);
+        if (y != size-1)
+            yValues.add(y+1);
+            
+        for (int a : xValues)
+        {
+            for (int b : yValues)
+            {
+                if (map[a][b].getCity() == null)
+                    map[a][b].setCity(this);
+            }
+            }
     }
     
     public Player getPlayer()
@@ -76,10 +79,9 @@ public class City extends Tile
     public void incPopulation(int num)
     {
         population += num;
-        if (population >= levelInc)
+        if (population > level)
         {
             level++;
-            levelInc++;
             population = population%level;
         }
     }
@@ -145,5 +147,31 @@ public class City extends Tile
     public void trainTroop(Troop type)
     {
         Player.troopMap[x][y] = type;
+    }
+    
+    public String toString()
+    {
+        if (player == null)
+            return "v("+x+","+y+")";
+        
+        String output = "c"+"("+x+","+y+")"+player.getPlayerNum()+".";
+        output += population+"/"+level;
+            
+        return output;
+    }
+    
+    public static Tile loadTile(String save)
+    {
+        int x = Integer.parseInt(save.substring(save.indexOf('(')+1, save.indexOf(',')));
+        int y = Integer.parseInt(save.substring(save.indexOf(',')+1, save.indexOf(')')));
+        if (save.charAt(0)=='v')
+            return new City(x,y);
+        
+        City c = new City(x,y);
+        c.player = Display.getPlayer(Integer.parseInt(save.substring(save.indexOf(')')+1,save.indexOf('.'))));
+        Display.getPlayer(Integer.parseInt(save.substring(save.indexOf(')')+1,save.indexOf('.')))).addCity(c);
+        c.population = Integer.parseInt(save.substring(save.indexOf('.')+1,save.indexOf('/')));
+        c.level = Integer.parseInt(save.substring(save.indexOf('/')+1));
+        return c;
     }
 }

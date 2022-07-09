@@ -33,4 +33,14 @@ public class DeepWater extends Tile
     {
         return true;
     }
+    
+    public String toString()
+    {
+        return "d";
+    }
+    
+    public static DeepWater loadTile(String save)
+    {
+        return new DeepWater();
+    }
 }

@@ -58,4 +58,20 @@ public class Field extends Tile
     {
         return hasFruit;
     }
+    
+    public String toString()
+    {
+        String output = "f";
+        if (hasFruit)
+            output += "1";
+        else
+            output += "0";
+            
+        return output;
+    }
+    
+    public static Field loadTile(String save)
+    {   
+        return new Field(save.charAt(0)=='1');
+    }
 }

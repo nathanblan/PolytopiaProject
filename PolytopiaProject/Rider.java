@@ -33,25 +33,15 @@ public class Rider extends Troop
         super.updateLastAttackTurn(turn);
         super.updateLastMoveTurn(turn);
         super.updateLastActionTurn(turn);
+        p.decStars(3);
         
         super.setXY(x, y);
         setX(x*Tile.TILE_SIZE);
         setY(y*Tile.TILE_SIZE);
     }
     
-    public String getInfo()
+    public String getType()
     {
-        if (shipLevel > 0)
-            return super.getInfo();
         return "rider";
-    }
-    
-    public void updateImage()
-    {
-        int n = getPlayer().getPlayerNum()+1;
-        if (super.getShipLevel() > 0)
-            super.updateImage();
-        else
-            super.setImage(new Image("troops\\rider"+n+".png"));
     }
 }

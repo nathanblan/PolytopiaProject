@@ -24,6 +24,18 @@ public class Mountain extends Tile
         hasGold = Math.random() < 0.3; // 30% chance
     }
     
+    public Mountain(boolean gold)
+    {
+        hasMine = false;
+        hasGold = gold;
+    }
+    
+    public Mountain(boolean gold, boolean mine)
+    {
+        hasGold = gold;
+        hasMine = mine;
+    }
+    
     public int buildMine()
     {
         if (!canBuildMine() || city == null)
@@ -72,5 +84,25 @@ public class Mountain extends Tile
     public boolean canGrabGold()
     {
         return hasGold;
+    }
+    
+    public String toString()
+    {
+        String output = "m";
+        if (hasGold)
+            output += "1";
+        else
+            output += "0";
+        if (hasMine)
+            output += "1";
+        else
+            output += "0";
+            
+        return output;
+    }
+    
+    public static Mountain loadTile(String save)
+    {   
+        return new Mountain(save.charAt(0)=='1',save.charAt(1)=='1');
     }
 }

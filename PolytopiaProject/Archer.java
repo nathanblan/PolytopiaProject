@@ -36,21 +36,11 @@ public class Archer extends Troop
         super.setXY(x, y);
         setX(x*Tile.TILE_SIZE);
         setY(y*Tile.TILE_SIZE);
+        p.decStars(3);
     }
     
-    public String getInfo()
+    public String getType()
     {
-        if (shipLevel > 0)
-            return super.getInfo();
         return "archer";
-    }
-    
-    public void updateImage()
-    {
-        int n = getPlayer().getPlayerNum()+1;
-        if (super.getShipLevel() > 0)
-            super.updateImage();
-        else
-            super.setImage(new Image("troops\\archer"+n+".png"));
     }
 }

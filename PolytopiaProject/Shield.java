@@ -17,6 +17,7 @@ public class Shield extends Troop
     public Shield(Player p, int x, int y)
     {
         super(p, 10, 1, 3, 1, 1);
+        
         super.setXY(x, y);
         setX(x*Tile.TILE_SIZE);
         setY(y*Tile.TILE_SIZE);
@@ -32,21 +33,11 @@ public class Shield extends Troop
         super.setXY(x, y);
         setX(x*Tile.TILE_SIZE);
         setY(y*Tile.TILE_SIZE);
+        p.decStars(3);
     }
     
-    public String getInfo()
+    public String getType()
     {
-        if (shipLevel > 0)
-            return super.getInfo();
         return "shield";
-    }
-    
-    public void updateImage()
-    {
-        int n = getPlayer().getPlayerNum()+1;
-        if (super.getShipLevel() > 0)
-            super.updateImage();
-        else
-            super.setImage(new Image("troops\\shield"+n+".png"));
     }
 }

@@ -54,7 +54,29 @@ public class TechTree
         
         hasRiding = false;
         hasCityBuilding = false;
-        hasMountainDestroyer = false;      
+        hasMountainDestroyer = false;
+    }
+    
+    public TechTree(String save)
+    {
+        hasOrganization = true;
+        hasFarming = save.charAt(1)=='1';
+        hasShields = save.charAt(2)=='1';
+        
+        hasClimbing = save.charAt(3)=='1';
+        hasMining = save.charAt(4)=='1';
+        
+        hasFishing = save.charAt(5)=='1';
+        hasSailing = save.charAt(6)=='1';
+        hasNavigation = save.charAt(7)=='1';
+        
+        hasHunting = save.charAt(8)=='1';
+        hasForestry = save.charAt(9)=='1';
+        hasArchery = save.charAt(10)=='1';
+        
+        hasRiding = save.charAt(11)=='1';
+        hasCityBuilding = save.charAt(12)=='1';
+        hasMountainDestroyer = save.charAt(13)=='1';
     }
     
     public void showTechTree(GraphicsContext gc)
@@ -334,5 +356,77 @@ public class TechTree
     private double square(double num)
     {
         return num*num;
+    }
+    
+    public String toString()
+    {
+        String output = "1";
+        
+        if (hasFarming)
+            output += "1";
+        else
+            output += "0";
+            
+        if (hasShields)
+            output += "1";
+        else
+            output += "0";
+        
+        if (hasClimbing)
+            output += "1";
+        else
+            output += "0";
+            
+        if (hasMining)
+            output += "1";
+        else
+            output += "0";
+            
+        if (hasFishing)
+            output += "1";
+        else
+            output += "0";
+            
+        if (hasSailing)
+            output += "1";
+        else
+            output += "0";
+            
+        if (hasNavigation)
+            output += "1";
+        else
+            output += "0";        
+            
+        if (hasHunting)
+            output += "1";
+        else
+            output += "0";
+            
+        if (hasForestry)
+            output += "1";
+        else
+            output += "0";
+            
+        if (hasArchery)
+            output += "1";
+        else
+            output += "0";
+
+        if (hasRiding)
+            output += "1";
+        else
+            output += "0";
+            
+        if (hasCityBuilding)
+            output += "1";
+        else
+            output += "0";
+            
+        if (hasMountainDestroyer)
+            output += "1";
+        else
+            output += "0";
+        
+        return output;
     }
 }

@@ -22,6 +22,11 @@ public class Grass extends Tile
         isFarm = false;
     }
     
+    public Grass(boolean farm)
+    {
+        isFarm = farm;
+    }
+    
     public int buildFarm()
     {
         if (!canBuildFarm() || city == null)
@@ -50,5 +55,21 @@ public class Grass extends Tile
     public boolean canBuildFarm()
     {
         return !isFarm;
+    }
+    
+    public String toString()
+    {
+        String output = "g";
+        if (isFarm)
+            output += "1";
+        else
+            output += "0";
+            
+        return output;
+    }
+    
+    public static Grass loadTile(String save)
+    {   
+        return new Grass(save.charAt(0)=='1');
     }
 }

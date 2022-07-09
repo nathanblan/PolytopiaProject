@@ -130,7 +130,7 @@ public class DisplayUtility
         }
     }
     
-    private static void clearFog(Canvas fog, int x, int y)
+    public static void clearFog(Canvas fog, int x, int y)
     {
         clearTile(fog.getGraphicsContext2D(), x, y);
     }
@@ -167,33 +167,34 @@ public class DisplayUtility
     {
         gc.drawImage(new Image("images\\starbackground.png"), w, 0, 200, h);
     }
-    public static void clearSide(GraphicsContext gc, int stars)
+    public static void clearSide(GraphicsContext gc, Player p)
     {
         gc.clearRect(w, 0, 200, h);
-        showStars(gc, stars);
+        showStars(gc, p);
     }
     
-    public static void showStars(GraphicsContext gc, int stars)
+    public static void showStars(GraphicsContext gc, Player p)
     {
-        gc.drawImage(new Image("images\\star.png"), w+110, 5, 20, 20);
+        gc.drawImage(new Image("images\\star.png"), w+90, 5, 20, 20);
         
         gc.setFill(Color.LIGHTGREY);
         gc.setFont(new Font(20));
         gc.setTextAlign(TextAlignment.CENTER);
-        gc.fillText(String.valueOf(stars), w+90, 22.5);
+        gc.fillText(String.valueOf(p.getStars()), w+70, 22.5);
+        gc.fillText("(+"+p.getWorth()+")", w+140, 22.5);
     }
     
-    public static void drawConfirmScreen(GraphicsContext gc, int stars, boolean canDoAction)
+    public static void drawConfirmScreen(GraphicsContext gc, Player p, boolean canDoAction)
     {
-        clearSide(gc, stars);
+        clearSide(gc, p);
         gc.drawImage(X_BTN, w+20, h-80, 60, 60);
         if (canDoAction)
             gc.drawImage(CHECK_BTN, w+120, h-80, 60, 60);
     }
     
-    public static void drawRegularScreen(GraphicsContext gc, int stars)
+    public static void drawRegularScreen(GraphicsContext gc, Player p)
     {
-        clearSide(gc, stars);
+        clearSide(gc, p);
         gc.drawImage(new Image("techtree_images\\tech tree.png"), w+20, h-80, 60, 60);
         gc.drawImage(END_TURN_BTN, w+120, h-80, 60, 60);
     }

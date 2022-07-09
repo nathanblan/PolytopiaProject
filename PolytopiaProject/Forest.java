@@ -22,6 +22,18 @@ public class Forest extends Tile
         hasAnimal = Math.random() < 0.3; // 30% chance to have animal
     }
     
+    public Forest(boolean animal)
+    {
+        hasLumberHut = false;
+        hasAnimal = animal;
+    }
+    
+    public Forest(boolean animal, boolean hut)
+    {
+        hasAnimal = animal;
+        hasLumberHut = hut;
+    }
+    
     public int hunt()
     {
         if (!canHunt() || city == null)
@@ -70,5 +82,25 @@ public class Forest extends Tile
     public boolean canBuildHut()
     {
         return !hasLumberHut;
+    }
+    
+    public String toString()
+    {
+        String output = "t";
+        if (hasAnimal)
+            output += "1";
+        else
+            output += "0";
+        if (hasLumberHut)
+            output += "1";
+        else
+            output += "0";
+            
+        return output;
+    }
+    
+    public static Forest loadTile(String save)
+    {   
+        return new Forest(save.charAt(0)=='1',save.charAt(1)=='1');
     }
 }

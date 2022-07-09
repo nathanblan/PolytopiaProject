@@ -58,4 +58,26 @@ public class Tile
     {
         return false;
     }
+    
+    public static Tile loadTile(String save)
+    {
+        char type = save.charAt(0);
+        
+        if (type == 't')
+            return Forest.loadTile(save.substring(1));
+        if (type == 'w')
+            return Water.loadTile(save.substring(1));
+        if (type == 'm')
+            return Mountain.loadTile(save.substring(1));
+        if (type == 'd')
+            return DeepWater.loadTile(save.substring(1));
+        if (type == 'f')
+            return Field.loadTile(save.substring(1));
+        if (type == 'g')
+            return Grass.loadTile(save.substring(1));
+        if (type == 'c' || type == 'v')
+            return City.loadTile(save);
+        
+        return null;
+    }
 }

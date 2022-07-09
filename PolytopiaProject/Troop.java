@@ -1,4 +1,5 @@
 import javafx.scene.canvas.*;
+import javafx.application.Platform;
 import javafx.scene.paint.Color;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -52,7 +53,7 @@ public class Troop extends ImageView
     /**
      * Constructor for objects of class Troop
      */
-    public Troop(Player p, int h, double a, double d, int r, int m)
+    protected Troop(Player p, int h, double a, double d, int r, int m)
     {
         player = p;
         
@@ -142,9 +143,9 @@ public class Troop extends ImageView
     /**
      * @return true if kills the other troop, false otherwise
      */
-    public void attack(Troop other)
+    public void attack(Troop other, Group root)
     {
-        int distance = CalcUtility.getDistance(getXCoord(), getYCoord(), other.getXCoord(), other.getYCoord());
+        int distance = CalcUtility.getDistance(curX, curY, other.curX, other.curY);
         
         double attackForce = attack * ((double)health/maxHealth);
         double defenseForce = other.defense * (other.health / other.maxHealth) * 1;
@@ -154,12 +155,31 @@ public class Troop extends ImageView
         
         other.health -= attackResult;
         if (other.health <= 0)
-            other.destroyTroop();
-        else if (other.range <= distance)
         {
-            health -= defenseResult;
-            if (health <= 0)
-                destroyTroop();
+            // killed other troop
+            other.destroyTroop();
+            moveTo(other.curX, other.curY);
+        }
+        else
+        {
+            animateAttack(other.curX, other.curY, root);
+            
+            if (other.range <= distance)
+            {
+                // counterattack
+                health -= defenseResult;
+                    
+                new Thread(() -> {
+                    CalcUtility.wait(1000);
+                    Platform.runLater(() -> other.animateAttack(curX, curY, root));
+                    if (health <= 0)
+                    {
+                        // troop die :P
+                        CalcUtility.wait(500);
+                        destroyTroop();
+                    }
+                }).start();
+            }
         }
     }
     
@@ -189,6 +209,8 @@ public class Troop extends ImageView
             range = 2;
             attack = 2;
             defense = 2;
+            
+            player.decStars(5);
         }
         else if (shipLevel == 3)
         {
@@ -196,6 +218,8 @@ public class Troop extends ImageView
             range = 2;
             attack = 4;
             defense = 3;
+            
+            player.decStars(15);
         }
         
         updateImage();
@@ -260,13 +284,11 @@ public class Troop extends ImageView
     
     public void destroyTroop()
     {
-        Player.troopMap[getXCoord()][getYCoord()] = null;
+        Player.troopMap[curX][curY] = null;
         setImage(null);
-        
-        System.out.println("destroyed troop");
     }
     
-    public void animateAttack(int x, int y, Group root)
+    private void animateAttack(int x, int y, Group root)
     {
         if (range == 1)
             meleeAttack(x, y);
@@ -274,7 +296,7 @@ public class Troop extends ImageView
             rangeAttack(x, y, root);
     }
     
-    public void meleeAttack(int x, int y)
+    private void meleeAttack(int x, int y)
     {
         setX(curX*Tile.TILE_SIZE);
         setY(curY*Tile.TILE_SIZE);
@@ -289,7 +311,7 @@ public class Troop extends ImageView
         animation.play();
     }
     
-    public void rangeAttack(int x, int y, Group root)
+    private void rangeAttack(int x, int y, Group root)
     {
         Circle c = new Circle(curX*Tile.TILE_SIZE+Tile.TILE_SIZE/2, curY*Tile.TILE_SIZE+Tile.TILE_SIZE/2, 2.5, Color.BLACK);
         root.getChildren().add(c);
@@ -298,8 +320,8 @@ public class Troop extends ImageView
         animation.setDelay(Duration.millis(0));
         animation.setFromX(0);
         animation.setFromY(0);
-        animation.setToX(x*Tile.TILE_SIZE-getX()+Tile.TILE_SIZE/2);
-        animation.setToY(y*Tile.TILE_SIZE-getY()+Tile.TILE_SIZE/2);
+        animation.setToX((x-curX+1)*Tile.TILE_SIZE/2);
+        animation.setToY((y-curY+1)*Tile.TILE_SIZE/2);
         
         animation.setCycleCount(1);
         animation.play();
@@ -323,12 +345,7 @@ public class Troop extends ImageView
     public void updateImage()
     {
         int n = player.getPlayerNum()+1;
-        if (shipLevel == 1)
-            super.setImage(new Image("troops\\boat"+n+".png"));
-        else if (shipLevel == 2)
-            super.setImage(new Image("troops\\ship"+n+".png"));
-        else
-            super.setImage(new Image("troops\\battleship"+n+".png"));
+        super.setImage(new Image("troops\\"+getInfo()+n+".png"));
     }
     
     public String getInfo()
@@ -339,6 +356,11 @@ public class Troop extends ImageView
             return "ship";
         if (shipLevel == 3)
             return "battleship";
+        return getType();
+    }
+    
+    public String getType()
+    {
         return "basic";
     }
     
@@ -352,5 +374,59 @@ public class Troop extends ImageView
         {
             ex.printStackTrace();
         }
+    }
+    
+    public String toString()
+    {
+        String output = getType();
+        
+        output += " "+curX+" "+curY+" "+player.getPlayerNum();
+        output += " "+shipLevel+" "+health;
+        output += " "+lastMoveTurn+" "+lastAttackTurn+" "+lastActionTurn;
+        
+        return output;
+    }
+    
+    public static Troop loadTroop(String save)
+    {
+        int space = save.indexOf(" ");
+        String type = save.substring(0, space);
+        int x = nextInt(save, space);
+        space = save.indexOf(" ", space+1);
+        int y = nextInt(save, space);
+        space = save.indexOf(" ", space+1);
+        int playerNum = nextInt(save, space);
+        space = save.indexOf(" ", space+1);
+        
+        Troop t = null;
+        
+        if (type.equals("archer"))
+            t = new Archer(Display.getPlayer(playerNum), x, y);
+        else if (type.equals("warrior"))
+            t = new Warrior(Display.getPlayer(playerNum), x, y);
+        else if (type.equals("rider"))
+            t = new Rider(Display.getPlayer(playerNum), x, y);
+        else if (type.equals("shield"))
+            t = new Shield(Display.getPlayer(playerNum), x, y);
+            
+        t.shipLevel = nextInt(save, space);
+        space = save.indexOf(" ", space+1);
+        t.health = nextInt(save, space);
+        space = save.indexOf(" ", space+1);
+        
+        t.lastMoveTurn = nextInt(save, space);
+        space = save.indexOf(" ", space+1);
+        t.lastAttackTurn = nextInt(save, space);
+        space = save.indexOf(" ", space+1);
+        t.lastActionTurn = Integer.parseInt(save.substring(space+1));
+        
+        Player.troopMap[x][y] = t;
+        
+        return t;
+    }
+    
+    private static int nextInt(String save, int space)
+    {
+        return Integer.parseInt(save.substring(space+1, save.indexOf(" ", space+1)));
     }
 }

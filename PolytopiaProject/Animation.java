@@ -36,7 +36,7 @@ public class Animation extends Application {
             @Override
             public void handle(MouseEvent e)
             {
-                t.animateAttack(2, 2, group);
+                //t.animateAttack(2, 2, group);
             }
         });
     }

@@ -9,12 +9,11 @@ import java.util.ArrayList;
 public class Player
 {
     public static Troop[][] troopMap = new Troop[16][16];
-    public static boolean[][] fogMap = new boolean[16][16];
+    public boolean[][] fogMap = new boolean[16][16];
     private ArrayList<City> cities;
     private TechTree tree;
     private int playerNum;
     private int stars;
-    private int turn = 0;
     
     public Player(int playerNum)
     {
@@ -22,6 +21,14 @@ public class Player
         cities = new ArrayList<City>();
         tree = new TechTree();
         stars = 5;
+    }
+    
+    public Player(int num, TechTree techTree, int numStars)
+    {
+        playerNum = num;
+        tree = techTree;
+        stars = numStars;
+        cities = new ArrayList<City>();
     }
     
     public void incStars(int num)
@@ -36,11 +43,17 @@ public class Player
     
     public void startTurn()
     {
+        stars += getWorth();
+    }
+    
+    public int getWorth()
+    {
+        int worth = 1;
         for (City c : cities)
         {
-            stars += c.getLevel();
+            worth += c.getLevel();
         }
-        stars++;
+        return worth;
     }
     
     public int getStars()

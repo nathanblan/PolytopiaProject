@@ -37,21 +37,12 @@ public class Warrior extends Troop
         super.setXY(x, y);
         setX(x*Tile.TILE_SIZE);
         setY(y*Tile.TILE_SIZE);
+        
+        p.decStars(2);
     }
     
-    public String getInfo()
+    public String getType()
     {
-        if (shipLevel > 0)
-            return super.getInfo();
         return "warrior";
-    }
-    
-    public void updateImage()
-    {
-        int n = getPlayer().getPlayerNum()+1;
-        if (super.getShipLevel() > 0)
-            super.updateImage();
-        else
-            super.setImage(new Image("troops\\warrior"+n+".png"));
     }
 }

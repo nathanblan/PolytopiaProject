@@ -22,6 +22,18 @@ public class Water extends Tile
         hasFish = Math.random() < 0.2; // 20% chance of having fish
     }
     
+    public Water(boolean fish)
+    {
+        hasPort = false;
+        hasFish = fish;
+    }
+    
+    public Water(boolean fish, boolean port)
+    {
+        hasFish = fish;
+        hasPort = port;
+    }
+    
     /**
      * Builds a port on the tile of water
      * @return -1 if unsuccessful, 1 if successful
@@ -88,5 +100,25 @@ public class Water extends Tile
     public boolean isWater()
     {
         return true;
+    }
+    
+    public String toString()
+    {
+        String output = "w";
+        if (hasFish)
+            output += "1";
+        else
+            output += "0";
+        if (hasPort)
+            output += "1";
+        else
+            output += "0";
+            
+        return output;
+    }
+    
+    public static Water loadTile(String save)
+    {   
+        return new Water(save.charAt(0)=='1',save.charAt(1)=='1');
     }
 }
