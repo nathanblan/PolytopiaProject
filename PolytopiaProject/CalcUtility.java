@@ -219,4 +219,33 @@ public class CalcUtility
         
         return -1;
     }
+    
+    public static Tile[][] getTileMap(int size)
+    {
+        char[][] charMap = MapGenerator.createTerrain(size);
+        Tile[][] map = new Tile[size][size];
+
+        for (int r = 0; r < size; r++)
+        {
+            for (int c = 0; c < size; c++)
+            {
+                if (charMap[r][c] == 'A')
+                    map[r][c] = new Mountain();
+                else if (charMap[r][c] == '=')
+                    map[r][c] = new DeepWater();
+                else if (charMap[r][c] == '~')
+                    map[r][c] = new Water();
+                else if (charMap[r][c] == '+')
+                    map[r][c] = new Forest();
+                else if (charMap[r][c] == ',')
+                    map[r][c] = new Grass();
+                else if (charMap[r][c] == '-')
+                    map[r][c] = new Field();
+                else if (charMap[r][c] == 'c')
+                    map[r][c] = new City(r,c);
+            }
+        }
+
+        return map;
+    }
 }

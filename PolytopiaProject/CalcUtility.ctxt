@@ -19,4 +19,6 @@ comment7.text=\r\n\ Returns\ the\ index\ of\ the\ button\ clicked,\ -1\ if\ not\
 comment8.params=x\ y
 comment8.target=int\ getConfirmButton(double,\ double)
 comment8.text=\r\n\ Returns\ -1\ if\ neither\ confirm\ button\ pressed,\ \r\n\ 1\ if\ confirm\ button\ pressed,\ \r\n\ 0\ if\ cancel\ button\ pressed\r\n
-numComments=9
+comment9.params=size
+comment9.target=Tile[][]\ getTileMap(int)
+numComments=10

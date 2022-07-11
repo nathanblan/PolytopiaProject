@@ -23,7 +23,7 @@ public class Display extends Application
     private static double sceneHeight = 800;
     private static int SIZE = 16;
 
-    private static Tile[][] map;
+    private Tile[][] map;
 
     private int curX = 0;
     private int curY = 0;
@@ -665,34 +665,7 @@ public class Display extends Application
         return actions;
     }
 
-    private static Tile[][] getTileMap()
-    {
-        char[][] charMap = MapGenerator.createTerrain(SIZE);
-        Tile[][] map = new Tile[SIZE][SIZE];
-
-        for (int r = 0; r < SIZE; r++)
-        {
-            for (int c = 0; c < SIZE; c++)
-            {
-                if (charMap[r][c] == 'A')
-                    map[r][c] = new Mountain();
-                else if (charMap[r][c] == '=')
-                    map[r][c] = new DeepWater();
-                else if (charMap[r][c] == '~')
-                    map[r][c] = new Water();
-                else if (charMap[r][c] == '+')
-                    map[r][c] = new Forest();
-                else if (charMap[r][c] == ',')
-                    map[r][c] = new Grass();
-                else if (charMap[r][c] == '-')
-                    map[r][c] = new Field();
-                else if (charMap[r][c] == 'c')
-                    map[r][c] = new City(r,c);
-            }
-        }
-
-        return map;
-    }
+    
     
     public void saveGame(int saveNumber)
     {
@@ -841,7 +814,7 @@ public class Display extends Application
         }
     }
     
-    private static void createNewGame()
+    private void createNewGame()
     {
         curTurn = 0;
         curPlayer = 0;
@@ -856,7 +829,7 @@ public class Display extends Application
             root.getChildren().add(fog[i]);
         }
         
-        map = getTileMap();
+        map = CalcUtility.getTileMap(SIZE);
         
         // starting city
         int firstX = 0;

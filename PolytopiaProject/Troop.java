@@ -50,6 +50,8 @@ public class Troop extends ImageView
     private int curX;
     private int curY;
     
+    private char direction;
+    
     /**
      * Constructor for objects of class Troop
      */
@@ -264,6 +266,7 @@ public class Troop extends ImageView
     
     public void moveTo(int x, int y, int millis)
     {
+        updateImage(getDirection(x));
         setX(curX*Tile.TILE_SIZE);
         setY(curY*Tile.TILE_SIZE);
         
@@ -290,6 +293,8 @@ public class Troop extends ImageView
     
     private void animateAttack(int x, int y, Group root)
     {
+        updateImage(getDirection(x));
+        
         if (range == 1)
             meleeAttack(x, y);
         else
@@ -344,8 +349,15 @@ public class Troop extends ImageView
     
     public void updateImage()
     {
+        updateImage('r');
+    }
+    
+    public void updateImage(char direction)
+    {
         int n = player.getPlayerNum()+1;
-        super.setImage(new Image("troops\\"+getInfo()+n+".png"));
+        super.setImage(new Image("troops\\"+getInfo()+n+direction+".png"));
+        
+        this.direction = direction;
     }
     
     public String getInfo()
@@ -385,6 +397,20 @@ public class Troop extends ImageView
         output += " "+lastMoveTurn+" "+lastAttackTurn+" "+lastActionTurn;
         
         return output;
+    }
+    
+    private char getDirection(Troop other)
+    {
+        return getDirection(other.curX);
+    }
+    
+    private char getDirection(int other)
+    {
+        if (other < curX)
+            return 'l';
+        if (other > curX)
+            return 'r';
+        return direction;
     }
     
     public static Troop loadTroop(String save)
