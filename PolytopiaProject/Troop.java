@@ -74,8 +74,8 @@ public class Troop extends ImageView
         lastAttackTurn = -1;
         lastActionTurn = -1;
         
-        super.setFitHeight(Tile.TILE_SIZE);
-        super.setFitWidth(Tile.TILE_SIZE);
+        setFitHeight(Tile.TILE_SIZE);
+        setFitWidth(Tile.TILE_SIZE);
         
         animation = new TranslateTransition();
         animation.setNode(this);
@@ -355,7 +355,7 @@ public class Troop extends ImageView
     public void updateImage(char direction)
     {
         int n = player.getPlayerNum()+1;
-        super.setImage(new Image("troops\\"+getInfo()+n+direction+".png"));
+        setImage(new Image("troops\\"+getInfo()+n+direction+".png"));
         
         this.direction = direction;
     }
@@ -393,7 +393,7 @@ public class Troop extends ImageView
         String output = getType();
         
         output += " "+curX+" "+curY+" "+player.getPlayerNum();
-        output += " "+shipLevel+" "+health;
+        output += " "+shipLevel+" "+health+" "+direction;
         output += " "+lastMoveTurn+" "+lastAttackTurn+" "+lastActionTurn;
         
         return output;
@@ -439,6 +439,8 @@ public class Troop extends ImageView
         space = save.indexOf(" ", space+1);
         t.health = nextInt(save, space);
         space = save.indexOf(" ", space+1);
+        t.direction = save.charAt(space+1);
+        space += 2;
         
         t.lastMoveTurn = nextInt(save, space);
         space = save.indexOf(" ", space+1);

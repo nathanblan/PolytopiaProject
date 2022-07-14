@@ -20,6 +20,7 @@ public class Grass extends Tile
     public Grass()
     {
         isFarm = false;
+        updateImage();
     }
     
     public Grass(boolean farm)
@@ -45,6 +46,14 @@ public class Grass extends Tile
             gc.drawImage(new Image("images\\farm.png"), x*TILE_SIZE, y*TILE_SIZE, TILE_SIZE, TILE_SIZE);
         else  
             gc.drawImage(new Image("images\\grass.jpg"), x*TILE_SIZE, y*TILE_SIZE, TILE_SIZE, TILE_SIZE);
+    }
+    
+    public void updateImage()
+    {
+        if (isFarm)
+            setImage(new Image("images\\farm.png"));
+        else  
+            setImage(new Image("images\\grass.jpg"));
     }
     
     public String getInfo()

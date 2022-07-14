@@ -20,6 +20,8 @@ public class Forest extends Tile
     {
         hasLumberHut = false;
         hasAnimal = Math.random() < 0.3; // 30% chance to have animal
+        
+        updateImage();
     }
     
     public Forest(boolean animal)
@@ -67,6 +69,16 @@ public class Forest extends Tile
             gc.drawImage(new Image("images\\forest_animal.jpg"), x*TILE_SIZE, y*TILE_SIZE, TILE_SIZE, TILE_SIZE);
         else
             gc.drawImage(new Image("images\\forest.jpg"), x*TILE_SIZE, y*TILE_SIZE, TILE_SIZE, TILE_SIZE);
+    }
+    
+    private void updateImage()
+    {
+        if (hasLumberHut)
+            setImage(new Image("images\\lumber_hut.jpg"));
+        else if (hasAnimal)
+            setImage(new Image("images\\forest_animal.jpg"));
+        else
+            setImage(new Image("images\\forest.jpg"));
     }
     
     public String getInfo()

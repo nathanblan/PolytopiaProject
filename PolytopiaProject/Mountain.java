@@ -22,6 +22,8 @@ public class Mountain extends Tile
     {
         hasMine = false;
         hasGold = Math.random() < 0.3; // 30% chance
+        
+        updateImage();
     }
     
     public Mountain(boolean gold)
@@ -69,6 +71,16 @@ public class Mountain extends Tile
             gc.drawImage(new Image("images\\mountain_with_gold.jpg"), x*TILE_SIZE, y*TILE_SIZE, TILE_SIZE, TILE_SIZE);
         else
             gc.drawImage(new Image("images\\mountain.jpg"), x*TILE_SIZE, y*TILE_SIZE, TILE_SIZE, TILE_SIZE);
+    }
+    
+    public void updateImage()
+    {
+        if (hasMine)
+            setImage(new Image("images\\mine.jpg"));
+        else if (hasGold)
+            setImage(new Image("images\\mountain_with_gold.jpg"));
+        else
+            setImage(new Image("images\\mountain.jpg"));
     }
     
     public String getInfo()

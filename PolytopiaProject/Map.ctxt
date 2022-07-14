@@ -1,0 +1,12 @@
+#BlueJ class context
+comment0.target=Map
+comment0.text=\r\n\ Write\ a\ description\ of\ class\ Map\ here.\r\n\r\n\ @author\ (your\ name)\r\n\ @version\ (a\ version\ number\ or\ a\ date)\r\n
+comment1.params=size\ root
+comment1.target=Map(int,\ javafx.scene.Group)
+comment2.params=x\ y
+comment2.target=Tile\ getTile(int,\ int)
+comment3.params=e
+comment3.target=void\ handleDrag(javafx.scene.input.MouseEvent)
+comment4.params=
+comment4.target=void\ liftClick()
+numComments=5

@@ -17,11 +17,17 @@ public class DeepWater extends Tile
      */
     public DeepWater()
     {
+        updateImage();
     }
     
     public void drawTile(GraphicsContext gc, int x, int y)
     {
         gc.drawImage(new Image("images\\deep water.jpg"), x*TILE_SIZE, y*TILE_SIZE, TILE_SIZE, TILE_SIZE);
+    }
+    
+    public void updateImage()
+    {
+        setImage(new Image("images\\deep water.jpg"));
     }
     
     public String getInfo()

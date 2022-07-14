@@ -20,6 +20,8 @@ public class Field extends Tile
     public Field()
     {
         hasFruit = Math.random() < 0.4;
+        
+        updateImage();
     }
     
     public Field(boolean fruit)
@@ -47,6 +49,14 @@ public class Field extends Tile
             gc.drawImage(new Image("images\\berries.jpg"), x*TILE_SIZE, y*TILE_SIZE, TILE_SIZE, TILE_SIZE);
         else
             gc.drawImage(new Image("images\\land.jpg"), x*TILE_SIZE, y*TILE_SIZE, TILE_SIZE, TILE_SIZE);
+    }
+    
+    public void updateImage()
+    {
+        if (hasFruit)
+            setImage(new Image("images\\berries.jpg"));
+        else
+            setImage(new Image("images\\land.jpg"));
     }
     
     public String getInfo()

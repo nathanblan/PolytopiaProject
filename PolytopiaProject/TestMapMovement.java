@@ -1,14 +1,11 @@
-
-
 import javafx.application.Application;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.scene.Scene;
-import javafx.geometry.Insets;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.layout.GridPane;
+import javafx.scene.Group;
 import javafx.stage.Stage;
+import javafx.scene.input.*;
+import javafx.scene.canvas.*;
 
 /**
  * Write a description of JavaFX class TestMapMovement here.
@@ -18,10 +15,6 @@ import javafx.stage.Stage;
  */
 public class TestMapMovement extends Application
 {
-    // We keep track of the count, and label displaying the count:
-    private int count = 0;
-    private Label myLabel = new Label("0");
-
     /**
      * The start method is the main entry point for every JavaFX application. 
      * It is called after the init() method has returned and after 
@@ -32,40 +25,35 @@ public class TestMapMovement extends Application
     @Override
     public void start(Stage stage)
     {
-        // Create a Button or any control item
-        Button myButton = new Button("Count");
-
-        // Create a new grid pane
-        GridPane pane = new GridPane();
-        pane.setPadding(new Insets(10, 10, 10, 10));
-        pane.setMinSize(300, 300);
-        pane.setVgap(10);
-        pane.setHgap(10);
-
-        //set an action on the button using method reference
-        myButton.setOnAction(this::buttonClick);
-
-        // Add the button and label into the pane
-        pane.add(myLabel, 1, 0);
-        pane.add(myButton, 0, 0);
-
-        // JavaFX must have a Scene (window content) inside a Stage (window)
-        Scene scene = new Scene(pane, 300,100);
-        stage.setTitle("JavaFX Example");
-        stage.setScene(scene);
+        stage.setTitle("Map Tester");
+        
+        Group root = new Group();
+        
+        Map map = new Map(16, root);
+        
+        Canvas canvas = new Canvas(800, 800);
+        root.getChildren().add(canvas);
+        
+        canvas.addEventHandler(MouseEvent.MOUSE_DRAGGED, new EventHandler<MouseEvent>()
+        {
+            @Override
+            public void handle(MouseEvent e)
+            {
+                map.handleDrag(e);
+            }
+        });
+        
+        canvas.addEventHandler(MouseEvent.MOUSE_RELEASED, new EventHandler<MouseEvent>()
+        {
+            @Override
+            public void handle(MouseEvent e)
+            {
+                map.liftClick();
+            }
+        });
 
         // Show the Stage (window)
+        stage.setScene(new Scene(root));
         stage.show();
-    }
-
-    /**
-     * This will be executed when the button is clicked
-     * It increments the count by 1
-     */
-    private void buttonClick(ActionEvent event)
-    {
-        // Counts number of button clicks and shows the result on a label
-        count = count + 1;
-        myLabel.setText(Integer.toString(count));
     }
 }

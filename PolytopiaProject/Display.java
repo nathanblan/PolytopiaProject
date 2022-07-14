@@ -60,7 +60,6 @@ public class Display extends Application
         gc.drawImage(new Image("images\\startscreen.png"), 0, 0, sceneWidth+200, sceneHeight);
 
         Canvas overlay = new Canvas(sceneWidth+200, sceneHeight);
-
         Canvas treeLayer = new Canvas(sceneWidth+200, sceneHeight);
 
         root.getChildren().add(mapLayer);

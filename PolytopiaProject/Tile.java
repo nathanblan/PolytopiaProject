@@ -1,14 +1,15 @@
 
+import javafx.scene.Node;
+import javafx.scene.image.ImageView;
+import javafx.scene.canvas.*;
+
 /**
  * A tile of the board
  *
  * @author (your name)
  * @version (a version number or a date)
  */
-
-import javafx.scene.canvas.*;
-
-public class Tile
+public class Tile extends ImageView
 {
     protected City city = null;
     public static final int TILE_SIZE = 50;
@@ -17,7 +18,15 @@ public class Tile
      * Constructor for objects of class Tile
      */
     public Tile()
-    {}
+    {
+        //setScale(50);
+    }
+    
+    public void setScale(int scale)
+    {
+        setFitHeight(scale);
+        setFitWidth(scale);
+    }
     
     public Player getPlayer()
     {

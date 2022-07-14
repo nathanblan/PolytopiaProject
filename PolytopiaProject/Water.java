@@ -20,6 +20,8 @@ public class Water extends Tile
     {
         hasPort = false;
         hasFish = Math.random() < 0.2; // 20% chance of having fish
+        
+        updateImage();
     }
     
     public Water(boolean fish)
@@ -75,6 +77,16 @@ public class Water extends Tile
             gc.drawImage(new Image("images\\water_with_fish.jpg"), x*TILE_SIZE, y*TILE_SIZE, TILE_SIZE, TILE_SIZE);
         else
             gc.drawImage(new Image("images\\shallow water.jpg"), x*TILE_SIZE, y*TILE_SIZE, TILE_SIZE, TILE_SIZE);
+    }
+    
+    public void updateImage()
+    {
+        if (hasPort)
+            setImage(new Image("images\\port.png"));
+        else if (hasFish)
+            setImage(new Image("images\\water_with_fish.jpg"));
+        else
+            setImage(new Image("images\\shallow water.jpg"));
     }
     
     public String getInfo()
