@@ -29,9 +29,9 @@ public class Map
         char[][] charMap = MapGenerator.createTerrain(SIZE);
         map = new Tile[SIZE][SIZE];
 
-        for (int r = 0; r < SIZE/2; r++)
+        for (int r = 0; r < SIZE; r++)
         {
-            for (int c = 0; c < SIZE/2; c++)
+            for (int c = 0; c < SIZE; c++)
             {
                 if (charMap[r][c] == 'A')
                     map[r][c] = new Mountain();
@@ -87,20 +87,19 @@ public class Map
                 xDiff = curX-SIZE*scale+DISPLAY_SIZE;
             if (yDiff < curY-SIZE*scale+DISPLAY_SIZE)
                 yDiff = curY-SIZE*scale+DISPLAY_SIZE;
-                
+            
             curX -= xDiff;
             curY -= yDiff;
             
-            for (int x = 0; x < SIZE/2; x++)
+            for (int x = 0; x < SIZE; x++)
             {
-                for (int y = 0; y < SIZE/2; y++)
+                for (int y = 0; y < SIZE; y++)
                 {
                     map[x][y].setX(map[x][y].getX()+xDiff);
                     map[x][y].setY(map[x][y].getY()+yDiff);
                 }
             }
         }
-        
         lastX = e.getX();
         lastY = e.getY();
     }

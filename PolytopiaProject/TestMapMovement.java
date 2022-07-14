@@ -26,6 +26,9 @@ public class TestMapMovement extends Application
     public void start(Stage stage)
     {
         stage.setTitle("Map Tester");
+        stage.setMaxHeight(800);
+        stage.setMaxWidth(800);
+        stage.setResizable(false);
         
         Group root = new Group();
         
@@ -53,7 +56,7 @@ public class TestMapMovement extends Application
         });
 
         // Show the Stage (window)
-        stage.setScene(new Scene(root));
+        stage.setScene(new Scene(root, 800, 800));
         stage.show();
     }
 }
