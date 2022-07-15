@@ -1,13 +1,13 @@
-import javafx.scene.Group;
+import javafx.scene.canvas.*;
 import javafx.scene.input.*;
 
 /**
- * Write a description of class Map here.
+ * Write a description of class CanvasMap here.
  *
  * @author (your name)
  * @version (a version number or a date)
  */
-public class Map
+public class Map extends Canvas
 {
     // instance variables - replace the example below with your own
     private final int SIZE;
@@ -21,13 +21,19 @@ public class Map
     
     private double lastX;
     private double lastY;
-    
-    public Map (int size, Group root)
+
+    /**
+     * Constructor for objects of class CanvasMap
+     */
+    public Map(int size)
     {
+        super(100*size, 100*size);
+        
         scale = 100;
         SIZE = size;
         char[][] charMap = MapGenerator.createTerrain(SIZE);
         map = new Tile[SIZE][SIZE];
+        GraphicsContext gc = getGraphicsContext2D();
 
         for (int r = 0; r < SIZE; r++)
         {
@@ -48,25 +54,14 @@ public class Map
                 else if (charMap[r][c] == 'c')
                     map[r][c] = new City(r,c);
                     
-                map[r][c].setX(r*scale);
-                map[r][c].setY(c*scale);
-                map[r][c].setScale(scale);
-                
-                root.getChildren().add(map[r][c]);
-                //break;
+                map[r][c].drawTile(gc, r, c, scale);
             }
-            //break;
         }
         
         curX = 0;
         curY = 0;
         lastX = -1;
         lastY = -1;
-    }
-    
-    public Tile getTile(int x, int y)
-    {
-        return map[x][y];
     }
     
     public void handleDrag(MouseEvent e)
@@ -88,25 +83,11 @@ public class Map
                     xDiff = curX-SIZE*scale+DISPLAY_SIZE;
                 if (yDiff < curY-SIZE*scale+DISPLAY_SIZE)
                     yDiff = curY-SIZE*scale+DISPLAY_SIZE;
-                /*
-                if (Math.abs(xDiff) > scale/2)
-                    xDiff = scale/2 * CalcUtility.sgn(xDiff);
-                if (Math.abs(yDiff) > scale/2)
-                    yDiff = scale/2 * CalcUtility.sgn(yDiff);
-                */
+                    
                 curX -= xDiff;
                 curY -= yDiff;
                 
-                // only moves tiles on screen w/ a buffer of 1? since each drag is very small
-                for (int x = max(0, (int)(curX/scale)-1); x < min(SIZE, (int)((curX+DISPLAY_SIZE)/scale)+1); x++)
-                {
-                    for (int y = max(0, (int)(curY/scale)-1); y < min(SIZE, (int)((curY+DISPLAY_SIZE)/scale)+1); y++)
-                    {
-                        map[x][y].setX(x*scale-curX);
-                        map[x][y].setY(y*scale-curY);
-                        map[x][y].toFront();
-                    }
-                }
+                relocate(-curX, -curY);
                 
                 lastX = e.getX();
                 lastY = e.getY();
@@ -123,19 +104,5 @@ public class Map
     {
         lastX = -1;
         lastY = -1;
-    }
-    
-    private int max(int a, int b)
-    {
-        if (a > b)
-            return a;
-        return b;
-    }
-    
-    private int min(int a, int b)
-    {
-        if (a < b)
-            return a;
-        return b;
     }
 }

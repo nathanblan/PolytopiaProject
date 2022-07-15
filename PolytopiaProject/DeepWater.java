@@ -16,18 +16,16 @@ public class DeepWater extends Tile
      * Constructor for objects of class DeepWater
      */
     public DeepWater()
-    {
-        updateImage();
-    }
+    {}
     
     public void drawTile(GraphicsContext gc, int x, int y)
     {
-        gc.drawImage(new Image("images\\deep water.jpg"), x*TILE_SIZE, y*TILE_SIZE, TILE_SIZE, TILE_SIZE);
+        drawTile(gc, x, y, TILE_SIZE);
     }
     
-    public void updateImage()
+    public void drawTile(GraphicsContext gc, int x, int y, int scale)
     {
-        setImage(new Image("images\\deep water.jpg"));
+        gc.drawImage(new Image("images\\deep water.jpg"), x*scale, y*scale, scale, scale);
     }
     
     public String getInfo()

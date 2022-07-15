@@ -32,7 +32,8 @@ public class TestMapMovement extends Application
         
         Group root = new Group();
         
-        Map map = new Map(16, root);
+        Map map = new Map(16);
+        root.getChildren().add(map);
         
         Canvas canvas = new Canvas(800, 800);
         root.getChildren().add(canvas);

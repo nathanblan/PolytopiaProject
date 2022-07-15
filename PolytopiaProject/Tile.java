@@ -9,7 +9,7 @@ import javafx.scene.canvas.*;
  * @author (your name)
  * @version (a version number or a date)
  */
-public class Tile extends ImageView
+public class Tile
 {
     protected City city = null;
     public static final int TILE_SIZE = 50;
@@ -18,15 +18,7 @@ public class Tile extends ImageView
      * Constructor for objects of class Tile
      */
     public Tile()
-    {
-        //setScale(50);
-    }
-    
-    public void setScale(int scale)
-    {
-        setFitHeight(scale);
-        setFitWidth(scale);
-    }
+    {}
     
     public Player getPlayer()
     {
@@ -36,6 +28,9 @@ public class Tile extends ImageView
     }
     
     public void drawTile(GraphicsContext gc, int x, int y)
+    {}
+    
+    public void drawTile(GraphicsContext gc, int x, int y, int scale)
     {}
     
     public City getCity()

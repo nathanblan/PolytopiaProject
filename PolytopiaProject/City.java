@@ -27,8 +27,6 @@ public class City extends Tile
         population = 0;
         this.x=x;
         this.y=y;
-        
-        updateImage();
     }
     
     public void setPlayer (Player newPlayer, Tile[][] map)
@@ -95,25 +93,20 @@ public class City extends Tile
     
     public void drawTile(GraphicsContext gc)
     {
-        if (player == null)
-            gc.drawImage(new Image("images\\village.jpg"), x*TILE_SIZE, y*TILE_SIZE, TILE_SIZE, TILE_SIZE);
-        else if (player.getPlayerNum() == 0) // player 1 city
-            gc.drawImage(new Image("images\\city.png"), x*TILE_SIZE, y*TILE_SIZE, TILE_SIZE, TILE_SIZE);
-        else // player 2 city
-            gc.drawImage(new Image("images\\city.png"), x*TILE_SIZE, y*TILE_SIZE, TILE_SIZE, TILE_SIZE);
-            
-        if (player != null)
-            drawPopulation(gc, x, y);
+        drawTile(gc, TILE_SIZE);
     }
     
-    public void updateImage()
+    public void drawTile(GraphicsContext gc, int scale)
     {
         if (player == null)
-            setImage(new Image("images\\village.jpg"));
+            gc.drawImage(new Image("images\\village.jpg"), x*scale, y*scale, scale, scale);
         else if (player.getPlayerNum() == 0) // player 1 city
-            setImage(new Image("images\\city.png"));
+            gc.drawImage(new Image("images\\city.png"), x*scale, y*scale, scale, scale);
         else // player 2 city
-            setImage(new Image("images\\city.png"));
+            gc.drawImage(new Image("images\\city.png"), x*scale, y*scale, scale, scale);
+            
+        if (player != null)
+            drawPopulation(gc, scale);
     }
     
     public void drawTile(GraphicsContext gc, int x, int y)
@@ -121,16 +114,26 @@ public class City extends Tile
         drawTile(gc);
     }
     
-    protected void drawPopulation(GraphicsContext gc, int x, int y)
+    public void drawTile(GraphicsContext gc, int x, int y, int scale)
     {
+        drawTile(gc, scale);
+    }
+    
+    protected void drawPopulation(GraphicsContext gc, int scale)
+    {
+        double xStart = x*scale+(scale/10.0);
+        double yStart = y*scale+(scale/5.0*4);
+        double width = scale/5.0*4;
+        double height = scale/10.0;
+        
         gc.setFill(Color.WHITE);
-        gc.fillRect(x*TILE_SIZE+5, y*TILE_SIZE+40, 40, 5);
+        gc.fillRect(xStart, yStart, width, height);
         gc.setFill(Color.TAN);
-        gc.fillRect(x*TILE_SIZE+5, y*TILE_SIZE+40, 40.0*population/(level+1), 5);
+        gc.fillRect(xStart, yStart, width*population/(level+1), height);
         gc.setFill(Color.BLACK);
         for (int i = 1; i <= level; i++)
         {
-            gc.fillRect(x*TILE_SIZE+5+40.0*i/(level+1)-0.5, y*TILE_SIZE+40, 1, 5);
+            gc.fillRect(xStart+width*i/(level+1)-0.5, yStart, 1, height);
         }
     }
     

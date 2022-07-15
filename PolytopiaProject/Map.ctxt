@@ -1,16 +1,11 @@
 #BlueJ class context
 comment0.target=Map
-comment0.text=\r\n\ Write\ a\ description\ of\ class\ Map\ here.\r\n\r\n\ @author\ (your\ name)\r\n\ @version\ (a\ version\ number\ or\ a\ date)\r\n
-comment1.params=size\ root
-comment1.target=Map(int,\ javafx.scene.Group)
-comment2.params=x\ y
-comment2.target=Tile\ getTile(int,\ int)
-comment3.params=e
-comment3.target=void\ handleDrag(javafx.scene.input.MouseEvent)
-comment4.params=
-comment4.target=void\ liftClick()
-comment5.params=a\ b
-comment5.target=int\ max(int,\ int)
-comment6.params=a\ b
-comment6.target=int\ min(int,\ int)
-numComments=7
+comment0.text=\r\n\ Write\ a\ description\ of\ class\ CanvasMap\ here.\r\n\r\n\ @author\ (your\ name)\r\n\ @version\ (a\ version\ number\ or\ a\ date)\r\n
+comment1.params=size
+comment1.target=Map(int)
+comment1.text=\r\n\ Constructor\ for\ objects\ of\ class\ CanvasMap\r\n
+comment2.params=e
+comment2.target=void\ handleDrag(javafx.scene.input.MouseEvent)
+comment3.params=
+comment3.target=void\ liftClick()
+numComments=4

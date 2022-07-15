@@ -20,8 +20,6 @@ public class Forest extends Tile
     {
         hasLumberHut = false;
         hasAnimal = Math.random() < 0.3; // 30% chance to have animal
-        
-        updateImage();
     }
     
     public Forest(boolean animal)
@@ -63,22 +61,17 @@ public class Forest extends Tile
     
     public void drawTile(GraphicsContext gc, int x, int y)
     {
-        if (hasLumberHut)
-            gc.drawImage(new Image("images\\lumber_hut.jpg"), x*TILE_SIZE, y*TILE_SIZE, TILE_SIZE, TILE_SIZE);
-        else if (hasAnimal)
-            gc.drawImage(new Image("images\\forest_animal.jpg"), x*TILE_SIZE, y*TILE_SIZE, TILE_SIZE, TILE_SIZE);
-        else
-            gc.drawImage(new Image("images\\forest.jpg"), x*TILE_SIZE, y*TILE_SIZE, TILE_SIZE, TILE_SIZE);
+        drawTile(gc, x, y, TILE_SIZE);
     }
     
-    private void updateImage()
+    public void drawTile(GraphicsContext gc, int x, int y, int scale)
     {
         if (hasLumberHut)
-            setImage(new Image("images\\lumber_hut.jpg"));
+            gc.drawImage(new Image("images\\lumber_hut.jpg"), x*scale, y*scale, scale, scale);
         else if (hasAnimal)
-            setImage(new Image("images\\forest_animal.jpg"));
+            gc.drawImage(new Image("images\\forest_animal.jpg"), x*scale, y*scale, scale, scale);
         else
-            setImage(new Image("images\\forest.jpg"));
+            gc.drawImage(new Image("images\\forest.jpg"), x*scale, y*scale, scale, scale);
     }
     
     public String getInfo()

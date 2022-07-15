@@ -20,8 +20,6 @@ public class Field extends Tile
     public Field()
     {
         hasFruit = Math.random() < 0.4;
-        
-        updateImage();
     }
     
     public Field(boolean fruit)
@@ -43,20 +41,18 @@ public class Field extends Tile
         return 1;
     }
     
+    
     public void drawTile(GraphicsContext gc, int x, int y)
     {
-        if (hasFruit)
-            gc.drawImage(new Image("images\\berries.jpg"), x*TILE_SIZE, y*TILE_SIZE, TILE_SIZE, TILE_SIZE);
-        else
-            gc.drawImage(new Image("images\\land.jpg"), x*TILE_SIZE, y*TILE_SIZE, TILE_SIZE, TILE_SIZE);
+        drawTile(gc, x, y, TILE_SIZE);
     }
     
-    public void updateImage()
+    public void drawTile(GraphicsContext gc, int x, int y, int scale)
     {
         if (hasFruit)
-            setImage(new Image("images\\berries.jpg"));
+            gc.drawImage(new Image("images\\berries.jpg"), x*scale, y*scale, scale, scale);
         else
-            setImage(new Image("images\\land.jpg"));
+            gc.drawImage(new Image("images\\land.jpg"), x*scale, y*scale, scale, scale);
     }
     
     public String getInfo()
