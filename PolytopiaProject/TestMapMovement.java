@@ -43,6 +43,7 @@ public class TestMapMovement extends Application
             public void handle(MouseEvent e)
             {
                 map.handleDrag(e);
+                canvas.toFront();
             }
         });
         

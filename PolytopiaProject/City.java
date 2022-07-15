@@ -27,6 +27,8 @@ public class City extends Tile
         population = 0;
         this.x=x;
         this.y=y;
+        
+        updateImage();
     }
     
     public void setPlayer (Player newPlayer, Tile[][] map)
@@ -102,6 +104,16 @@ public class City extends Tile
             
         if (player != null)
             drawPopulation(gc, x, y);
+    }
+    
+    public void updateImage()
+    {
+        if (player == null)
+            setImage(new Image("images\\village.jpg"));
+        else if (player.getPlayerNum() == 0) // player 1 city
+            setImage(new Image("images\\city.png"));
+        else // player 2 city
+            setImage(new Image("images\\city.png"));
     }
     
     public void drawTile(GraphicsContext gc, int x, int y)

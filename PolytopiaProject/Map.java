@@ -78,35 +78,64 @@ public class Map
             
             xDiff *= 1;
             yDiff *= 1;
-            
-            if (xDiff > curX)
-                xDiff = curX;
-            if (yDiff > curY)
-                yDiff = curY;
-            if (xDiff < curX-SIZE*scale+DISPLAY_SIZE)
-                xDiff = curX-SIZE*scale+DISPLAY_SIZE;
-            if (yDiff < curY-SIZE*scale+DISPLAY_SIZE)
-                yDiff = curY-SIZE*scale+DISPLAY_SIZE;
-            
-            curX -= xDiff;
-            curY -= yDiff;
-            
-            for (int x = 0; x < SIZE; x++)
+            if (Math.abs(xDiff) > 10 || Math.abs(yDiff) > 10)
             {
-                for (int y = 0; y < SIZE; y++)
+                if (xDiff > curX)
+                    xDiff = curX;
+                if (yDiff > curY)
+                    yDiff = curY;
+                if (xDiff < curX-SIZE*scale+DISPLAY_SIZE)
+                    xDiff = curX-SIZE*scale+DISPLAY_SIZE;
+                if (yDiff < curY-SIZE*scale+DISPLAY_SIZE)
+                    yDiff = curY-SIZE*scale+DISPLAY_SIZE;
+                /*
+                if (Math.abs(xDiff) > scale/2)
+                    xDiff = scale/2 * CalcUtility.sgn(xDiff);
+                if (Math.abs(yDiff) > scale/2)
+                    yDiff = scale/2 * CalcUtility.sgn(yDiff);
+                */
+                curX -= xDiff;
+                curY -= yDiff;
+                
+                // only moves tiles on screen w/ a buffer of 1? since each drag is very small
+                for (int x = max(0, (int)(curX/scale)-1); x < min(SIZE, (int)((curX+DISPLAY_SIZE)/scale)+1); x++)
                 {
-                    map[x][y].setX(map[x][y].getX()+xDiff);
-                    map[x][y].setY(map[x][y].getY()+yDiff);
+                    for (int y = max(0, (int)(curY/scale)-1); y < min(SIZE, (int)((curY+DISPLAY_SIZE)/scale)+1); y++)
+                    {
+                        map[x][y].setX(x*scale-curX);
+                        map[x][y].setY(y*scale-curY);
+                        map[x][y].toFront();
+                    }
                 }
+                
+                lastX = e.getX();
+                lastY = e.getY();
             }
         }
-        lastX = e.getX();
-        lastY = e.getY();
+        else
+        {
+            lastX = e.getX();
+            lastY = e.getY();
+        }
     }
     
     public void liftClick()
     {
         lastX = -1;
         lastY = -1;
+    }
+    
+    private int max(int a, int b)
+    {
+        if (a > b)
+            return a;
+        return b;
+    }
+    
+    private int min(int a, int b)
+    {
+        if (a < b)
+            return a;
+        return b;
     }
 }
