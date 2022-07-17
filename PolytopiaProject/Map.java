@@ -21,6 +21,9 @@ public class Map extends Canvas
     
     private double lastX;
     private double lastY;
+    
+    private final int SCALE_MIN;
+    private final int SCALE_MAX;
 
     /**
      * Constructor for objects of class CanvasMap
@@ -31,6 +34,10 @@ public class Map extends Canvas
         
         scale = 100;
         SIZE = size;
+        
+        SCALE_MAX = DISPLAY_SIZE/5;
+        SCALE_MIN = DISPLAY_SIZE/SIZE;
+        
         char[][] charMap = MapGenerator.createTerrain(SIZE);
         map = new Tile[SIZE][SIZE];
         GraphicsContext gc = getGraphicsContext2D();
@@ -73,36 +80,53 @@ public class Map extends Canvas
             
             xDiff *= 1;
             yDiff *= 1;
-            if (Math.abs(xDiff) > 10 || Math.abs(yDiff) > 10)
-            {
-                if (xDiff > curX)
-                    xDiff = curX;
-                if (yDiff > curY)
-                    yDiff = curY;
-                if (xDiff < curX-SIZE*scale+DISPLAY_SIZE)
-                    xDiff = curX-SIZE*scale+DISPLAY_SIZE;
-                if (yDiff < curY-SIZE*scale+DISPLAY_SIZE)
-                    yDiff = curY-SIZE*scale+DISPLAY_SIZE;
-                    
-                curX -= xDiff;
-                curY -= yDiff;
-                
-                relocate(-curX, -curY);
-                
-                lastX = e.getX();
-                lastY = e.getY();
-            }
+            
+            curX -= xDiff;
+            curY -= yDiff;
+            
+            if (curX < 0)
+                curX = 0;
+            if (curY < 0)
+                curY = 0;
+            if (curX > SIZE*scale-DISPLAY_SIZE)
+                curX = SIZE*scale-DISPLAY_SIZE;
+            if (curY > SIZE*scale-DISPLAY_SIZE)
+                curY = SIZE*scale-DISPLAY_SIZE;
+            
+            relocate();
         }
-        else
-        {
-            lastX = e.getX();
-            lastY = e.getY();
-        }
+        lastX = e.getX();
+        lastY = e.getY();
     }
     
     public void liftClick()
     {
         lastX = -1;
         lastY = -1;
+    }
+    
+    public void handleClick(ScrollEvent e)
+    {
+        if (e.getDeltaX() == 0)
+        {
+            double change = e.getDeltaY() * 5 / 16;
+            
+            scale += change;
+            if (scale < SCALE_MIN)
+                scale = SCALE_MIN;
+            if (scale > SCALE_MAX)
+                scale = SCALE_MAX;
+            
+            System.out.println(scale);    
+            
+            setScaleX(scale/100.0);
+            setScaleY(scale/100.0);
+        }
+    }
+    
+    private void relocate()
+    {
+        //relocate(scale*SIZE-curX, scale*SIZE-curY);
+        relocate(-curX, -curY);
     }
 }

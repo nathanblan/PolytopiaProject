@@ -44,7 +44,6 @@ public class TestMapMovement extends Application
             public void handle(MouseEvent e)
             {
                 map.handleDrag(e);
-                canvas.toFront();
             }
         });
         
@@ -55,6 +54,15 @@ public class TestMapMovement extends Application
             {
                 map.liftClick();
             }
+        });
+        
+        canvas.addEventHandler(ScrollEvent.SCROLL, new EventHandler<ScrollEvent>()
+        {
+           @Override
+           public void handle(ScrollEvent e)
+           {
+               map.handleClick(e);
+           }
         });
 
         // Show the Stage (window)
