@@ -34,36 +34,12 @@ public class TestMapMovement extends Application
         
         Map map = new Map(16);
         root.getChildren().add(map);
+        root.getChildren().add(map.controls());
         
-        Canvas canvas = new Canvas(800, 800);
-        root.getChildren().add(canvas);
+        //Canvas canvas = new Canvas(800, 800);
+        //root.getChildren().add(canvas);
         
-        canvas.addEventHandler(MouseEvent.MOUSE_DRAGGED, new EventHandler<MouseEvent>()
-        {
-            @Override
-            public void handle(MouseEvent e)
-            {
-                map.handleDrag(e);
-            }
-        });
         
-        canvas.addEventHandler(MouseEvent.MOUSE_RELEASED, new EventHandler<MouseEvent>()
-        {
-            @Override
-            public void handle(MouseEvent e)
-            {
-                map.liftClick();
-            }
-        });
-        
-        canvas.addEventHandler(ScrollEvent.SCROLL, new EventHandler<ScrollEvent>()
-        {
-           @Override
-           public void handle(ScrollEvent e)
-           {
-               map.handleClick(e);
-           }
-        });
 
         // Show the Stage (window)
         stage.setScene(new Scene(root, 800, 800));

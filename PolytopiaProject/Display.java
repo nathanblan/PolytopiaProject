@@ -51,8 +51,8 @@ public class Display extends Application
         Canvas mapLayer = new Canvas(sceneWidth+200, sceneHeight);
         GraphicsContext gc = mapLayer.getGraphicsContext2D();
 
-        //createNewGame();
-        loadSave(1);
+        createNewGame();
+        //loadSave(1);
         DisplayUtility.drawTileMap(gc, map);
 
         Canvas transition = new Canvas(sceneWidth+200, sceneHeight);

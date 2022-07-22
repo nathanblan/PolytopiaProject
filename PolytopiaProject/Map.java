@@ -1,5 +1,6 @@
 import javafx.scene.canvas.*;
 import javafx.scene.input.*;
+import javafx.event.*;
 
 /**
  * Write a description of class CanvasMap here.
@@ -105,7 +106,7 @@ public class Map extends Canvas
         lastY = -1;
     }
     
-    public void handleClick(ScrollEvent e)
+    public void handleZoom(ScrollEvent e)
     {
         if (e.getDeltaX() == 0)
         {
@@ -128,5 +129,39 @@ public class Map extends Canvas
     {
         //relocate(scale*SIZE-curX, scale*SIZE-curY);
         relocate(-curX, -curY);
+    }
+    
+    public Canvas controls()
+    {
+        Canvas canvas = new Canvas(DISPLAY_SIZE, DISPLAY_SIZE);
+        
+        canvas.addEventHandler(MouseEvent.MOUSE_DRAGGED, new EventHandler<MouseEvent>()
+        {
+            @Override
+            public void handle(MouseEvent e)
+            {
+                handleDrag(e);
+            }
+        });
+        
+        canvas.addEventHandler(MouseEvent.MOUSE_RELEASED, new EventHandler<MouseEvent>()
+        {
+            @Override
+            public void handle(MouseEvent e)
+            {
+                liftClick();
+            }
+        });
+        
+        /*canvas.addEventHandler(ScrollEvent.SCROLL, new EventHandler<ScrollEvent>()
+        {
+           @Override
+           public void handle(ScrollEvent e)
+           {
+               handleZoom(e);
+           }
+        });*/
+        
+        return canvas;
     }
 }
