@@ -18,4 +18,6 @@ comment7.params=e
 comment7.target=void\ handle(javafx.scene.input.MouseEvent)
 comment8.params=e
 comment8.target=void\ handle(javafx.scene.input.MouseEvent)
-numComments=9
+comment9.params=e
+comment9.target=void\ handle(javafx.scene.input.ScrollEvent)
+numComments=10

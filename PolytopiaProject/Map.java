@@ -62,7 +62,7 @@ public class Map extends Canvas
                 else if (charMap[r][c] == 'c')
                     map[r][c] = new City(r,c);
                     
-                map[r][c].drawTile(gc, r, c, scale);
+                map[r][c].drawTile(gc, r, c, 100);
             }
         }
         
@@ -85,15 +85,6 @@ public class Map extends Canvas
             curX -= xDiff;
             curY -= yDiff;
             
-            if (curX < 0)
-                curX = 0;
-            if (curY < 0)
-                curY = 0;
-            if (curX > SIZE*scale-DISPLAY_SIZE)
-                curX = SIZE*scale-DISPLAY_SIZE;
-            if (curY > SIZE*scale-DISPLAY_SIZE)
-                curY = SIZE*scale-DISPLAY_SIZE;
-            
             relocate();
         }
         lastX = e.getX();
@@ -110,7 +101,7 @@ public class Map extends Canvas
     {
         if (e.getDeltaX() == 0)
         {
-            double change = e.getDeltaY() * 5 / 16;
+            double change = 10 * CalcUtility.sgn(e.getDeltaY());
             
             scale += change;
             if (scale < SCALE_MIN)
@@ -122,12 +113,22 @@ public class Map extends Canvas
             
             setScaleX(scale/100.0);
             setScaleY(scale/100.0);
+            
+            relocate();
         }
     }
     
     private void relocate()
     {
-        //relocate(scale*SIZE-curX, scale*SIZE-curY);
+        if (curX < 0 - (scale-100)*8)
+                curX = 0 - (scale-100)*8;
+        if (curY < 0 - (scale-100)*8)
+            curY = 0 - (scale-100)*8;
+        if (curX > SIZE*scale-DISPLAY_SIZE - (scale-100)*8)
+            curX = SIZE*scale-DISPLAY_SIZE - (scale-100)*8;
+        if (curY > SIZE*scale-DISPLAY_SIZE - (scale-100)*8)
+            curY = SIZE*scale-DISPLAY_SIZE - (scale-100)*8;
+        
         relocate(-curX, -curY);
     }
     
@@ -153,14 +154,14 @@ public class Map extends Canvas
             }
         });
         
-        /*canvas.addEventHandler(ScrollEvent.SCROLL, new EventHandler<ScrollEvent>()
+        canvas.addEventHandler(ScrollEvent.SCROLL, new EventHandler<ScrollEvent>()
         {
            @Override
            public void handle(ScrollEvent e)
            {
                handleZoom(e);
            }
-        });*/
+        });
         
         return canvas;
     }

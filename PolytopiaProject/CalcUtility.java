@@ -11,6 +11,15 @@ public class CalcUtility
     private static final int w = 800;
     private static final int h = 800;
     
+    public static int sgn(int num)
+    {
+        if (num > 0)
+            return 1;
+        if (num < 0)
+            return -1;
+        return 0;
+    }
+    
     public static int getDistance (int x1, int y1, int x2, int y2)
     {
         return max(abs(x1-x2), abs(y1-y2));
