@@ -1,16 +1,18 @@
 import javafx.scene.canvas.*;
 import javafx.scene.input.*;
 import javafx.event.*;
+import java.util.*;
+import javafx.scene.*;
 
 /**
  * Write a description of class CanvasMap here.
  *
- * @author (your name)
- * @version (a version number or a date)
+ * @author Kaz
+ * @version 9/23/2022
  */
 public class Map extends Canvas
 {
-    // instance variables - replace the example below with your own
+    // map variables
     private final int SIZE;
     private Tile[][] map;
     private final int DISPLAY_SIZE = 800;
@@ -25,9 +27,19 @@ public class Map extends Canvas
     
     private final int SCALE_MIN;
     private final int SCALE_MAX;
+    
+    // canvases that make up the map
+    private final Canvas overlay;
+    private final Canvas control;
+    
+    // all the nodes that are moved with the map, like fog
+    private ArrayList<Node> dragged;
+    
+    // game-related variables
+    private final int NUM_PLAYERS = 2;
 
     /**
-     * Constructor for objects of class CanvasMap
+     * Constructor for objects of class Map
      */
     public Map(int size)
     {
@@ -36,43 +48,48 @@ public class Map extends Canvas
         scale = 100;
         SIZE = size;
         
+        // set constants
         SCALE_MAX = DISPLAY_SIZE/5;
         SCALE_MIN = DISPLAY_SIZE/SIZE;
-        
-        char[][] charMap = MapGenerator.createTerrain(SIZE);
-        map = new Tile[SIZE][SIZE];
-        GraphicsContext gc = getGraphicsContext2D();
 
+        // get a map and draw it
+        map = CalcUtility.getTileMap(SIZE);
         for (int r = 0; r < SIZE; r++)
         {
             for (int c = 0; c < SIZE; c++)
             {
-                if (charMap[r][c] == 'A')
-                    map[r][c] = new Mountain();
-                else if (charMap[r][c] == '=')
-                    map[r][c] = new DeepWater();
-                else if (charMap[r][c] == '~')
-                    map[r][c] = new Water();
-                else if (charMap[r][c] == '+')
-                    map[r][c] = new Forest();
-                else if (charMap[r][c] == ',')
-                    map[r][c] = new Grass();
-                else if (charMap[r][c] == '-')
-                    map[r][c] = new Field();
-                else if (charMap[r][c] == 'c')
-                    map[r][c] = new City(r,c);
-                    
-                map[r][c].drawTile(gc, r, c, 100);
+                map[r][c].drawTile(getGraphicsContext2D(), r, c, 100);
             }
         }
-        
+
+        // set variables for dragging and location
         curX = 0;
         curY = 0;
         lastX = -1;
         lastY = -1;
+        
+        // add an overlay
+        dragged = new ArrayList<Node>();
+        overlay = new Canvas (100*size, 100*size);
+        dragged.add(overlay);
+        
+        // set up top-most canvas for sensing drag
+        control = new Canvas (DISPLAY_SIZE, DISPLAY_SIZE);
+        
+        control.addEventHandler(MouseEvent.MOUSE_DRAGGED, new EventHandler<MouseEvent>(){public void handle(MouseEvent e){handleDrag(e);}});
+        control.addEventHandler(MouseEvent.MOUSE_RELEASED, new EventHandler<MouseEvent>(){public void handle(MouseEvent e){liftClick();}});
+        control.addEventHandler(ScrollEvent.SCROLL, new EventHandler<ScrollEvent>(){public void handle(ScrollEvent e){handleZoom(e);}});
     }
     
-    public void handleDrag(MouseEvent e)
+    private void handleClick(MouseEvent e)
+    {
+        int x = (int)(e.getX()+curX-(scale-100)*8)%scale;
+        int y = (int)(e.getY()+curY-(scale-100)*8)%scale;
+
+        System.out.println(x+" "+y);
+    }
+    
+    private void handleDrag(MouseEvent e)
     {
         if (lastX != -1 && lastY != -1)
         {
@@ -91,13 +108,13 @@ public class Map extends Canvas
         lastY = e.getY();
     }
     
-    public void liftClick()
+    private void liftClick()
     {
         lastX = -1;
         lastY = -1;
     }
     
-    public void handleZoom(ScrollEvent e)
+    private void handleZoom(ScrollEvent e)
     {
         if (e.getDeltaX() == 0)
         {
@@ -107,9 +124,7 @@ public class Map extends Canvas
             if (scale < SCALE_MIN)
                 scale = SCALE_MIN;
             if (scale > SCALE_MAX)
-                scale = SCALE_MAX;
-            
-            System.out.println(scale);    
+                scale = SCALE_MAX;    
             
             setScaleX(scale/100.0);
             setScaleY(scale/100.0);
@@ -121,7 +136,7 @@ public class Map extends Canvas
     private void relocate()
     {
         if (curX < 0 - (scale-100)*8)
-                curX = 0 - (scale-100)*8;
+            curX = 0 - (scale-100)*8;
         if (curY < 0 - (scale-100)*8)
             curY = 0 - (scale-100)*8;
         if (curX > SIZE*scale-DISPLAY_SIZE - (scale-100)*8)
@@ -134,35 +149,6 @@ public class Map extends Canvas
     
     public Canvas controls()
     {
-        Canvas canvas = new Canvas(DISPLAY_SIZE, DISPLAY_SIZE);
-        
-        canvas.addEventHandler(MouseEvent.MOUSE_DRAGGED, new EventHandler<MouseEvent>()
-        {
-            @Override
-            public void handle(MouseEvent e)
-            {
-                handleDrag(e);
-            }
-        });
-        
-        canvas.addEventHandler(MouseEvent.MOUSE_RELEASED, new EventHandler<MouseEvent>()
-        {
-            @Override
-            public void handle(MouseEvent e)
-            {
-                liftClick();
-            }
-        });
-        
-        canvas.addEventHandler(ScrollEvent.SCROLL, new EventHandler<ScrollEvent>()
-        {
-           @Override
-           public void handle(ScrollEvent e)
-           {
-               handleZoom(e);
-           }
-        });
-        
-        return canvas;
+        return control;
     }
 }
