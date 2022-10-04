@@ -25,6 +25,9 @@ public class Map extends Canvas
     private double lastX;
     private double lastY;
     
+    private double clickX;
+    private double clickY;
+    
     private final int SCALE_MIN;
     private final int SCALE_MAX;
     
@@ -77,25 +80,26 @@ public class Map extends Canvas
         control = new Canvas (DISPLAY_SIZE, DISPLAY_SIZE);
         
         control.addEventHandler(MouseEvent.MOUSE_DRAGGED, new EventHandler<MouseEvent>(){public void handle(MouseEvent e){handleDrag(e);}});
-        control.addEventHandler(MouseEvent.MOUSE_RELEASED, new EventHandler<MouseEvent>(){public void handle(MouseEvent e){liftClick();}});
+        control.addEventHandler(MouseEvent.MOUSE_RELEASED, new EventHandler<MouseEvent>(){public void handle(MouseEvent e){handleLift(e);}});
         control.addEventHandler(ScrollEvent.SCROLL, new EventHandler<ScrollEvent>(){public void handle(ScrollEvent e){handleZoom(e);}});
+        control.addEventHandler(MouseEvent.MOUSE_PRESSED, new EventHandler<MouseEvent>(){public void handle(MouseEvent e){handlePress(e);}});
     }
     
-    private void handleClick(MouseEvent e)
+    private void handlePress(MouseEvent e)
     {
-        int x = (int)(e.getX()+curX-(scale-100)*8)%scale;
-        int y = (int)(e.getY()+curY-(scale-100)*8)%scale;
-
-        System.out.println(x+" "+y);
+        clickX = e.getX();
+        clickY = e.getY();
     }
     
     private void handleDrag(MouseEvent e)
     {
         if (lastX != -1 && lastY != -1)
         {
+            // find out how much mouse has moved
             double xDiff = e.getX()-lastX;
             double yDiff = e.getY()-lastY;
             
+            // can control rate of drag
             xDiff *= 1;
             yDiff *= 1;
             
@@ -104,14 +108,24 @@ public class Map extends Canvas
             
             relocate();
         }
+        
+        // record position from last drag
         lastX = e.getX();
         lastY = e.getY();
     }
     
-    private void liftClick()
+    private void handleLift(MouseEvent e)
     {
         lastX = -1;
         lastY = -1;
+        
+        if (e.getX() == clickX && e.getY() == clickY)
+        {
+            int x = (int)(e.getX()+curX+(scale-100)*8)/scale;
+            int y = (int)(e.getY()+curY+(scale-100)*8)/scale;
+            
+            System.out.println(x+" "+y);
+        }
     }
     
     private void handleZoom(ScrollEvent e)
@@ -133,6 +147,9 @@ public class Map extends Canvas
         }
     }
     
+    /**
+     * Moves the map, makes sure it stays within bounds
+     */
     private void relocate()
     {
         if (curX < 0 - (scale-100)*8)
