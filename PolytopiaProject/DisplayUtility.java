@@ -19,7 +19,7 @@ import javafx.scene.image.Image;
  */
 public class DisplayUtility
 {
-    private static final int w = 800;
+    private static final int w = 1600;
     private static final int h = 800;
     private static final int size = 16;
     
@@ -165,7 +165,7 @@ public class DisplayUtility
     
     public static void fillSide(GraphicsContext gc)
     {
-        gc.drawImage(new Image("images\\starbackground.png"), w, 0, 200, h);
+        //gc.drawImage(new Image("images\\starbackground.png"), w, 0, 200, h);
     }
     public static void clearSide(GraphicsContext gc, Player p)
     {
@@ -291,5 +291,10 @@ public class DisplayUtility
         gc.fillText(t.getInfo(), w+100, 60);
         gc.setFont(new Font(20));
         gc.fillText(t.getHealth()+" health", w+100, 85);
+    }
+    
+    public static void fillActionScreen(GraphicsContext gc)
+    {
+        gc.drawImage(new Image("images\\starbackground.png"), 0, 0, w, 200);
     }
 }
