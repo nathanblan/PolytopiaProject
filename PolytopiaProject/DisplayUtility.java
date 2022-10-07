@@ -165,7 +165,7 @@ public class DisplayUtility
     
     public static void fillSide(GraphicsContext gc)
     {
-        //gc.drawImage(new Image("images\\starbackground.png"), w, 0, 200, h);
+        gc.drawImage(new Image("images\\starbackground.png"), w, 0, 200, h);
     }
     public static void clearSide(GraphicsContext gc, Player p)
     {

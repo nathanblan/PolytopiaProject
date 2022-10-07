@@ -1,0 +1,26 @@
+#BlueJ class context
+comment0.target=Player
+comment0.text=\r\n\ Store\ all\ player\ information\ in\ objects\ from\ this\ class.\r\n\r\n\ @author\ (your\ name)\r\n\ @version\ (a\ version\ number\ or\ a\ date)\r\n
+comment1.params=playerNum
+comment1.target=Player(int)
+comment10.params=c
+comment10.target=void\ addCity(City)
+comment11.params=c
+comment11.target=void\ removeCity(City)
+comment2.params=num\ techTree\ numStars
+comment2.target=Player(int,\ TechTree,\ int)
+comment3.params=num
+comment3.target=void\ incStars(int)
+comment4.params=
+comment4.target=int\ getPlayerNum()
+comment5.params=
+comment5.target=void\ startTurn()
+comment6.params=
+comment6.target=int\ getWorth()
+comment7.params=
+comment7.target=int\ getStars()
+comment8.params=num
+comment8.target=void\ decStars(int)
+comment9.params=
+comment9.target=TechTree\ getTree()
+numComments=12

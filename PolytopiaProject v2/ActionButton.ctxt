@@ -1,0 +1,21 @@
+#BlueJ class context
+comment0.target=ActionButton
+comment1.params=t
+comment1.target=ActionButton(java.lang.String)
+comment1.text=\r\n\ Constructor\ for\ objects\ of\ class\ ActionButton\r\n
+comment2.params=p
+comment2.target=javafx.scene.image.Image\ getButton(Player)
+comment3.params=gc\ width
+comment3.target=void\ displayInfo(javafx.scene.canvas.GraphicsContext,\ double)
+comment3.text=\r\n\ Displays\ the\ text\ onto\ the\ side\ panel,\ formats\ it\ somewhat\ nicely\r\n
+comment4.params=t
+comment4.target=boolean\ doAction(Troop)
+comment5.params=t\ x\ y\ turn
+comment5.target=int\ doAction(Tile,\ int,\ int,\ int)
+comment6.params=p
+comment6.target=void\ doAction(Player)
+comment7.params=p
+comment7.target=boolean\ canDoAction(Player)
+comment8.params=
+comment8.target=java.lang.String\ toString()
+numComments=9

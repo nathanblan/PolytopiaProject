@@ -1,0 +1,16 @@
+#BlueJ class context
+comment0.target=MapGenerator
+comment1.params=rand\ roughness\ width\ height
+comment1.target=void\ init(java.util.Random,\ float,\ int,\ int)
+comment2.params=v\ l\ h
+comment2.target=float\ roughen(float,\ int,\ int)
+comment3.params=xl\ yl\ xh\ yh
+comment3.target=void\ generate(int,\ int,\ int,\ int)
+comment4.params=shift\ size
+comment4.target=char[][]\ getBasicTerrain(double,\ int)
+comment5.params=other\ size
+comment5.target=void\ addCities(char[][],\ int)
+comment6.params=size
+comment6.target=char[][]\ createTerrain(int)
+comment6.text=\n\ Make\ a\ map\ with\ land\ and\ water\n
+numComments=7

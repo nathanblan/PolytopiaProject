@@ -1,0 +1,27 @@
+#BlueJ class context
+comment0.target=Tile
+comment0.text=\r\n\ A\ tile\ of\ the\ board\r\n\r\n\ @author\ (your\ name)\r\n\ @version\ (a\ version\ number\ or\ a\ date)\r\n
+comment1.params=
+comment1.target=Tile()
+comment1.text=\r\n\ Constructor\ for\ objects\ of\ class\ Tile\r\n
+comment10.params=select
+comment10.target=boolean\ canAfford(int)
+comment11.params=save
+comment11.target=Tile\ loadTile(java.lang.String)
+comment2.params=
+comment2.target=Player\ getPlayer()
+comment3.params=gc\ x\ y
+comment3.target=void\ drawTile(javafx.scene.canvas.GraphicsContext,\ int,\ int)
+comment4.params=gc\ x\ y\ scale
+comment4.target=void\ drawTile(javafx.scene.canvas.GraphicsContext,\ int,\ int,\ int)
+comment5.params=
+comment5.target=City\ getCity()
+comment6.params=c
+comment6.target=void\ setCity(City)
+comment7.params=
+comment7.target=boolean\ isWater()
+comment8.params=
+comment8.target=java.lang.String\ getInfo()
+comment9.params=
+comment9.target=boolean\ canAfford()
+numComments=12

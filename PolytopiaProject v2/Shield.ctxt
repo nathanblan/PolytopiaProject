@@ -1,0 +1,10 @@
+#BlueJ class context
+comment0.target=Shield
+comment1.params=p\ x\ y
+comment1.target=Shield(Player,\ int,\ int)
+comment1.text=\r\n\ Constructor\ for\ objects\ of\ class\ Shield\r\n
+comment2.params=p\ turn\ x\ y
+comment2.target=Shield(Player,\ int,\ int,\ int)
+comment3.params=
+comment3.target=java.lang.String\ getType()
+numComments=4

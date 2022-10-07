@@ -823,7 +823,7 @@ public class Display extends Application
         for (int i = 0; i < NUM_PLAYERS; i++)
         {
             players[i] = new Player(i);
-            fog[i] = new Canvas(sceneWidth+200, sceneHeight);
+            fog[i] = new Canvas(sceneWidth, sceneHeight);
             DisplayUtility.fillFog(fog[i]);
             root.getChildren().add(fog[i]);
         }

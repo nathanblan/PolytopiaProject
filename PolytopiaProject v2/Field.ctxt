@@ -1,0 +1,22 @@
+#BlueJ class context
+comment0.target=Field
+comment1.params=
+comment1.target=Field()
+comment1.text=\r\n\ Constructor\ for\ objects\ of\ class\ Land\r\n
+comment2.params=fruit
+comment2.target=Field(boolean)
+comment3.params=
+comment3.target=int\ harvestFruit()
+comment4.params=gc\ x\ y
+comment4.target=void\ drawTile(javafx.scene.canvas.GraphicsContext,\ int,\ int)
+comment5.params=gc\ x\ y\ scale
+comment5.target=void\ drawTile(javafx.scene.canvas.GraphicsContext,\ int,\ int,\ int)
+comment6.params=
+comment6.target=java.lang.String\ getInfo()
+comment7.params=
+comment7.target=boolean\ canHarvestFruit()
+comment8.params=
+comment8.target=java.lang.String\ toString()
+comment9.params=save
+comment9.target=Field\ loadTile(java.lang.String)
+numComments=10
