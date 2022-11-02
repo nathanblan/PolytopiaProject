@@ -20,9 +20,7 @@ public class Warrior extends Troop
         super(p, 10, 2, 2, 1, 1);
         
         canDash = true;
-        super.setXY(x, y);
-        setX(x*Tile.TILE_SIZE);
-        setY(y*Tile.TILE_SIZE);
+        setXY(x, y);
     }
     
     public Warrior(Player p, int turn, int x, int y)
@@ -31,12 +29,10 @@ public class Warrior extends Troop
         
         canDash = true;
         
-        super.updateLastAttackTurn(turn);
-        super.updateLastMoveTurn(turn);
-        super.updateLastActionTurn(turn);
-        super.setXY(x, y);
-        setX(x*Tile.TILE_SIZE);
-        setY(y*Tile.TILE_SIZE);
+        updateLastAttackTurn(turn);
+        updateLastMoveTurn(turn);
+        updateLastActionTurn(turn);
+        setXY(x, y);
         
         p.decStars(2);
     }

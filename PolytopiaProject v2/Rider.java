@@ -19,9 +19,7 @@ public class Rider extends Troop
         super(p, 10, 2, 1, 1, 2);
         
         canDash = true;
-        super.setXY(x, y);
-        setX(x*Tile.TILE_SIZE);
-        setY(y*Tile.TILE_SIZE);
+        setXY(x, y);
     }
     
     public Rider(Player p, int turn, int x, int y)
@@ -30,14 +28,12 @@ public class Rider extends Troop
         
         canDash = true;
         
-        super.updateLastAttackTurn(turn);
-        super.updateLastMoveTurn(turn);
-        super.updateLastActionTurn(turn);
-        p.decStars(3);
+        updateLastAttackTurn(turn);
+        updateLastMoveTurn(turn);
+        updateLastActionTurn(turn);
+        setXY(x, y);
         
-        super.setXY(x, y);
-        setX(x*Tile.TILE_SIZE);
-        setY(y*Tile.TILE_SIZE);
+        p.decStars(3);
     }
     
     public String getType()

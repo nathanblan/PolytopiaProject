@@ -19,9 +19,7 @@ public class Archer extends Troop
         super(p, 10, 2, 1, 2, 1);
         
         canDash = true;
-        super.setXY(x, y);
-        setX(x*Tile.TILE_SIZE);
-        setY(y*Tile.TILE_SIZE);
+        setXY(x, y);
     }
     
     public Archer(Player p, int turn, int x, int y)
@@ -30,12 +28,11 @@ public class Archer extends Troop
         
         canDash = true;
         
-        super.updateLastAttackTurn(turn);
-        super.updateLastMoveTurn(turn);
-        super.updateLastActionTurn(turn);
-        super.setXY(x, y);
-        setX(x*Tile.TILE_SIZE);
-        setY(y*Tile.TILE_SIZE);
+        updateLastAttackTurn(turn);
+        updateLastMoveTurn(turn);
+        updateLastActionTurn(turn);
+        setXY(x, y);
+        
         p.decStars(3);
     }
     

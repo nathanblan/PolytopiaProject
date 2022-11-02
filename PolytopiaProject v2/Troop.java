@@ -14,8 +14,10 @@ import javafx.scene.Node;
  * Main class for Troops
  * 
  */
-public class Troop extends ImageView
+public class Troop
 {
+    private static final int SCALE = 100;
+    
     // instance variables
     private int health;
     private int maxHealth;
@@ -45,12 +47,15 @@ public class Troop extends ImageView
     
     protected boolean canDash;
     
-    private final TranslateTransition animation;
+    private static final TranslateTransition animation = new TranslateTransition();
+    private static ImageView movingObject = new ImageView();
     
     private int curX;
     private int curY;
     
     private char direction;
+    
+    private static GraphicsContext troopGC;
     
     /**
      * Constructor for objects of class Troop
@@ -74,12 +79,18 @@ public class Troop extends ImageView
         lastAttackTurn = -1;
         lastActionTurn = -1;
         
-        setFitHeight(Tile.TILE_SIZE);
-        setFitWidth(Tile.TILE_SIZE);
-        
-        animation = new TranslateTransition();
-        animation.setNode(this);
+        //setFitHeight(Tile.TILE_SIZE);
+        //setFitWidth(Tile.TILE_SIZE);
         updateImage();
+    }
+    
+    public static void setGraphics(GraphicsContext gc, Group root)
+    {
+        troopGC = gc;
+        troopGC.setFill(Color.TRANSPARENT);
+        root.getChildren().add(movingObject);
+        
+        animation.setNode(movingObject);
         animation.setAutoReverse(true);
     }
     
@@ -145,7 +156,7 @@ public class Troop extends ImageView
     /**
      * @return true if kills the other troop, false otherwise
      */
-    public void attack(Troop other, Group root)
+    public void attack(Troop other)
     {
         int distance = CalcUtility.getDistance(curX, curY, other.curX, other.curY);
         
@@ -158,25 +169,25 @@ public class Troop extends ImageView
         other.health -= attackResult;
         if (other.health <= 0)
         {
-            // killed other troop
+            // Killed other troop
             other.destroyTroop();
             moveTo(other.curX, other.curY);
         }
         else
         {
-            animateAttack(other.curX, other.curY, root);
+            animateAttack(other.curX, other.curY);
             
             if (other.range <= distance)
             {
-                // counterattack
+                // Counterattack
                 health -= defenseResult;
                     
                 new Thread(() -> {
                     CalcUtility.wait(1000);
-                    Platform.runLater(() -> other.animateAttack(curX, curY, root));
+                    Platform.runLater(() -> other.animateAttack(curX, curY));
                     if (health <= 0)
                     {
-                        // troop die :P
+                        // Troop dies :P
                         CalcUtility.wait(500);
                         destroyTroop();
                     }
@@ -266,15 +277,18 @@ public class Troop extends ImageView
     
     public void moveTo(int x, int y, int millis)
     {
-        updateImage(getDirection(x));
-        setX(curX*Tile.TILE_SIZE);
-        setY(curY*Tile.TILE_SIZE);
+        //updateImage(getDirection(x));
+        troopGC.fillRect(curX*SCALE, curY*SCALE, SCALE, SCALE);
+        
+        movingObject.setImage(getImage(getDirection(x)));
+        movingObject.setX(curX*SCALE);
+        movingObject.setY(curY*SCALE);
         
         animation.setDelay(Duration.millis(millis));
         animation.setFromX(0);
         animation.setFromY(0);
-        animation.setToX(x*Tile.TILE_SIZE-getX());
-        animation.setToY(y*Tile.TILE_SIZE-getY());
+        animation.setToX((x-curX)*Tile.TILE_SIZE);
+        animation.setToY((y-curY)*Tile.TILE_SIZE);
         
         animation.setCycleCount(1);
         animation.play();
@@ -283,44 +297,45 @@ public class Troop extends ImageView
         Player.troopMap[x][y] = this;
         
         setXY(x, y);
+        movingObject.setImage(null);
     }
     
     public void destroyTroop()
     {
         Player.troopMap[curX][curY] = null;
-        setImage(null);
+        //(null);
     }
     
-    private void animateAttack(int x, int y, Group root)
+    public void animateAttack(int x, int y)
     {
         updateImage(getDirection(x));
         
         if (range == 1)
             meleeAttack(x, y);
         else
-            rangeAttack(x, y, root);
+            rangeAttack(x, y);
     }
     
     private void meleeAttack(int x, int y)
     {
-        setX(curX*Tile.TILE_SIZE);
-        setY(curY*Tile.TILE_SIZE);
+        troopGC.fillRect(curX*SCALE, curY*SCALE, SCALE, SCALE);
         
+        movingObject.setImage(getImage(getDirection(x)));
         animation.setDelay(Duration.millis(0));
         animation.setFromX(0);
         animation.setFromY(0);
-        animation.setToX(x*Tile.TILE_SIZE-getX());
-        animation.setToY(y*Tile.TILE_SIZE-getY());
+        animation.setToX((x-curX)*Tile.TILE_SIZE);
+        animation.setToY((y-curY)*Tile.TILE_SIZE);
         
         animation.setCycleCount(2);
         animation.play();
+        
+        movingObject.setImage(null);
     }
     
-    private void rangeAttack(int x, int y, Group root)
+    private void rangeAttack(int x, int y)
     {
-        Circle c = new Circle(curX*Tile.TILE_SIZE+Tile.TILE_SIZE/2, curY*Tile.TILE_SIZE+Tile.TILE_SIZE/2, 2.5, Color.BLACK);
-        root.getChildren().add(c);
-        animation.setNode(c);
+        //movingObject = new Circle(curX*Tile.TILE_SIZE+Tile.TILE_SIZE/2, curY*Tile.TILE_SIZE+Tile.TILE_SIZE/2, 2.5, Color.BLACK);
         
         animation.setDelay(Duration.millis(0));
         animation.setFromX(0);
@@ -331,20 +346,16 @@ public class Troop extends ImageView
         animation.setCycleCount(1);
         animation.play();
         
-        animation.setNode(this);
-        new Thread(() -> {
-            CalcUtility.wait(500);
-            c.setFill(Color.TRANSPARENT);
-        }).start();
+        movingObject.setImage(null);
     }
     
     public int getXCoord()
     {
-        return (int)getX()/Tile.TILE_SIZE;
+        return curX;
     }
     public int getYCoord()
     {
-        return (int)getY()/Tile.TILE_SIZE;
+        return curY;
     }
     
     public void updateImage()
@@ -354,10 +365,23 @@ public class Troop extends ImageView
     
     public void updateImage(char direction)
     {
-        int n = player.getPlayerNum()+1;
-        setImage(new Image("troops\\"+getInfo()+n+direction+".png"));
+        //setImage(new Image("troops\\"+getInfo()+n+direction+".png"));
+        troopGC.fillRect(curX*SCALE, curY*SCALE, SCALE, SCALE);
+        troopGC.drawImage(getImage(direction), curX*SCALE, curY*SCALE, SCALE, SCALE);
         
         this.direction = direction;
+    }
+    
+    private Image getImage()
+    {
+        int n = player.getPlayerNum()+1;
+        return new Image("troops\\"+getInfo()+n+"r.png");
+    }
+    
+    private Image getImage(char direction)
+    {
+        int n = player.getPlayerNum()+1;
+        return new Image("troops\\"+getInfo()+n+direction+".png");
     }
     
     public String getInfo()

@@ -13,16 +13,18 @@ import javafx.event.EventHandler;
 import javafx.event.ActionEvent;
 import javafx.scene.input.*;
  
-public class Animation extends Application {
+public class Animation extends Application
+{
     @Override
-    public void start (Stage primaryStage) throws Exception {
+    public void start (Stage primaryStage) throws Exception
+    {
         Canvas c = new Canvas(600, 600);
-        c.getGraphicsContext2D().setFill(Color.LIME);
-        Archer t = new Archer(new Player(0), 1, 1);   
-        t.updateImage();
         Group group = new Group();
  
-        group.getChildren().add(t);
+        Troop.setGraphics(c.getGraphicsContext2D(), group);
+        
+        //c.getGraphicsContext2D().setFill(Color.LIME);
+        Warrior t = new Warrior(new Player(0), 1, 1);
         primaryStage.setScene(new Scene(group, 600, 600));
         primaryStage.show();
         
@@ -36,7 +38,7 @@ public class Animation extends Application {
             @Override
             public void handle(MouseEvent e)
             {
-                //t.animateAttack(2, 2, group);
+                t.animateAttack(2, 2);
             }
         });
     }

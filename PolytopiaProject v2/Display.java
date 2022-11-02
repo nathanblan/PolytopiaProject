@@ -270,7 +270,7 @@ public class Display extends Application
                 if (c.x == x && c.y == y)
                 {
                     Troop other = Player.troopMap[x][y];
-                    t.attack(other, root);
+                    t.attack(other);
 
                     if (other == Player.troopMap[x][y] || t.getRange() > 1)
                         t.updateLastAttackTurn(curTurn);
@@ -402,7 +402,7 @@ public class Display extends Application
             }
             else if (temp == 3)
             {
-                root.getChildren().add(Player.troopMap[curSelectedX][curSelectedY]);
+                //root.getChildren().add(Player.troopMap[curSelectedX][curSelectedY]);
                 overlay.toFront();
                 fog[curPlayer].toFront();
             }
@@ -775,7 +775,7 @@ public class Display extends Application
             String data = saveFile.nextLine();
             while (!data.equals("<t>"))
             {
-                root.getChildren().add(Troop.loadTroop(data));
+                //.getChildren().add(Troop.loadTroop(data));
                 data = saveFile.nextLine();
             }
             
@@ -864,7 +864,7 @@ public class Display extends Application
         }
         
         Warrior w = new Warrior(players[0], firstX, firstY);
-        root.getChildren().add(w);
+        //root.getChildren().add(w);
         ((City)map[firstX][firstY]).setPlayer(players[0], map);
         Player.troopMap[firstX][firstY] = w;
         DisplayUtility.clearStartingFog(fog[0], firstX, firstY, players[0]);
@@ -872,7 +872,7 @@ public class Display extends Application
         ((City)map[secondX][secondY]).setPlayer(players[1], map);
         
         w = new Warrior(players[1], secondX, secondY);
-        root.getChildren().add(w);
+        //root.getChildren().add(w);
         Player.troopMap[secondX][secondY] = w;
         DisplayUtility.clearStartingFog(fog[1], secondX, secondY, players[1]);
     }

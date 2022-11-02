@@ -18,21 +18,18 @@ public class Shield extends Troop
     {
         super(p, 10, 1, 3, 1, 1);
         
-        super.setXY(x, y);
-        setX(x*Tile.TILE_SIZE);
-        setY(y*Tile.TILE_SIZE);
+        setXY(x, y);
     }
     
     public Shield(Player p, int turn, int x, int y)
     {
         super(p, 10, 1, 3, 1, 1);
         
-        super.updateLastAttackTurn(turn);
-        super.updateLastMoveTurn(turn);
-        super.updateLastActionTurn(turn);
-        super.setXY(x, y);
-        setX(x*Tile.TILE_SIZE);
-        setY(y*Tile.TILE_SIZE);
+        updateLastAttackTurn(turn);
+        updateLastMoveTurn(turn);
+        updateLastActionTurn(turn);
+        setXY(x, y);
+        
         p.decStars(3);
     }
     
